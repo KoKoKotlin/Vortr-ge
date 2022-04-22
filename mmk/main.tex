@@ -4,6 +4,11 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{wrapfig}
+
+\captionsetup[figure]{labelformat=empty}
+\setbeamertemplate{section in toc}[square]
 
 \usetheme{Singapore}
 \usecolortheme{default}
@@ -11,10 +16,11 @@
 \setbeamerfont{text}{size=\large}
 \setbeamercovered{dynamic}
 
+
 \title{System Usability Scale (SUS)}
-\author[Y. Höll, J. Jäpel]{}
+\author[Y. Höll, F. Jäpel]{}
 \date{April 26, 2022}
-%\logo{\includegraphics[]{TUBAF-logo.png}}
+% \logo{\includegraphics[keepaspectratio=True, width=30px]{./image/logo.png}}
 
 \beamertemplatenavigationsymbolsempty 
 
@@ -31,19 +37,22 @@
 	\frametitle{Was bedeutet SUS}
 	\begin{columns}
 		% Column 1
-		\begin{column}{0.5\textwidth}
+		\begin{column}{0.7\textwidth}
 			\begin{itemize}
 				\item<1> Fragebogen mit festen Fragen
 				\item<1> 8 Usability, 2 Learnability
 				\item<1> Punktzahl 1-5
+				\item<1> Formel für Gesamtpunktzahl: 
+				Sei $u_n$ Punktzahl bei Frage $n$ und $G$ Gesamtpunktzahl, dann:
+				\begin{math} G=((\sum\limits_{k=1}^5(u_{2k-1})-5) + (25-\sum\limits_{k=1}^5(u_{2k}))) \cdot 2.5 $\\$ \end{math}
 			\end{itemize}
 		\end{column}
 		% Column 2    
-		\begin{column}{0.5\textwidth}
+		\begin{column}{0.3\textwidth}
 			\begin{figure}
 				\centering
-				\includegraphics[keepaspectratio=true, width=75px]{./image/sus.png}
-				\caption{SUS Standardfragebogen}
+				\includegraphics[keepaspectratio=true, width=65px]{./image/sus.png}
+				\caption{SUS Standardfragebogen \tiny{\cite{wiki1}}}
 			\end{figure}		
 		\end{column}
 	\end{columns}
@@ -126,11 +135,12 @@
 		\begin{figure}
 			\centering
 			\includegraphics[keepaspectratio=true, width=1\textwidth]{./image/peter.png}
-			
+			\caption{\tiny{\cite{harrati2016exploring}}}
 		\end{figure}
-		\cite{harrati2016exploring}
+		
 \end{frame}
 
+\section{Zusammenfassung}
 \begin{frame}
 	\frametitle{Abschluss}
 	\begin{columns}
@@ -148,8 +158,8 @@
 			\begin{figure}
 				\centering
 				\includegraphics[keepaspectratio=true, width=125px]{./image/sus-meme.png}
+				\caption{\tiny{\cite{sp1}}}
 			\end{figure}
-			\cite{sp1}
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -157,6 +167,10 @@
 \section{Quellen}
 \begin{frame}[allowframebreaks]
     \nocite{*}
+	\hfill
+	\begin{wrapfigure}{r}{3cm}
+		\includegraphics[keepaspectratio=true, width=100px]{./image/J3Nae.png}
+	\end{wrapfigure}
     \bibliographystyle{unsrt}
     \bibliography{references}
 \end{frame}
