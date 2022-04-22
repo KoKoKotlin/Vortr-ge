@@ -1,0 +1,164 @@
+\documentclass[12pt, aspectratio=169]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+
+\usetheme{Singapore}
+\usecolortheme{default}
+\usefonttheme{structurebold}
+\setbeamerfont{text}{size=\large}
+\setbeamercovered{dynamic}
+
+\title{System Usability Scale (SUS)}
+\author[Y. Höll, J. Jäpel]{}
+\date{April 26, 2022}
+%\logo{\includegraphics[]{TUBAF-logo.png}}
+
+\beamertemplatenavigationsymbolsempty 
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}
+	\frametitle{Einteilung}
+	\tableofcontents
+\end{frame}
+
+\section{Was bedeutet SUS}
+\begin{frame}
+	\frametitle{Was bedeutet SUS}
+	\begin{columns}
+		% Column 1
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item<1> Fragebogen mit festen Fragen
+				\item<1> 8 Usability, 2 Learnability
+				\item<1> Punktzahl 1-5
+			\end{itemize}
+		\end{column}
+		% Column 2    
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[keepaspectratio=true, width=75px]{./image/sus.png}
+				\caption{SUS Standardfragebogen}
+			\end{figure}		
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\begin{enumerate}
+		\item <1> I think that I would like to use this system frequently.
+		\item <1> I found the system unnecessarily complex.
+		\item <1> I thought the system was easy to use.
+		\item <1> I think that I would need the support of a technical person to be able to use this system.
+		\item <1> I found the various functions in this system were well integrated.
+		\item <1> I thought there was too much inconsistency in this system.
+		\item <1> I would imagine that most people would learn to use this system very quickly.
+		\item <1> I found the system very cumbersome to use.
+		\item <1> I felt very confident using the system.
+		\item <1> I needed to learn a lot of things before I could get going with this system.
+	\end{enumerate}
+\end{frame}
+
+\section{Einsatzgebiete}
+\begin{frame}
+	\frametitle{Einsatzgebiete}
+	\begin{itemize}
+		\item<1> wenig Zeit oder finanzielle Mittel
+		\item<1> in Kombination mit anderen Tests
+		\item<1> meist mit konkreter Aufgabe (test-then-measure)
+		\item<1> nicht für Erkennung genauer Probleme
+	\end{itemize}
+\end{frame}
+
+	
+\begin{frame}
+	\frametitle{Use Cases}
+	\begin{itemize}
+		\item<1> Allgemeiner Vergleich mit ähnlichen Produkten
+		\item<1> Interface-Typen/Website-Versionen vergleichen
+		\item<1> Continuous Testing
+	\end{itemize}
+\end{frame}
+
+\section{Testablauf}
+\begin{frame}
+	\frametitle{Testablauf}
+	\begin{enumerate}
+		\item<1> Tester nutzt das System mit konkreter Aufgabe
+		\item<1> Tester erhält den Fragebogen
+		\item<1> Statistische Aufarbeitung der Ergebnisse
+		\item<1> Vergleich mit anderen/ähnlichen Systemen
+	\end{enumerate}
+\end{frame}
+
+\section{Vor- \& Nachteile}
+\begin{frame}
+	\frametitle{Vorteile}
+	\begin{itemize}
+		\item<1> Einfach vergleichbare Daten, gut für Statistik
+		\item<1> geringer Zeitaufwand
+		\item<1> gibt es schon seit 1993
+		\item<1> Zeitliche Trends erkennbar
+		\item<1> Selbsterklärend
+		\item<1> Keine Beobachtung während des Tests nötig
+		\item<1> Programmunabhängig
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Nachteile}
+	\begin{itemize}
+		\item<1> Gründe für schlechten Score nicht vorhanden
+		\item<1> Vergleich zwischen Systemen nur qualitativ
+		\item<1> Geringe Korrelation Effektivität - Usability
+		\item<1> Vergleichbarkeit mit Test in anderen Sprachen nicht klar
+	\end{itemize}
+\end{frame}
+
+\section{Beispiel}
+\begin{frame}
+	\frametitle{Beispiel}
+		\begin{figure}
+			\centering
+			\includegraphics[keepaspectratio=true, width=1\textwidth]{./image/peter.png}
+			
+		\end{figure}
+		\cite{harrati2016exploring}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Abschluss}
+	\begin{columns}
+		% Column 1
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item <1> standartisierter Fragebogen
+				\item <1> einfache, schnelle Einschätzung
+				\item <1> kein Vorwissen oder Anleitung für Tester nötig
+				\item <1> nur eine sehr grobe Metrik
+			\end{itemize}
+		\end{column}
+		% Column 2    
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[keepaspectratio=true, width=125px]{./image/sus-meme.png}
+			\end{figure}
+			\cite{sp1}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\section{Quellen}
+\begin{frame}[allowframebreaks]
+    \nocite{*}
+    \bibliographystyle{unsrt}
+    \bibliography{references}
+\end{frame}
+
+\end{document}
