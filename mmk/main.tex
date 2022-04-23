@@ -1,5 +1,6 @@
 \documentclass[12pt, aspectratio=169]{beamer}
 
+\usepackage{color}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{tikz}
@@ -15,13 +16,19 @@
 \usefonttheme{structurebold}
 \setbeamerfont{text}{size=\large}
 \setbeamercovered{dynamic}
-\setbeamertemplate{footline}[frame number]
 
+\definecolor{ao}{rgb}{0.0, 0.0, 0.7}
+
+%\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{footline}[text line]{%
+  \parbox{\linewidth}{\vspace*{-8pt}\color{ao}\insertshorttitle\hspace{10px}\insertshortauthor\hfill\insertpagenumber}}
 
 \title{System Usability Scale (SUS)}
-\author[Y. Höll, F. Jäpel]{}
+\author[Y. Höll, F. Jäpel]{Yannik Höll \& Franz Jäpel}
 \date{April 26, 2022}
 % \logo{\includegraphics[keepaspectratio=True, width=30px]{./image/logo.png}}
+
+
 
 \beamertemplatenavigationsymbolsempty 
 
