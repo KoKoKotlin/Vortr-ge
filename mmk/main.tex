@@ -15,6 +15,7 @@
 \usefonttheme{structurebold}
 \setbeamerfont{text}{size=\large}
 \setbeamercovered{dynamic}
+\setbeamertemplate{footline}[frame number]
 
 
 \title{System Usability Scale (SUS)}
@@ -25,7 +26,9 @@
 \beamertemplatenavigationsymbolsempty 
 
 \begin{document}
-\frame{\titlepage}
+\begin{frame}[noframenumbering, plain]
+	\titlepage
+\end{frame}
 
 \begin{frame}
 	\frametitle{Einteilung}
@@ -87,22 +90,41 @@
 	
 \begin{frame}
 	\frametitle{Use Cases}
+	\vspace{20px}
 	\begin{itemize}
 		\item<1> Allgemeiner Vergleich mit ähnlichen Produkten
 		\item<1> Interface-Typen/Website-Versionen vergleichen
 		\item<1> Continuous Testing
 	\end{itemize}
+	\vspace{15px}
+	\begin{figure}
+		\includegraphics[keepaspectratio=true, width=200px]{./image/ab.png}
+		\caption{A-B-Test \tiny{\cite{pic2}}}
+	\end{figure}
 \end{frame}
 
 \section{Testablauf}
 \begin{frame}
 	\frametitle{Testablauf}
-	\begin{enumerate}
-		\item<1> Tester nutzt das System mit konkreter Aufgabe
-		\item<1> Tester erhält den Fragebogen
-		\item<1> Statistische Aufarbeitung der Ergebnisse
-		\item<1> Vergleich mit anderen/ähnlichen Systemen
-	\end{enumerate}
+	\begin{columns}
+		% Column 1
+		\begin{column}{0.7\textwidth}
+			\begin{enumerate}
+				\item<1> Tester nutzt das System mit konkreter Aufgabe
+				\item<1> Tester erhält den Fragebogen
+				\item<1> Statistische Aufarbeitung der Ergebnisse
+				\item<1> Vergleich mit anderen/ähnlichen Systemen
+			\end{enumerate}
+		\end{column}
+		% Column 2    
+		\begin{column}{0.3\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[keepaspectratio=true, width=75px]{./image/ablauf.png}
+				\caption{Beispielablauf \tiny{\cite{young2009cultivating}}}
+			\end{figure}		
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \section{Vor- \& Nachteile}
@@ -165,7 +187,7 @@
 \end{frame}
 
 \section{Quellen}
-\begin{frame}[allowframebreaks]
+\begin{frame}[allowframebreaks, noframenumbering]
     \nocite{*}
 	\hfill
 	\begin{wrapfigure}{r}{3cm}
