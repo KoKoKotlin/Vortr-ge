@@ -1,0 +1,34 @@
+\begin{tikzpicture}
+	\begin{axis}[
+		xlabel={Aufgabe},
+		ylabel={Zeit in s},
+		title=Zeit pro Tester und Aufgabe,
+		ybar,
+		bar width=0.2cm,
+		symbolic x coords={S1, S2.1, S2.2, S3.1, S3.2, S3.3},
+		xtick={S1, S2.1, S2.2, S3.1, S3.2, S3.3},
+		width=0.89\textwidth,
+		height=0.9\textheight,
+		legend style={
+			at={(1.15,0.0)},
+			anchor=south,
+			column sep=1ex
+		}
+	]
+	\addplot[style={lime,fill=lime}] coordinates {(S1, 10)(S2.1, 70)(S2.2, 0)(S3.1, 5)(S3.2, 11)(S3.3, 7)};
+	\addplot[style={green,fill=green}] coordinates {(S1, 20)(S2.1, 20)(S2.2, 0)(S3.1, 0)(S3.2, 1)(S3.3, 0)};
+	\addplot[style={blue,fill=blue}] coordinates {(S1, 0)(S2.1, 0)(S2.2, 0)(S3.1, 0)(S3.2, 0)(S3.3, 0)};
+	\addplot[style={red,fill=red}] coordinates {(S1, 0)(S2.1, 0)(S2.2, 0)(S3.1, 0)(S3.2, 0)(S3.3, 0)};
+	\addplot[style={purple,fill=purple}] coordinates {(S1, 30)(S2.1, 30)(S2.2, 30)(S3.1, 60)(S3.2, 60)(S3.3, 240)};
+	\addplot[style={violet,fill=violet}] coordinates {(S1, 3)(S2.1, 30)(S2.2, 25)(S3.1, 15)(S3.2, 30)(S3.3, 30)};
+	\legend{Hönig, Bär, Sukhankova, Schanck, Naumann, Leyer}
+	\end{axis}
+\end{tikzpicture}
+
+% \addplot[style={green,fill=green}] coordinates {(S1, 10)(S2.1, 70)(S2.2, 0)(S3.1, 5)(S3.2, 11)(S3.3, 7)(L1, 7)(L2.1, 292)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)(L2.6, 0)(L2.7, 37)(L3.1, 0)(L3.2, 0)(L3.3, 0)(L3.4, 0)(L3.5, 0)}; %Hönig
+% \addplot[style={green,fill=green}] coordinates {(S1, 10)(S2.1, 70)(S2.2, 0)(S3.1, 5)(S3.2, 11)(S3.3, 7)(L1, 7)(L2.1, 292)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)(L2.6, 0)(L2.7, 37)(L3.1, 0)(L3.2, 0)(L3.3, 0)(L3.4, 0)(L3.5, 0)}; %Hönig
+% \addplot[style={green,fill=green}] coordinates {(S1, 10)(S2.1, 70)(S2.2, 0)(S3.1, 5)(S3.2, 11)(S3.3, 7)(L1, 7)(L2.1, 292)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)(L2.6, 0)(L2.7, 37)(L3.1, 0)(L3.2, 0)(L3.3, 0)(L3.4, 0)(L3.5, 0)}; %Hönig
+% \addplot[style={green,fill=green}] coordinates {(S1, 10)(S2.1, 70)(S2.2, 0)(S3.1, 5)(S3.2, 11)(S3.3, 7)(L1, 7)(L2.1, 292)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)(L2.6, 0)(L2.7, 37)(L3.1, 0)(L3.2, 0)(L3.3, 0)(L3.4, 0)(L3.5, 0)}; %Hönig
+% \addplot[style={green,fill=green}] coordinates {(S1, 10)(S2.1, 70)(S2.2, 0)(S3.1, 5)(S3.2, 11)(S3.3, 7)(L1, 7)(L2.1, 292)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)(L2.6, 0)(L2.7, 37)(L3.1, 0)(L3.2, 0)(L3.3, 0)(L3.4, 0)(L3.5, 0)}; %Hönig
+% \addplot[style={green,fill=green}] coordinates {(S1, 10)(S2.1, 70)(S2.2, 0)(S3.1, 5)(S3.2, 11)(S3.3, 7)(L1, 7)(L2.1, 292)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)(L2.6, 0)(L2.7, 37)(L3.1, 0)(L3.2, 0)(L3.3, 0)(L3.4, 0)(L3.5, 0)}; %Hönig
+% symbolic x coords={S1, S2.1, S2.2, S3.1, S3.2, S3.3, L1, L2.1, L2.2, L2.3, L2.4, L2.5, L2.6, L2.7, L3.1, L3.2, L3.3, L3.4, L3.5},

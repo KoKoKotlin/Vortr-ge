@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+	\begin{axis}[
+        ylabel={Punktzahl},
+		xlabel={Frage},
+		title=Durschnittliche Punktzahl pro Frage,
+		ybar,
+		nodes near coords, bar width=0.2cm,
+		symbolic x coords={1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+        width=\textwidth,
+        height=0.9\textheight
+	]
+	\addplot coordinates{(1, 1.5)(2, 2)(3, 3.83)(4, 2.17)(5, 3.5)(6, 2.33)(7, 3.67)(8, 2.17)(9, 3.17)(10, 1.67)};
+	\end{axis}
+\end{tikzpicture}

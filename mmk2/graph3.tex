@@ -1,0 +1,26 @@
+\begin{tikzpicture}
+	\begin{axis}[
+        xlabel={Aufgabe},
+		ylabel={Zeit in s},
+		title=Zeit pro Tester und Aufgabe,
+		ybar,
+		bar width=0.2cm,
+		symbolic x coords={L1, L2.1, L2.2, L2.3, L2.4, L2.5},
+		xtick={L1, L2.1, L2.2, L2.3, L2.4, L2.5},
+		width=0.895\textwidth,
+		height=0.9\textheight,
+		legend style={
+			at={(1.15,0.0)},
+			anchor=south,
+			column sep=1ex
+		}
+	]
+	\addplot[style={lime,fill=lime}] coordinates {(L1, 7)(L2.1, 292)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)};
+	\addplot[style={green,fill=green}] coordinates {(L1, 20)(L2.1, 120)(L2.2, 120)(L2.3, 240)(L2.4, 20)(L2.5, 0)};
+	\addplot[style={blue,fill=blue}] coordinates {(L1, 0)(L2.1, 0)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)};
+	\addplot[style={red,fill=red}] coordinates {(L1, 0)(L2.1, 0)(L2.2, 0)(L2.3, 0)(L2.4, 0)(L2.5, 0)};
+	\addplot[style={purple,fill=purple}] coordinates {(L1, 30)(L2.1, 300)(L2.2, 300)(L2.3, 30)(L2.4, 30)(L2.5, 0)};
+	\addplot[style={violet,fill=violet}] coordinates {(L1, 30)(L2.1, 50)(L2.2, 45)(L2.3, 120)(L2.4, 40)(L2.5, 30)};
+	\legend{Hönig, Bär, Sukhankova, Schanck, Naumann, Leyer}
+	\end{axis}
+\end{tikzpicture}

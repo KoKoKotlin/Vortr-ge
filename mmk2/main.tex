@@ -1,0 +1,174 @@
+\documentclass[12pt, aspectratio=169]{beamer}
+
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{wrapfig}
+\usepackage{xurl}
+\usepackage{pgfplots}
+\usepackage{minipage-marginpar}
+\usepackage{wrapfig}
+\usepackage{subfig}
+
+
+\captionsetup[figure]{labelformat=empty}
+\setbeamertemplate{section in toc}[square]
+
+\usetheme{Singapore}
+\usecolortheme{default}
+\usefonttheme{structurebold}
+\setbeamerfont{text}{size=\large}
+\setbeamercovered{dynamic}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\pgfplotsset{compat=1.16}
+
+\definecolor{ao}{rgb}{0.0, 0.0, 0.7}
+
+%\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{footline}[text line]{%
+  \parbox{\linewidth}{\vspace*{-8pt}\color{ao}\insertshorttitle\hspace{10px}\insertshortauthor\hfill\insertpagenumber}}
+
+\title{Test mittels Heuristischer Evaluation}
+\author[Y. Höll, F. Jäpel, C. Pooch]{Yannik Höll \& Franz Jäpel \& Christoph Pooch}
+\date{April 26, 2022}
+% \logo{\includegraphics[keepaspectratio=True, width=30px]{./image/logo.png}}
+
+
+
+\beamertemplatenavigationsymbolsempty 
+
+\begin{document}
+\begin{frame}[noframenumbering, plain]
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Einteilung}
+	\tableofcontents
+\end{frame}
+
+\section{System Usability Scale}
+\begin{frame}
+\begin{center}
+	\begin{table}	
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+	\hline
+	\textbf{Frage}& \textbf{1}& \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} \\ \hline
+	\textbf{Tester 1}&1	&2 &4 &1 &3	&3 &4 &2 &3	&1 \\ \hline
+	\textbf{Tester 2}&1	&1 &4 &2 &5 &2 &4 &1 &3 &1 \\ \hline
+	\textbf{Tester 3}&1	&3 &3 &2 &2 &3 &2 &2 &3 &3 \\ \hline
+	\textbf{Tester 4}&2	&1 &4 &2 &4 &1 &4 &1 &4 &1 \\ \hline
+	\textbf{Tester 5}&2	&3 &4 &2 &4 &4 &3 &4 &3 &1 \\ \hline
+	\textbf{Tester 6}&2	&2 &4 &4 &3 &1 &5 &3 &3	&3 \\ \hline
+	\textbf{Durchschn.}&1,50 &2,00 &3,83 &2,17 &3,50 &2,33 &3,67 &2,17 &3,17 &1,67 \\ \hline
+		\end{tabular}
+	\caption{Auswertung SUS Fragebogen}
+	\end{table}
+\end{center}
+\end{frame}
+
+\begin{frame}
+	\begin{figure}	
+		\includegraphics[width=1\textwidth]{image/sus-scale-nocorrect.png}
+		\caption{Auswertung SUS Fragebogen mittels Skalierung}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\input{graph.tex}
+\end{frame}
+
+\begin{frame}
+	\begin{figure}
+		\includegraphics[width=1\textwidth]{image/sus-scale-correct.png}
+		\caption{Korrigierte Auswertung SUS Fragebogen mittels Skalierung}
+	\end{figure}
+\end{frame}
+
+\section{Aufgabenbewertung}
+\begin{frame}
+	\hspace*{-20px}
+	\input{graph2.tex}
+\end{frame}
+
+\begin{frame}
+	\hspace*{-20px}
+	\input{graph3.tex}
+\end{frame}
+
+\begin{frame}
+	\hspace*{-20px}
+	\input{graph4.tex}
+\end{frame}
+
+\section{Heuristische Evaluation}
+
+\begin{frame}
+	\centering
+	\begin{tabular}{|l|c|}
+		\hline
+		\textbf{Heuristik} & \textbf{Nummer} \\ \hline
+		Determinismus& 1\\ \hline
+		Sprache& 2\\ \hline
+		Limitierung& 3\\ \hline
+		Nutzerangepasstheit& 4\\ \hline
+		Einheitlichkeit& 5\\ \hline
+		Bugs& 6\\ \hline
+		Anpassbarkeit& 7\\ \hline
+		Nutzerunterstützung& 8\\ \hline
+		Rückgängigmachen von Aktionen& 9\\ \hline
+		Rückmeldung& 10\\ \hline
+		Fehler vermeiden& 11\\ \hline
+		Selbsterklärendes Design& 12\\ \hline
+		Erwartungsgemäße Funktionalität& 13\\ \hline
+		Barrierefreiheit& 14\\ \hline
+		
+	\end{tabular}
+\end{frame}
+
+\begin{frame}
+	\hspace*{-20px}
+	\input{graph5.tex}
+\end{frame}
+
+\begin{frame}
+	\begin{figure}
+		\includegraphics[height=0.6\textheight]{image/misere.png}
+		\caption{Screenshot der Misere}
+	\end{figure}
+	\begin{enumerate}
+		\item Formular Heuristiken: \url{https://forms.gle/nhwj1Xj4SPZw4Jjj6}
+		\item Formular Aufgaben: \url{https://forms.gle/YQhYtWiWFfxNEUsP6}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+	\begin{minipage}[b]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{image/Heur2.png}
+	\end{minipage}
+	\hspace{0.5cm}
+	\begin{minipage}[b]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{image/Heur1.png}
+	\end{minipage}
+	\caption{100\% der Teilnehmenden einer Heuristischen Evaluation haben hier keinen Verstoß gegen Heuristiken feststellen können!
+	\ \\ Das Ergebnis war absolut genderneutral. Allerdings gab es diverse Teilnehmende nicht.\tiny{[1]}}
+\end{figure}
+
+\end{frame}
+
+\section{Quellen}
+\begin{frame}
+	\centering
+	\begin{figure}
+		\includegraphics[trim={0 20cm 0 15cm},clip,height=0.8\textheight]{image/geile_quelle.jpeg}
+		\caption{Quelle 1 (Institut für Diskrete Mathematik und Algebra, unbekannter Autor)}
+	\end{figure}
+\end{frame}
+
+\end{document}
