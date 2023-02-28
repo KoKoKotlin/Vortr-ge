@@ -1,0 +1,86 @@
+\documentclass[12pt, aspectratio=169]{beamer}
+
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{wrapfig}
+\usepackage{xurl}
+
+\captionsetup[figure]{labelformat=empty}
+\setbeamertemplate{section in toc}[square]
+
+\usetheme{Singapore}
+\usecolortheme{default}
+\usefonttheme{structurebold}
+\setbeamerfont{text}{size=\large}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\definecolor{ao}{rgb}{0.0, 0.0, 0.7}
+
+%\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{footline}[text line]{%
+  \parbox{\linewidth}{\vspace*{-8pt}\color{ao}\insertshorttitle\hspace{10px}\insertshortauthor\hfill\insertpagenumber}}
+
+\title{Kombinatorische Spieltheorie}
+\author[Y. Höll]{Yannik Höll}
+\date{3. März, 2023}
+% \logo{\includegraphics[keepaspectratio=True, width=30px]{./image/logo.png}}
+
+\beamertemplatenavigationsymbolsempty 
+
+\begin{document}
+\begin{frame}[noframenumbering, plain]
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Einteilung}
+	\tableofcontents
+\end{frame}
+
+\section{Einleitung}
+\begin{frame}
+Kombinatorische Spieltheorie beschäftigt sich mit Spielen die:
+
+\begin{itemize}
+    \item 2 Spieler (Links, Rechts)
+    \item endliche/abzählbare Positionen
+    \item Spieler ziehen abwechselnd
+    \item jeder Spieler hat vollständige Information
+    \item kein Zufall
+    \item Konvention: Keine Züge mehr $\Rightarrow$ Verlierer (kein Unentschieden)
+\end{itemize}
+
+\onslide<2-> {
+Kombinatorische Spieltheorie ist:
+\begin{itemize}
+    \item nicht wie gewöhnliche Spieltheorie
+    \item eher mathematische Rätsel, Denkaufgaben
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}
+Nicht untersucht werden können Spiele wie:
+\begin{itemize}
+    \item<2-> Schach (Unentschieden)
+    \item<3-> Backgammon (Zufall)
+    \item<4-> Tennis, oder andere Sportarten (keine diskreten Zustände)
+    \item<5-> Schere-Stein-Papier (keine vollständige Information, nicht abwechselnd)
+\end{itemize}
+
+\onslide<6-> {
+    $\Rightarrow$ viele untersuchte Spiele eher unbekannt \\
+    $\Rightarrow$ Spiele wurden wegen Theorie "erfunden"
+}
+\end{frame}
+
+\section{Nim}
+\section{Poker-Nim}
+\section{Hackenbush}
+\section{Hackenbush-Hotchpotch}
+
+\end{document}
