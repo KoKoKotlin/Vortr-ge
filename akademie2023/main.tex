@@ -274,7 +274,161 @@ Nicht untersucht werden können Spiele wie:
 \end{frame}
 
 \section{Hackenbush}
+\begin{frame}
+    \frametitle{Hackenbush}
+\textbf{Regeln}:
+    \begin{itemize}
+        \item Graphenstruktur mit Kanten in 2 Farben (rot, blau)
+        \item Kanten können mit speziellem Knoten, der "Boden" heißt, verbunden sein
+        \item Spieler löschen Kanten ihrer Farbe (\alert{L}inks löscht b\alert{L}au, \alert{R}echts löscht \alert{R}ot)
+        \item wenn Teilgraph nicht mit Boden verbunden, löschen
+        \item abwechselndes Ziehen
+        \item wer als erstes in seinem Zug keine Kanten mehr löschen kann, verliert
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hackenbush}
+    \begin{figure}
+        \includegraphics[width=0.7\textwidth]{pic/hackenbush.png}
+        \caption{Hackenbush-Position - Hund \tiny{\cite{ww}}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Einfache Hackenbush Positionen}
+    \begin{itemize}
+        \item<1-> $\{|\} = 0$
+        \item<2-> $\{0|\} = 1$
+        \item<3-> $\{1|\} = 2$
+        \item<4-> $\{n-1|\} = n, \forall n \in \mathbb{N}$
+        \item<5-> Analog: $\{|-n+1\} = -n, \forall n \in \mathbb{N^+}$
+    \end{itemize}
+    \vspace*{20px}
+    \onslide<6-> {
+        \[\Rightarrow -(-n) = -\{|-n+1\} = \{n-1|\} = n\]
+    }
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hackenbush}
+    \huge{Der Wert jeder Hackenbush-Position, bei der blaue und rote Kanten getrennt vorkommen, 
+    kann durch aufsummieren der Anzahlen von blauen und roten Kanten bestimmt werden.}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hackenbush - Gebrochene Zahlen}
+    \begin{itemize}
+        \item<1-> $\{0|1\} = \frac{1}{2}$
+        \item<2-> $\{0|\frac{1}{2}\} = \frac{1}{4}$
+        \item<3-> $\{0|\frac{1}{2^n}\} = \frac{1}{2^{n+1}}, \forall n \in \mathbb{N}$
+        \item<4-> $\{-\frac{1}{2^n}|0\} = -\frac{1}{2^{n+1}}, \forall n \in \mathbb{N}$
+        \item<5-> $\{\frac{p}{2^{q}} | \frac{p+1}{2^{q}}\} = \frac{2p+1}{2^{q+1}}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{pic/hackenbush-nums.png}
+        \caption{Hackenbush-Position mit zugehörigen Werten \tiny{\cite{ww}}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \includegraphics[width=0.9\textwidth]{pic/hackenbush-pi.png}
+        \caption{Hackenbush-Position mit dem Wert $\pi$ ($\pi = 3,0010010000111111011\cdots$) \tiny{\cite{ww}}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hackenbush - Berlekamp's Algorithmus}
+    \begin{itemize}
+        \item Wenn Zahl positiv, dann mit blauem Ast starten, sonst mit Rotem
+        \item $n$ Äste für ganzaligen Anteil $n$ (blau) oder $-n$ (rot)
+        \item Dezimaltrenner wird ersetzt durch Blau, Rot (wenn positiv) oder Rot, Blau (wenn negativ)
+        \item Nachkommastellenanteil in binäre Darstellung umwandeln und für jede 1 einen blauen Ast und für jede 0 einen roten Ast hinzufügen in richtiger Reihenfolge
+        \item wenn binäre Darstellung endlich $\Rightarrow$ letzte 1 auslassen
+    \end{itemize}
+\end{frame}
+
 \section{Hackenbush-Hotchpotch}
+\begin{frame}
+    \frametitle{Hackenbush-Hotchpotch}
+\textbf{Regeln}:
+    \begin{itemize}
+        \item Graphenstruktur mit Kanten in \alert{3} Farben (rot, blau, \alert{grün})
+        \item Kanten können mit speziellem Knoten, der "Boden" heißt, verbunden sein
+        \item Spieler löschen Kanten ihrer Farbe (Links löscht bLau, Rechts löscht Rot)
+        \item \alert{grüne Kanten können von beiden Spielern gelöscht werden}
+        \item wenn Teilgraph nicht mit Boden verbunden, löschen
+        \item abwechselndes Ziehen
+        \item wer als erstes in seinem Zug keine Kanten mehr löschen kann, verliert
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Only-Green Hackenbush}
+    \begin{itemize}
+        \item<1-> Entspricht Nim, solange die Graphen keine \textit{Verzweigung} besitzen
+        \item<2-> Wenn 2 identische Teilgraphen existieren $\Rightarrow$ Kopier-Strategie
+    \end{itemize}
+    \onslide<2->{
+        \begin{figure}
+            \includegraphics[width=0.7\textwidth]{pic/hackenbush-green.png}
+            \caption{Grüner Wald \tiny{\cite{ww}}}            
+        \end{figure}
+    }
+\end{frame}
+
+\begin{frame}
+    \frametitle{Only-Green Hackenbush - Colon Principle}
+    \begin{figure}
+        \includegraphics[width=0.5\textwidth]{pic/colon.png}
+        \caption{Colon Principle \tiny{\cite{ww}}}            
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Only-Green Hackenbush}
+    \begin{itemize}
+        \item<1-> Bei Verzweigungen:
+        \begin{itemize}
+            \item<1-> alle Verzweigungen markieren
+            \item<1-> Werte ab Verzweigung ausrechnen und addieren
+            \item<1-> unverzweigten Weg mit selben Wert wie Summe an Verzweigungsknoten anfügen
+        \end{itemize}
+        \item<2-> Bei Zyklen (Kreise) $\Rightarrow$ Fusion-Rule anwenden
+    \end{itemize}
+    \onslide<2-> {
+    \begin{block}{Fusion-Rule}
+        Jeder Zyklus in einem Only-Green Hackenbush-Graphen kann fusioniert werden,
+        ohne den Wert des gesamten Graphen zu ändern
+    \end{block}
+    }
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \includegraphics[width=\textwidth]{pic/green-girl.png}
+        \caption{Fusion-Rule angewandt auf Position \tiny{\cite{ww}}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Hackenbush-Hotchpotch}
+    \begin{itemize}
+        \item<1-> $* < 1/2^n, \: \forall n \in \mathbb{N}, \: * > -1/2^n, \forall n \in \mathbb{N}, \: * \neq 0$
+        \item<2-> $* \: || \: 0$, "Start confused with 0", Stern ist ununterscheidbar von 0
+        \item<3-> $\uparrow \: = \{0,* | 0\}$, $\uparrow \: || \: *$
+        \item<3-> $\uparrow + \uparrow \: = \: \Uparrow$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \centering
+    \huge{Danke für Ihre Aufmerksamkeit!}
+\end{frame}
 
 \section{Quellen}
 \begin{frame}[allowframebreaks, noframenumbering]
