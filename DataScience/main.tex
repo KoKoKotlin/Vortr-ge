@@ -1,0 +1,146 @@
+\documentclass{article}
+\usepackage[left=3cm,right=3cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\setlength{\parindent}{0mm}
+
+\newcommand{\R}[0]{\mathbb{R}}
+\newcommand{\F}[0]{\mathcal{F}}
+
+\title{Datascience}
+\author{Yannik Höll}
+\date{\today}
+
+\newtheorem{defin}{Definition}
+\newtheorem{thm}{Satz}
+
+\begin{document}
+\maketitle
+
+\section{Inverse Faltung}
+
+\subsection{Klassische Fouriertransformation und Faltung}
+
+Für folgende Definitionen sei $n \in \mathbb{N} \setminus \{ 0 \}$.
+
+\begin{defin}
+    Seien $f,g \in L^1(\R^n)$. \\
+    Dann ist die \textbf{Konvolution} von $f$ mit $g$ für $x \in \Omega$ definiert als:
+    \begin{equation}
+        (f \star g)(x) := \int_{\R^n} f(x - y) g(y) dy
+    \end{equation}
+\end{defin}
+
+\begin{defin} Die \textbf{Fourier-Transformation} einer Funktion $f \in L^1(\R^n)$ ist definiert durch:
+    \begin{equation}
+        (\mathcal{F}f)(\xi) := \int_{\R^n} f(x) \cdot e^{-2\pi i x \cdot \xi} dx
+    \end{equation}
+    für $x, \xi \in \R^n$. Dabei ist $x \cdot \xi$ das Skalarprodukt im $\R^n$.
+\end{defin}
+
+Die Fouriertransformation ist wohldefiniert, weil $f \in L^1(\R^n)$.
+\begin{proof}
+    Sei $f \in L^1(\R^n)$, dann gilt:
+    \begin{align*}
+        \Bigg\lvert \int_{\R^n} f(x) \cdot e^{-2\pi i x \cdot \xi} dx \Bigg\rvert &\leq \int_{\R^n} \lvert f(x) \rvert \lvert e^{-2\pi i x \cdot \xi} \rvert dx \\
+        &= \int_{\R^n} \lvert f(x) \rvert dx \\
+        &= \lVert f \rVert_{L^1(\R^n)} < \infty
+    \end{align*}
+\end{proof}
+
+\begin{defin}
+    Die \textbf{Inverse Fouriertransformation} einer Funktion $f \in L^1(\R^n)$ ist definiert durch:
+    \begin{equation}
+        (\mathcal{F}f)(\xi) := \int_{\R^n} f(x) \cdot e^{2\pi i x \cdot \xi} dx
+    \end{equation}
+    für $x, \xi \in \R^n$. Dabei ist $x \cdot \xi$ das Skalarprodukt im $\R^n$.
+\end{defin}
+Der Nachweis der Wohldefiniertheit funktioniert genauso, wie bei der Fouriertransformation.
+
+\begin{thm}
+    \textbf{Faltungssatz} \\
+    Seien $f,g \in L^1(\R^n)$ und $\mathcal{F}f \cdot \mathcal{F}g \in L^1(\R^n)$. Dann gilt:
+    \begin{equation}
+        \mathcal{F}(f \star g) = \mathcal{F}f \cdot \mathcal{F}g
+    \end{equation}
+
+    \begin{proof}
+        Der Beweis ist abgeschlossen, wenn gezeigt wurde, dass $\F^{-1} (\F f \cdot \F g) = f \star g$. 
+        
+        Sei $F(\omega) := \F f(\omega)$ und $G(\omega) := \F g(\omega)$. Dann gilt: \\
+        \begin{align*}
+            \F^{-1} (F(\omega) G(\omega)) &= \int_{\R^n} F(\omega) G(\omega) \cdot e^{2\pi i \omega \cdot t} d\omega \\
+            &= \int_{\R^n} \Bigg\lbrack \int_{\R^n} f(s) \cdot e^{-2\pi i s \cdot \omega} ds \Bigg\rbrack G(\omega) \cdot e^{2\pi i \omega \cdot} d\omega \\
+            &= \int_{\R^n} \int_{\R^n} f(s) G(\omega) \cdot e^{2\pi i \omega \cdot (s - t)} ds d\omega
+        \end{align*}
+        Nach dem Satz von Fubini kann die Integrationsreihenfolge vertauscht werden:
+        \begin{align*}
+            \F^{-1} (F(\omega) G(\omega)) &= \int_{\R^n} \int_{\R^n} f(s) G(\omega) \cdot e^{2\pi i \omega \cdot (s - t)} d\omega ds \\
+            &= \int_{\R^n} f(s) \Bigg \lbrack \int_{\R^n} G(\omega) \cdot e^{2\pi i \omega \cdot (t - s)} d\omega \Bigg \rbrack ds \\
+            &= \int_{\R^n} f(s) g(t-s) ds = f \star g
+        \end{align*}
+    \end{proof}
+\end{thm}
+
+\subsection{Diskrete Fouriertransformation}
+
+Mit Satz 1 ist es nun theoretisch möglich, die Faltung von zwei Funktionen umzukehren, unter der Vorraussetzung, 
+dass eine der beiden Funktionen bekannt ist. Dafür kann man die Fouriertransformation wie folgt nutzen:
+
+Seien $w: \R \to \R$ und $f, g \in L^1(\R)$, sodass gilt: $w = f \star g$. Dabei sind $w$ und $g$ bekannt und $f$ ist die gesuchte Funktion.
+Wenn $w$ und $g$ hinreichund gute Eigenschaften haben, sodass die Integrale existieren und die Inverse Fouriertransformation existiert, dann kann
+man folgenden Algorithmus nutzen, um $f$ zu berechnen:
+\begin{enumerate}
+    \item Berechne $\hat{w} := \mathcal{F}w$ und $\hat{g} := \mathcal{F}g$.
+    \item Berechne $\hat{f} := \frac{\hat{w}}{\hat{g}}$.
+    \item Berechne $f := \mathcal{F}^{-1}\hat{f}$.
+\end{enumerate}
+
+Durch die Berechnung im 2. Schritt wird sofort deutlich, dass $\hat{g}$ keine Nullstellen besitzen darf,
+da ansonsten der Quotient nicht existiert. Zusätzlich muss man auch über Stetigkeitseigenschaften der Methode nachdenken,
+da man Komponenten von hohen Frequenzen von $w$ potentiell stark aufgebläht werden 
+und damit auch potentielle Messfehler verstärt werden können.
+
+Für konkrete Berechnungen benötigt man die diskrete Fouriertransformation. 
+Sei dafür $u \in C^0(\R)$ mit $supp(u) := \{x \in \R \: | \: u(x) \neq 0 \} \subseteq [-a, a], a > 0$. Diese Funktion wird an $N \in \mathbb{N}_{>0}$ äquidistanten Stellen betrachtet, 
+die z.B. Messwerte darstellen können. Sei dafür $u_j = u(t_j), t_j := jh, h:= \frac{2a}{N}, j \in \{-\frac{N}{2}, \cdots, \frac{N}{2} - 1\}$.
+
+Dann kann $u$ durch lineare B-Splines approximiert werden durch:
+\begin{equation}
+    B_2(t) := \begin{cases}
+        t + 1, &-1 \leq t \leq 0, \\
+        1 - t, &0 \leq t \leq 1, \\
+        0, &{\rm sonst}.
+    \end{cases} \\
+\end{equation}
+\begin{equation}
+    u_N(t) := \sum\limits_{j=-N/2}^{N/2-1} u_j B_2 \left(\frac{t}{h} - j\right)
+\end{equation}
+
+Durch Fouriertransformation erhält man:
+\begin{equation}
+    \mathcal{F}(u_N)(y) := \left(\frac{{\rm sin}(\pi h y)}{\pi h y}\right) \cdot \underbrace{\left(h \sum\limits_{j=-N/2}^{N/2-1} u_j e^{-2\pi i jhy}\right)}_{:=U(y)}
+\end{equation}
+
+Wählt man $y := \frac{k}{2a}, \: k \in \mathbb{Z}$, dann sind die Stellen, an denen man die Funktion $u$ und die Transformierte $\mathcal{F}(u_N)$
+auswertet äquidistant. Damit erhält man schlussendlich:
+
+\begin{align}
+    U_k = \frac{1}{N} \sum\limits_{j=-N/2}^{N/2-1} u_j e^{-2\pi ijk/N}
+\iff u_j = \frac{1}{N} \sum\limits_{k=-N/2}^{N/2-1} U_k e^{2k\pi ijk/N}
+\end{align}
+
+Dabei sind die $U_k$ nun die diskreten Fourierkoeffizienten von $u$ zu den entsprechenden Stützstellen.
+
+Diese diskrete Variante der Transformation kann nun verwendet werden, um die Inverse Faltung wie oben beschrieben für konkrete Messwerte zu berechnen. 
+Es handelt sich allerdings um ein schlecht gestelltes Problem und man muss Regularisierungen anwenden, um die die schlechten Stetigkeitseigenschaften der Methode zu verbessern. 
+
+\section{PLSR}
+
+\subsection{Singulärwert-Zerlegung (SVD)}
+\subsection{Principle Component Analysis (PCA)}
+
+\end{document}
