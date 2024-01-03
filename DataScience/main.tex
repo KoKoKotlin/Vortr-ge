@@ -15,6 +15,8 @@
 \date{\today}
 
 \newtheorem{defin}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definthm}{Definition \& Satz}
 \newtheorem{thm}{Satz}
 
 \begin{document}
@@ -140,7 +142,136 @@ Es handelt sich allerdings um ein schlecht gestelltes Problem und man muss Regul
 
 \section{PLSR}
 
+%TODO: maybe m and n have to be swapped
+
 \subsection{Singulärwert-Zerlegung (SVD)}
+Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung einer Matrix, die auch auf nicht-quadratische, singuläre Matritzen angewandt werden kann.
+
+\begin{definthm}
+    Sei $A \in \R^{n \times m}$ eine reellwertige Matrix mit dem Rang $r$ $(n, m \in \mathbb{N}_{>0})$.
+
+    Die \textbf{Singulärwertzerlegung} von $A$  hat folgende Gestalt:
+    \begin{equation}
+        A = U \Sigma V^T
+    \end{equation}
+    wobei $U \in \R^{n \times r}, \; \Sigma \in \R^{r \times r}, \; V \in \R^{m \times r}$.
+    Die Spalten von $U$ nennt man die \textbf{Links-Singulärvektoren} und die von $V$ die \textbf{Rechts-Singulärvektoren} von $A$. $U, V$ sind orthogonale Matritzen.
+    $\Sigma$ ist eine Diagonalmatrix deren Einträge $\sigma_i$ $(i \in \{1, \cdots, r\})$ die \textbf{Singulärwerte} von $A$ genannt werden.
+    
+    Die Matritzen erfüllen folgendes Gleichungssystem:
+    \begin{align}
+        &Mv_i = \sigma_i u_i, \:&&\forall i \in \{1, \cdots, r\} \\
+        &Mv_i = 0, \: &&\forall i \in \{r, \cdots, m\}
+    \end{align}
+
+    Diese Zerlegung existiert für jede beliebige Matrix $A \in \R^{n \times m}$.
+\end{definthm}
+
+\begin{proof}
+    Betrachte
+    \begin{align}
+        A^TA = (V \Sigma^T U^T) (U \Sigma V^T) &= V \Sigma^T \Sigma V^T \\
+        AA^T = (U \Sigma V^T) (V \Sigma^T U^T) &= U \Sigma \Sigma^T U^T
+    \end{align}
+    Diese beiden Matritzen sind symmetrische, quadratische Matritzen und haben somit
+    nicht-negative Eigenwerte. Man kann also beide Matritzen in der Form $Q \Lambda Q^T$ darstellen.
+    Dabei ist $V = Q$ für Gleichung (12) und $U = Q$ für Gleichung (13). Und somit sind $V$ bzw. $U$ die Eigenwerte
+    von $A^TA$ bzw. $AA^T$ und insbesondere orthogonale Matritzen.
+
+    \textbf{Konstruktion von $V$}: Wähle orthonormale Eigenvektoren $v_1, \cdots, v_r$ von $A^TA$.
+
+    \textbf{Konstruktion von $\Sigma$}: Setze $\sigma_i = \sqrt{\lambda_i}, \: \forall i \in \{1, \cdots, r\}, \lambda_i \in \Lambda$.
+
+    \textbf{Konstruktion von $U$}: Setze $u_i = \frac{Av_i}{\sigma_i}, \: \forall i \in \{1, \cdots, r\}$.
+    
+    \textbf{Behautung}: 
+    \begin{enumerate}
+        \item $u_i$ sind die Eigenvektoren zu den Eigenwerten $\lambda_i$ für $AA^T$.
+        \item Die $u_i$ sind orthonormale Vektoren.
+    \end{enumerate}
+    \begin{equation*}
+        AA^Tu_k = AA^T(\frac{Av_k}{\sigma_k}) = A\left(\frac{A^TAv_k}{\sigma_k}\right) = A\frac{\sigma_k^2v_k}{\sigma_k} = \sigma_k^2u_k
+    \end{equation*}
+    Somit ist 1. von der Behauptung gezeigt.
+
+    \begin{equation*}
+        u_j^Tu_k = \left(\frac{Av_j}{\sigma_j}\right)^T\left(\frac{Av_k}{\sigma_k}\right) = \frac{v_j^T(A^TAv_k)}{\sigma_j\sigma_k} = \frac{\sigma_k}{\sigma_j}v_j^Tv_k = \begin{cases}
+            1, &\text{für } j = k,\\
+            0, &\text{sonst}.
+        \end{cases}
+    \end{equation*}
+    Das zeigt den 2. Teil der Behauptung.
+
+    Nun müssen noch die letzen $m - r$ Vektoren für $V$ und die letzen $n - r$ Vektoren für $U$ gewählt werden.
+    Man wählt eine Orthonormalbasis für den Nullraum von $A$ und diese bilden dann die fehlenden Vektoren für $V$ 
+    und weiterhin wählt man eine Orthonormalbasis für den Nullraum von $A^T$ und diese bilden die fehlenden Vektoren für $U$.
+    Die so gewählten Vektoren $v_i$ sind automatisch orthogonal zu den bereits gewählten $v_1, \cdots, v_r$ 
+    und dasselbe gilt für die so gewählten $u_i$. 
+\end{proof}
+
+\begin{thm} \textbf{Satz von Eckard-Young}
+    
+    Sei $A \in \R^{n\times m}$ eine Rang $r$ Matrix. Weiterhin sei $A_k = \sum\limits_{i=1}^k u_i\sigma_iv_i^T$. 
+    Wobei $\sigma_i$ die ersten $k$ Singulärwerte von A sind, wobei gilt $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r \geq 0$. Die $u_i, v_i$ sind die dazugehörigen Singulärvektoren. 
+    Dann gilt für $\forall B \in \R^{n \times m}$ mit Rang $r$:
+    \begin{equation}
+        \lVert A - B \rVert \geq \lVert A - A_k \rVert
+    \end{equation}
+\end{thm}
+
+Diese Formulierung gilt für eine ganze Reihe von verschiedenen Operatornormen.
+Für die PCA und die PLSR wird die Fourmulierung mit der Spektralnorm $\lVert \cdot \rVert_2$ benötigt.
+
+\begin{defin}
+    Sei $A \in R^{n \times m}$. Dann ist die \textbf{Spektralnorm} von $A$ definiert durch:
+    \begin{equation}
+        \lVert A \rVert_2 \: := \: \max\limits_{x \neq 0} \frac{\lVert Ax \rVert_2}{\lVert x \rVert_2}
+    \end{equation}
+    wobei $\lVert \cdot \rVert_2: \R^m \to \R$ als Vektornorm die gewöhnliche euklidische Norm ist.
+\end{defin}
+
+\begin{lemma}
+    Für $A \in \R^{n \times m}$ gilt:
+    \begin{equation}
+        \lVert A \rVert_2 = \sigma_1
+    \end{equation}
+\end{lemma}
+
+\begin{proof}
+    Sei $S = A^TA$. Es gilt $\lVert Ax \rVert_2^2 = x^TA^TAx$ und $\lVert x \rVert_2^2 = x^Tx$.
+    Durch einfache Differentation nach $x_i$ und der Quotientenregel erhält man:
+    \begin{equation}
+        \partial_{x_i}\frac{x^TSx}{x^Tx} = (x^Tx)^{-2}\left[ (x^Tx) \cdot 2(Sx)_i - 2x_i \cdot (x^TSx) \right]
+    \end{equation}
+
+    Setzt man nun die $m$ Ableitungen auf $0$ und formt die Gleichung um erhält man:
+    \begin{equation}
+        2Sx = \underbrace{\frac{x^TSx}{x^Tx}}_{:= \lambda} 2x = 2\lambda x
+    \end{equation}
+    also ist $x$ Eigenvektor zum Eigenwert $\lambda$ von $S = A^TA$ und
+    somit ist das Maximum von $\frac{\lVert Ax \rVert}{\lVert x \rVert}$ gleich $\sqrt{\lambda_1} = \sigma_1$ wobei $\lambda_1$ der größte Eigenwert von $A^TA$ ist.
+\end{proof}
+
+\begin{thm} \textbf{Satz von Eckard-Young für die Spektralnorm}
+
+    Seien $A, B \in \R^{n \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$. Dann gilt:
+    \begin{equation}
+        \lVert A - B \rVert_2 \geq \sigma_{k+1}
+    \end{equation}
+\end{thm}
+
+\begin{proof}
+    Nach Lemma 1 ist $\lVert A - A_k \rVert_2 = \sigma_{k+1}$. Wähle $x \neq 0$ so, dass $Bx = 0$ und $x = \sum\limits_{i=1}^{k+1} c_i^2v_i$.
+
+    Wegen ${\rm dim}({\rm Kern}(B)) = n - k$ und ${\rm dim}({\rm span}\{v_1, \cdots, v_{k+1}\}) = k + 1$ hat der Schnitt von ${\rm Kern}(B)$ und ${\rm span}\{v_1, \cdots, v_{k+1}\}$ mindestens Dimension $1$. 
+    Damit ist sichergestellt das ein $x$ wie oben gewählt, existiert. Nun folgt mit der Wahl von $x$:
+    \begin{align*}
+        &\lVert(A-B)x\rVert_2^2 = \lVert Ax \rVert^2_2 = \left\lVert \sum\limits_{i=1}^{k+1} c_i\sigma_i u_i \right\rVert^2 = \sum\limits_{i=1}^{k+1}c_i^2\sigma_i^2 \geq \left(\sum\limits_{i=1}^{k+1}c_i^2\right)\sigma_{k+1}^2 = \lVert x \rVert_2^2 \sigma_{k+1}^2 \\
+    \Rightarrow \:\:\: &\frac{\lVert (A - B)x \rVert_2}{\lVert x \rVert_2} \geq \sigma_{k+1}
+    \end{align*}
+\end{proof}
+
 \subsection{Principle Component Analysis (PCA)}
+
 
 \end{document}
