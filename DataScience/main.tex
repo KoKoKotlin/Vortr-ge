@@ -190,7 +190,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
         \item Die $u_i$ sind orthonormale Vektoren.
     \end{enumerate}
     \begin{equation*}
-        AA^Tu_k = AA^T(\frac{Av_k}{\sigma_k}) = A\left(\frac{A^TAv_k}{\sigma_k}\right) = A\frac{\sigma_k^2v_k}{\sigma_k} = \sigma_k^2u_k
+        AA^Tu_k = AA^T\left(\frac{Av_k}{\sigma_k}\right) = A\left(\frac{A^TAv_k}{\sigma_k}\right) = A\frac{\sigma_k^2v_k}{\sigma_k} = \sigma_k^2u_k
     \end{equation*}
     Somit ist 1. von der Behauptung gezeigt.
 
@@ -254,7 +254,7 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Spektralnorm $\lVert \c
 
 \begin{thm} \textbf{Satz von Eckard-Young für die Spektralnorm}
 
-    Seien $A, B \in \R^{n \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$. Dann gilt:
+    Seien $A, B \in \R^{n \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k < r$. Dann gilt:
     \begin{equation}
         \lVert A - B \rVert_2 \geq \sigma_{k+1}
     \end{equation}
