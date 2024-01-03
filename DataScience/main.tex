@@ -142,29 +142,32 @@ Es handelt sich allerdings um ein schlecht gestelltes Problem und man muss Regul
 
 \section{PLSR}
 
-%TODO: maybe m and n have to be swapped
-
 \subsection{Singulärwert-Zerlegung (SVD)}
+\textbf{Notation}:
+\begin{enumerate}
+    \item $A \in \R^{m \times n}: \: \mathcal{N}(A) := \{x \in \R^n \: | \: Ax = 0\}$ ist der \textbf{Nullraum} der Matrix $A$
+\end{enumerate}
+
 Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung einer Matrix, die auch auf nicht-quadratische, singuläre Matritzen angewandt werden kann.
 
 \begin{definthm}
-    Sei $A \in \R^{n \times m}$ eine reellwertige Matrix mit dem Rang $r$ $(n, m \in \mathbb{N}_{>0})$.
+    Sei $A \in \R^{m \times n}$ eine reellwertige Matrix mit dem Rang $r$ $(m,n \in \mathbb{N}_{>0})$.
 
     Die \textbf{Singulärwertzerlegung} von $A$  hat folgende Gestalt:
     \begin{equation}
         A = U \Sigma V^T
     \end{equation}
-    wobei $U \in \R^{n \times r}, \; \Sigma \in \R^{r \times r}, \; V \in \R^{m \times r}$.
+    wobei $U \in \R^{m \times m}, \; \Sigma \in \R^{m \times n}, \; V \in \R^{m \times m}$.
     Die Spalten von $U$ nennt man die \textbf{Links-Singulärvektoren} und die von $V$ die \textbf{Rechts-Singulärvektoren} von $A$. $U, V$ sind orthogonale Matritzen.
     $\Sigma$ ist eine Diagonalmatrix deren Einträge $\sigma_i$ $(i \in \{1, \cdots, r\})$ die \textbf{Singulärwerte} von $A$ genannt werden.
     
     Die Matritzen erfüllen folgendes Gleichungssystem:
     \begin{align}
         &Mv_i = \sigma_i u_i, \:&&\forall i \in \{1, \cdots, r\} \\
-        &Mv_i = 0, \: &&\forall i \in \{r, \cdots, m\}
+        &Mv_i = 0, \: &&\forall i \in \{r + 1, \cdots, n\}
     \end{align}
 
-    Diese Zerlegung existiert für jede beliebige Matrix $A \in \R^{n \times m}$.
+    Diese Zerlegung existiert für jede beliebige Matrix $A \in \R^{m \times n}$.
 \end{definthm}
 
 \begin{proof}
@@ -202,7 +205,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
     \end{equation*}
     Das zeigt den 2. Teil der Behauptung.
 
-    Nun müssen noch die letzen $m - r$ Vektoren für $V$ und die letzen $n - r$ Vektoren für $U$ gewählt werden.
+    Nun müssen noch die letzen $n - r$ Vektoren für $V$ und die letzen $m - r$ Vektoren für $U$ gewählt werden.
     Man wählt eine Orthonormalbasis für den Nullraum von $A$ und diese bilden dann die fehlenden Vektoren für $V$ 
     und weiterhin wählt man eine Orthonormalbasis für den Nullraum von $A^T$ und diese bilden die fehlenden Vektoren für $U$.
     Die so gewählten Vektoren $v_i$ sind automatisch orthogonal zu den bereits gewählten $v_1, \cdots, v_r$ 
@@ -211,9 +214,9 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
 
 \begin{thm} \textbf{Satz von Eckard-Young}
     
-    Sei $A \in \R^{n\times m}$ eine Rang $r$ Matrix. Weiterhin sei $A_k = \sum\limits_{i=1}^k u_i\sigma_iv_i^T$. 
+    Sei $A \in \R^{m\times n}$ eine Rang $r$ Matrix. Weiterhin sei $A_k = \sum\limits_{i=1}^k u_i\sigma_iv_i^T$. 
     Wobei $\sigma_i$ die ersten $k$ Singulärwerte von A sind, wobei gilt $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r \geq 0$. Die $u_i, v_i$ sind die dazugehörigen Singulärvektoren. 
-    Dann gilt für $\forall B \in \R^{n \times m}$ mit Rang $r$:
+    Dann gilt für $\forall B \in \R^{m \times n}$ mit Rang $k$:
     \begin{equation}
         \lVert A - B \rVert \geq \lVert A - A_k \rVert
     \end{equation}
@@ -231,7 +234,7 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Spektralnorm $\lVert \c
 \end{defin}
 
 \begin{lemma}
-    Für $A \in \R^{n \times m}$ gilt:
+    Für $A \in \R^{m \times n}$ gilt:
     \begin{equation}
         \lVert A \rVert_2 = \sigma_1
     \end{equation}
@@ -254,16 +257,17 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Spektralnorm $\lVert \c
 
 \begin{thm} \textbf{Satz von Eckard-Young für die Spektralnorm}
 
-    Seien $A, B \in \R^{n \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k < r$. Dann gilt:
+    Seien $A, B \in \R^{m \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$. Dann gilt:
     \begin{equation}
         \lVert A - B \rVert_2 \geq \sigma_{k+1}
     \end{equation}
+    Im Fall $k = r$ ist $\sigma_{r+1} = 0$.
 \end{thm}
 
 \begin{proof}
     Nach Lemma 1 ist $\lVert A - A_k \rVert_2 = \sigma_{k+1}$. Wähle $x \neq 0$ so, dass $Bx = 0$ und $x = \sum\limits_{i=1}^{k+1} c_i^2v_i$.
 
-    Wegen ${\rm dim}({\rm Kern}(B)) = n - k$ und ${\rm dim}({\rm span}\{v_1, \cdots, v_{k+1}\}) = k + 1$ hat der Schnitt von ${\rm Kern}(B)$ und ${\rm span}\{v_1, \cdots, v_{k+1}\}$ mindestens Dimension $1$. 
+    Wegen ${\rm dim}(\mathcal{N}(B)) = n - k$ und ${\rm dim}({\rm span}\{v_1, \cdots, v_{k+1}\}) = k + 1$ hat der Schnitt von $\mathcal{N}(B)$ und ${\rm span}\{v_1, \cdots, v_{k+1}\}$ mindestens Dimension $1$. 
     Damit ist sichergestellt das ein $x$ wie oben gewählt, existiert. Nun folgt mit der Wahl von $x$:
     \begin{align*}
         &\lVert(A-B)x\rVert_2^2 = \lVert Ax \rVert^2_2 = \left\lVert \sum\limits_{i=1}^{k+1} c_i\sigma_i u_i \right\rVert^2 = \sum\limits_{i=1}^{k+1}c_i^2\sigma_i^2 \geq \left(\sum\limits_{i=1}^{k+1}c_i^2\right)\sigma_{k+1}^2 = \lVert x \rVert_2^2 \sigma_{k+1}^2 \\
