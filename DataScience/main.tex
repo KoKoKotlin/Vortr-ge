@@ -277,5 +277,86 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Spektralnorm $\lVert \c
 
 \subsection{Principle Component Analysis (PCA)}
 
+\section{MLPS}
+% TODO: example pictures for erosion and dilation and opening
+
+Der letzte Abschnitt beschreibt eine speziellen Algorithmus zur Hintergrundkorrektur von spektralen Daten.
+Spektrale Daten sind z.B. physikalische Messwerte aus einem Spektrum beispielsweise dem Lichtspektrum. 
+Sie bestehen aus Intensitäten bestimmter Wellenlängen aus dem das gemessene Signal besteht. 
+Misst man beispielsweise mit einem Lichtspektrometer, welches die Intensitäten der Wellenlängen einer bestimmten Lichtquelle bestimmt, das Licht einer blauen LED,
+so wird man sehen, dass hauptsächlich die Wellenlängen im Signal einen großen Einfluss haben, die blauem Licht zuzuordnen sind. Andere Wellenlängen haben keinen oder nur einen sehr geringen Einfluss.
+
+Messungen dieser Art können durch einen Hintergrund stark verzerrt werden. In der Lichtanalogie wäre der Hintergrund zum Beispiel die Laborbeleuchtung, welche aus weißen besteht. 
+Sie würde in der Messung einer bestimmten Lichtquelle alle die Intensitäten aller Wellenlängen erhöhen, sodass die Messung verfälscht wird.
+Wenn der Signal-Rauschen-Abstand zu groß wird, dann ist die gesamte Messung wertlos. Deswegen muss man vor der genaueren Analyse solcher Spektraldaten den Hintergrund, welcher aus der Umgebung kommt, entfernen.
+
+Die Arbeit beschreibt einen Algorithmus, welcher Methoden aus der mathematischen Morphologie und Penalized Least Squares verbindet.
+
+\subsection{Mathematische Morphologie}
+Die mathematische Morphologie ist eine Technik zur Analyse geometrischer Eigenschaften.
+Sie verwendet dafür topologische und megentheoretische Hilfsmittel. Zum Einsatz kommt sie hauptsächlich im Kontext der Analyse von Bildern also 2 dimensionalen Daten.
+Die wissenschaftliche Arbeit hat eine Variante entwickelt, diese Technik ebenfalls auf eindimensionale Daten wie zum Beispiel spektrale Messwerte anzuwenden.
+
+Die beiden Hauptoperationen, die in der mathematischen Morphologie genutzt werden, sind die \textbf{Dilatation} und die \textbf{Erosion} zusätzlich zu den megentheoretische Operationen (Vereinigung, Schnitt, Differenz).
+Aus diesen können anschließend alle anderen Operationen zusammengestellt werden. Insbesondere die Operation der Öffnung, welche dann im MLPS-Algorithmus verwendet wird.
+
+
+Bei der beschreibung der folgenden Operationen wird eine Strukturmaske $B \subseteq \R^2$ (meistens eine Kreisfläche) verwendet und welche als Teilmenge des Bildes $A \in \R^2$ aufgefasst wird.
+$B_x$ bezeichnet dann die Translation der Strukturmaske zum Punkt $x$. Dafür muss wird ein bestimmter Referenzpunkt $b \in B$ festgelegt, der nach der Translation identisch zum Punkt $x$ sein soll.
+Beispielsweise könnte man für die Kreisscheibe den Mittelpunkt als Referenzpunkt wählen, sodass $B_x$ dann die Kreisscheibe mit dem Zentrum $x$ ist.
+
+\subsubsection{Dilatation}
+\begin{equation}
+    {\rm Dil}(A) := \bigcup\limits_{x \in A} B_x
+\end{equation}
+
+Diese Operation transliert die Strukturmaske an jeden Punkt des Bildes $A$ und vereinigt alle Translate $B_x$. Das führt zu einem "Aufblähen" des Originalbilds um die Strukturmaske.
+
+\subsubsection{Erosion}
+\begin{equation}
+    {\rm Er}(A) := \bigcup \{B_x \: | \: x \in A \land B_x \subseteq A\}
+\end{equation}
+
+Diese Operation transliert die Strukturmaske ebenfalls an jeden Punkt des Bildes, vereinigt jedoch nur die Translate, welche sich vollständig im Ursprünglichen Bild befinden.
+Das führt zu einer "Verkleinerung" des Bildes. Lange dünne Spitzen, die aus dem Bild herausragen, werden je nach Größe und Form der Strukturmaske abgeschnitten.
+
+\subsubsection{Öffnung}
+
+Die Öffnung ist die Hintereinanderausführung von Erosion und Dilatation, also:
+\begin{equation}
+    {\rm Op}(A) := ({\rm Dil} \circ {\rm Er})(A) = {\rm Dil}({\rm Er}(A))
+\end{equation}
+
+Wie beschrieben entfernt die Erosion Spitzen, die aus dem Bild herausragen und die anschließende Dilatation macht die Errosion an dem verbleibenden Stellen wieder rückgängig.
+
+\subsubsection{Im Kontext von MLPS}
+
+Nun wird nicht mehr mit 2 dimensionalen Bildern als Eingabe gearbeitet sondern mit eindimensionalen Messwerten. Die Daten werden in einem $(x,y)$-Koordinatensystem abgetragen. 
+Sei nun $(x,f(x)) \in \R^2$ ein Messwert. Somit sei $f:\R \to \R$ die Funktion, die für alle $x \in \R$ den gemessenen Wert ausgibt. Als eindimensionales Analogon zur Kreisscheibe wird nun ein Intervall verwendet. 
+Dieses Fenster sei $W_x := [x-w, x+w]$ mit $w \in \R_+$. Die halbe Fensterbreite $w$ ist dabei ein Hyperparameter, der manuell festgelegt werden muss. 
+Dieses Fenster wird nun so transliert, dass sein Zentrum mit $x$ übereinstimmt.
+
+Für die Dilatation wird dann das Maximum über die im Fenster befindlichen Messwerte genommen und für die Erosion jeweils das Minimum. Somit gilt:
+
+\begin{align}
+    {\rm Er}(x)  &= \min\limits_{\tilde{x} \in W_x} f(\tilde{x}) \\
+    {\rm Dil}(x) &= \max\limits_{\tilde{x} \in W_x} f(\tilde{x})
+\end{align}
+
+Die Definition def Öffnung bleibt gleich, wie im 2 dimensionalen Fall.
+Für echte Daten muss dieses Definition noch diskretisiert werden, weil die Messwerte nicht durch eine Funktion $f$ die auf ganz $\R$ existiert, definiert sind, sondern eine diskrete Menge von Punktion $X := \{(x_i,y_i) \in \R^2 \: | \: n\in \mathbb{N}, i=1,\cdots,n \}$.
+
+Die beiden Operatoren ändern sich für jedes $i\in \{1,\cdots,n\}$ zu:
+\begin{align}
+    {\rm Er}(x_i) &= \min \{y_{i+j} \: | \: j=-w,\cdots,w \: \land \: 0 \leq i + j \leq n\} \\
+    {\rm Dil}(x)  &= \max \{y_{i+j} \: | \: j=-w,\cdots,w \: \land \: 0 \leq i + j \leq n\}
+\end{align}
+
+Dabei ist $w \in \mathbb{N}$ nun eine diskrete Fenstergröße.
+
+Die Öffnung bringt nun eine grobe erste Schätzung für das Hintergrundspektrum, welches entfernt werden soll.
+
+\subsection{Penalized Least Squares}
+\subsection{Signal Hintergrundkorrektur}
 
 \end{document}
