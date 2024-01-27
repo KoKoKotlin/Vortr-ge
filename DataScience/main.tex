@@ -8,6 +8,7 @@
 \setlength{\parindent}{0mm}
 
 \newcommand{\R}[0]{\mathbb{R}}
+\newcommand{\N}[0]{\mathbb{N}}
 \newcommand{\F}[0]{\mathcal{F}}
 
 \title{Datascience}
@@ -349,14 +350,69 @@ Für echte Daten muss dieses Definition noch diskretisiert werden, weil die Mess
 Die beiden Operatoren ändern sich für jedes $i\in \{1,\cdots,n\}$ zu:
 \begin{align}
     {\rm Er}(x_i) &= \min \{y_{i+j} \: | \: j=-w,\cdots,w \: \land \: 0 \leq i + j \leq n\} \\
-    {\rm Dil}(x)  &= \max \{y_{i+j} \: | \: j=-w,\cdots,w \: \land \: 0 \leq i + j \leq n\}
+    {\rm Dil}(x_i)  &= \max \{y_{i+j} \: | \: j=-w,\cdots,w \: \land \: 0 \leq i + j \leq n\}
 \end{align}
 
 Dabei ist $w \in \mathbb{N}$ nun eine diskrete Fenstergröße.
 
-Die Öffnung bringt nun eine grobe erste Schätzung für das Hintergrundspektrum, welches entfernt werden soll.
-
 \subsection{Penalized Least Squares}
+Penalized Least Squared ist eine Variante der Least Squares Optimierung.
+
+\begin{align}
+    Ax = b \label{eq:ls} \\ 
+    \min\limits_{x \in \R^n} \lVert b - Ax \rVert \label{eq:minls}
+\end{align}
+$x \in \R^n, b \in \R^m, A \in \R^{m\times n}$.
+
+Das gewöhnliche Least-Squares-Verfahren wird verwendet, um ein lineares Gleichugssystem zu lösen. 
+Dieses kann als Matrix-Vektor-Produkt dargestellt werden wie in Gleichung \ref{eq:ls}. 
+Aus dieser kann man das Minimierungsproblem herleiten, welches in Gleichung \ref{eq:minls}.
+Dabei sei erwähnt, dass die Matrix $A$ nicht invertierbar sein muss und sich $b$ auch nicht im Spaltenraum von $A$ befinden muss.
+Das führt dazu, dass es keine eindeutige beste Approximation einer Lösung geben muss.
+Least Squares liefert jedoch immer eine eindeutige Lösung der Form $\hat{x} = A^{\dagger} b$, wobei $A^{\dagger}$ die Moore-Pensrose-Pseudoinverse ist.
+Diese ist die eindeutig bestimmte Lösung, die \ref{eq:minls} erfüllt und von allen Lösungen, die ebenfalls \ref{eq:minls} erfüllen, besitzt $\hat{x}$ die kleinste Norm.
+
+Penalized-Least-Squares erweitert das Optimierungsproblem aus \ref{eq:minls} nun um ein Regularisierungsfunktional der Form $R: \R^n \to \R$.
+Die neue Optimierungsproblem hat dann die Form:
+
+\begin{equation}
+    \min\limits_{x \in \R^n} \lVert b - Ax \rVert + \lambda R(x)
+\end{equation}
+wobei $\lambda \in \R$ wieder ein Hyperparameter ist, welcher den Einfluss der Regularisierungen steuert.
+
+Spezielle zu erwähnen sind die LASSO und $\ell^2$-Regularisierungen. Für LASSO gilt: $R: \R^n \ni x \mapsto \lVert x \rVert_1$ und für die $\ell^2$-Regularisierung gilt: $R: \R^n \ni x \mapsto \lVert x \rVert_2$.
+LASSO liefert dabei dünnbesetzte Lösungen mit vielen Nulleinträgen. 
+$\ell^2$ hält die Norm der Lösung beschränkt, sodass es keine besonders großen Werte in $\hat{x}$ gibt.
+
 \subsection{Signal Hintergrundkorrektur}
+
+Im folgenden Abschnitt bezeichnet gilt: $x \in R^n$ ist der Vektor der Messwerte eines Signals. 
+
+Als erstes führt der Algorithmus eine diskrete morphologische Öffnung mit den Messwerten $x$ durch. Dabei muss eine Fenstergröße $w$ für den Algorithmus festgelegt werden.
+In der wissenschaftlichen Arbeit wurde mit den verschiedenen Fenstergrößen ($w=11,13,15$) experiementiert, welche alle zu einem sehr ähnlichen Ergebnis führten.
+Die Öffnung bringt nun eine grobe erste Schätzung für das Hintergrundspektrum, welches entfernt werden soll.
+An die Peaks der Messung kann man jedoch erkenne, dass sich durch die Öffnung Plateaus formen, sodass das Hintergrundspektrum dort nur sehr schlecht approximiert ist.
+
+Deswegen wird nun zusätzlich eine Penalized-Least-Square-Regression mit den lokalen Minima um die Peaks durchgeführt.
+Diese Minima bestimmt man, indem man die als erstes die Start und Endpunkte dieser Plateaus bei den Peaks bestimmt.
+Sei $s_k \in \N$ der Index des Startpunkts und $e_k \in \N$ der Index des Endpunktes des Plateaus am $k$-ten Peaks. Das $k$-te Minimum ist nun definiert durch:
+\begin{equation}
+    M_k = \arg\min \{x_j \: | \: j=e_k,\cdots s_{k+1}\}
+\end{equation}
+
+MLPS nutzt die Rauhigkeit der Least-Squares-Lösung als Regularisierungsfunktional.
+\begin{equation}
+    R: \R^n \ni x \mapsto \sum_{i=2}^{n} (x_i - x_{i-1})^2 = \lVert Dx \rVert_2
+\end{equation}
+wobei $D \in \R^{n\times n}$ definiert ist durch $(d_{ij})_{i=1,j=1}^{n-1,n} = (\delta_{i,j-1} - \delta_{i,j})_{i=1,j=1}^{n-1,n}$, wobei $\delta_{i,j}$ das Kronecker-Delta ist.
+
+Die Lösung dieses neuen Problems ist dann gegeben durch:
+\begin{equation}
+    \hat{x} = (W + \lambda D^TD)^{-1}Wb
+\end{equation}
+
+Die Lösung $\hat{x}$ ist nun das approximierte Hintergrundspektrum.
+
+Man kann nun erkennen, dass nach der Regression die Plateaus verschwunden sind und der Hintergrund besser approximiert wird also durch die isolierte Anwendung der morphologischen Methoden. 
 
 \end{document}
