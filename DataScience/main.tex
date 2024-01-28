@@ -16,6 +16,7 @@
 \date{\today}
 
 \newtheorem{defin}{Definition}
+\newtheorem{bem}{Bemerkung}
 \newtheorem{lemma}{Lemma}
 \newtheorem{definthm}{Definition \& Satz}
 \newtheorem{thm}{Satz}
@@ -224,10 +225,11 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
 \end{thm}
 
 Diese Formulierung gilt für eine ganze Reihe von verschiedenen Operatornormen.
-Für die PCA und die PLSR wird die Fourmulierung mit der Spektralnorm $\lVert \cdot \rVert_2$ benötigt.
+Nachfolgend ist exemplarisch der Beweis des Satzes von Eckard-Young für die Spektralnorm.
+Dieser illustriert auf natürliche Weise die Aussage das Satzes.
 
 \begin{defin}
-    Sei $A \in R^{m \times n}$. Dann ist die \textbf{Spektralnorm} von $A$ definiert durch:
+    Sei $A \in \R^{m \times n}$. Dann ist die \textbf{Spektralnorm} von $A$ definiert durch:
     \begin{equation}
         \lVert A \rVert_2 \: := \: \max\limits_{x \neq 0} \frac{\lVert Ax \rVert_2}{\lVert x \rVert_2}
     \end{equation}
@@ -276,7 +278,100 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Spektralnorm $\lVert \c
     \end{align*}
 \end{proof}
 
+Für die PCA und die PLSR wird die Fourmulierung mit der Frobenius-Norm $\lVert \cdot \rVert_F$ benötigt.
+
+\begin{defin}
+    Sei $A \in \R^{m \times n}$. Dann ist die \textbf{Frobenius-Norm} von $A$ definiert durch:
+    \begin{equation}
+        \lVert A \rVert_F \: := \: \sqrt{\sum_{i=1}^{m}\sum_{j=1}^{n} |a_{ij}|^2}
+    \end{equation}
+\end{defin}
+
+\begin{bem}
+    Für $A \in \R^{m \times n}$ gilt:
+    \begin{equation}
+        \lVert A \rVert_F^2 \overset{*}{=} {\rm tr(A^TA)} = (A^TA)_{11} + (A^TA)_{22} + \cdots + (A^TA)_{nn} = \sigma_1^2 + \sigma_2^2 + \cdots + \sigma_n^2        
+    \end{equation}
+\end{bem}
+
+\begin{proof}
+    Die Gleichheit (*) gilt, da für $\forall i\in \{1, \cdots, n\}$ gilt: $(A^TA)_{ii} = a_i^Ta_i = \lVert a_i \rVert^2_2$, wobei $a_i$ die i-te Spalte von A ist.
+    Der Rest folgt aus dem Beweis für die SVD.
+\end{proof}
+
+\begin{thm} \textbf{Satz von Eckard-Young für die Frobenius-Norm}
+
+    Seien $A, B \in \R^{m \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$. Dann gilt:
+    \begin{equation}
+        \lVert A - B \rVert_F \geq \lVert A - A_k \rVert_F
+    \end{equation}
+\end{thm}
+
+\begin{proof}
+    Seien $A,B \in \R^{m \times n}$ mit ${\rm Rang}(B) \leq k \leq {\rm Rang(A)} = r$, sodass für alle $C \in \R^{m \times n}$ gilt: 
+    \begin{equation*}
+        \lVert A - C \rVert_F \geq \lVert A - B \rVert_F
+    \end{equation*}
+
+    Sei nun $B=U D V^T$ die SVD von $B$. Somit ist $D$ eine Diagonalmatrix mit $D \in \R^{k\times k}$. 
+    Die orthogonalen Matritzen $U,V$ diagonalisieren $A$ im Allgemeinen nicht. Somit gilt:
+    \begin{equation*}
+        A = U \begin{bmatrix}
+            L+E+R & F\\
+            G & H
+        \end{bmatrix} V^T
+    \end{equation*} 
+    Dabei ist $L$ eine untere Dreiecksmatrix, $R$ eine obere Dreiecksmatrix und $E$ eine Diagonalmatrix. Betrachte nun die Matrix $C$ mit ${\rm Rang}(C) \leq k$:
+    \begin{equation*}
+        C = U \begin{bmatrix}
+            L+D+R & F \\
+            0 & 0
+        \end{bmatrix} V^T
+    \end{equation*}
+    Nun folgt aus dem Fakt, dass $\lVert \cdot \rVert_F$ invariant bzgl. der Multiplikation mit $U, V^T$ und der Definition von C sofort:
+    \begin{equation*}
+        \lVert A - B \rVert_F^2 = \lVert A-C \rVert_F^2 + \lVert L \rVert_F^2 + \lVert R \rVert_F^2 + \lVert F \rVert_F^2
+    \end{equation*}
+    und aus der Minimalitätsbediengung von $\lVert A - B \rVert_F$ folgt $L = R = F = 0$. Genauso kann man beweisen, dass $G = 0$ gilt. Damit kann man A schreiben als:
+    \begin{equation}
+        A = U \begin{bmatrix}
+            E & 0 \\
+            0 & H
+        \end{bmatrix} V^T \label{eq:SVDA}
+    \end{equation}
+    Wiederum folgt aus der Minimalitätsbediengung $D = E = {\rm diag}(\sigma_1, \cdots, \sigma_k)$, weil in Gleichung \ref{eq:SVDA} die SVD von A steht.
+    Somit gilt für $H$ die Gleichheit $H = {\rm diag}(\sigma_{k+1}, \cdots, \sigma_r)$ und damit:
+    \begin{equation*}
+        \lVert A - B \rVert_F^2 = \lVert H \rVert_F^2 = \sigma_{k+1}^2 + \cdots + \sigma_{r}^2 = \lVert A - A_k \rVert_F^2 \Rightarrow B = A_k 
+    \end{equation*}
+
+\end{proof}
+
 \subsection{Principle Component Analysis (PCA)}
+% TODO: include graphic of principle values
+
+Die PCA beruht nun aus den Erkenntnissen des Satzes von Eckard-Young. Gegeben sein eine Matrix $A \in \R^{m\times n}$. 
+Diese Matrix ist eine Matrix mit $n$ Messwerten von $m$ Messgrößen.
+Im ersten Schritt werden die Daten um den Koordinatenursprung zentriert, indem man von jeder Spalte von $A$ den Mittelwert der Spalte abzieht.
+Die PCA führt nun eine Zerlegung der so entstandenen Matrix durch die SVD durch. 
+Man erhält nun die Singulärvektoren $u_i$ und die Singulärwerte $\sigma_i$.
+Der Satz von Eckard-Young besagt, dass $A$ am besten durch $A_k$ approximiert wird.
+Die Daten in $A_k$ sind auf einen $k$-dimensionalen Unterraum projeziert wurden. 
+D.h. man hat die Dimension von $m$ auf $k$ reduziert und kann so Rechneraufwand einsparen, 
+weil die $m$ ursprünglichen Messgrößen auf $k$ Messgrößen reduziert hat, welche die Daten aber am besten beschreiben.
+Was \glqq am besten beschreiben\dq \space bedeutet soll nun erläutert werden:
+
+Die Totale Varianz der Daten $T$ ist gegeben durch $T = \lVert A \rVert_F^2 / (n-1) = (\sigma_1^2 + \cdots + \sigma_r^2) / (n-1)$.
+Als Erinnerung: Die Singulärwerte sind der größe nach absteigend sortiert. Somit gilt, dass die Totale Varianz der Daten in Richtung des ersten Singulärvektors $u_1$ maximal ist.
+Das kann man so interpretieren, dass sich die Daten im Unterraum, der durch $u_1$ aufgespannt wird, am stärsten voneinander unterscheiden. Sie streuen dort am stärsten.
+Den Grund dafür liefert der Satz von Eckard-Young: Er besagt, dass $A_1$ die beste Rang-1-Approximation von $A$ ist. Es folgt: $\lVert A_1 \rVert_F^2 / (n-1) = \sigma_1^2 / (n-1)$.
+Diese Argument kann man erweitern auf beliebige $k$. Eckard-Young stellt immer sicher, dass der Unterraum, der durch die Spalten von $A_k$ aufgespannt wird, die Totale Varianz T maximiert 
+und in diesem Sinne die Daten am besten beschreibt.
+
+Ein zusätzlicher Effekt ist, dass man durch das Weglassen der Dimensionen mit besonders kleinen Singulärwerten, das Rauschen aus den Daten entfernen kann. 
+Das verbessert auch die numerische Stabilität von Analysealgorithmen, welche auf die Daten im Anschluss angewendet werden. 
+
+\subsection{Partial Least Squares Regression (PLSR)}
 
 \section{MLPS}
 % TODO: example pictures for erosion and dilation and opening
