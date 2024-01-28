@@ -10,6 +10,7 @@
 \newcommand{\R}[0]{\mathbb{R}}
 \newcommand{\N}[0]{\mathbb{N}}
 \newcommand{\F}[0]{\mathcal{F}}
+\newcommand{\E}[0]{\mathbb{E}}
 
 \title{Datascience}
 \author{Yannik Höll}
@@ -372,6 +373,42 @@ Ein zusätzlicher Effekt ist, dass man durch das Weglassen der Dimensionen mit b
 Das verbessert auch die numerische Stabilität von Analysealgorithmen, welche auf die Daten im Anschluss angewendet werden. 
 
 \subsection{Partial Least Squares Regression (PLSR)}
+
+Die PLSR kann man als eine Verallgemeinerung der PCA verstehen. Es werden nun zwei Datenmatrutzen $X\in \R^{m \times l} ,Y \in \R^{m \times n}$ betrachtet.
+Das Ziel ist eine Vorhersage der Daten von $Y$ aus den Informationen aus $X$. 
+Anders als bei der PCA wird nun nicht eine Dekomposition von $X^TX$ durchgeführt, um die Varianz der Daten von $X$ zu modellieren, sondern es wird die Kovarinz
+zwischen $X$ und $Y$ modelliert, in dem man die Kovarianzmatrix $Y^TX$ zerlegt.
+
+Es folgt eine Herleitung, warum die SVD von $Y^TX$ die Kovarianz korrekt modelliert.
+
+Gegeben seien $v \in \R^m, w \in \R^l$ mit $\lVert v \rVert_2 = \lVert w \rVert_2 = 1$, so dass die Korrelation zwischen $z = v^Tx, r = w^Ty$ maximiert wird.
+D.h. es muss gelten:
+
+\begin{equation*}
+    \max\limits_{v,w} \E[z \cdot r] = \max\limits_{v,w} \E[v^Tx \cdot w^Ty] = \max\limits_{v,w} v^T\E[x \cdot y]w = \max\limits_{v,w} v^T C_{xy} w, \: (v \in \R^m, w\in\R^l)
+\end{equation*}
+
+Das Maximierungsproblem mit Nebenbediengung kann mit Hilfe der Lagrange-Multiplikatorenmethode wie folgt gelöst werden:
+\begin{equation*}
+    (v^0, w^0) = \arg\max\limits_{v,w} \left\{ \underbrace{v^TC_{xy}w - \frac{1}{2}\lambda_v(v^Tv - 1) - \frac{1}{2}\lambda_w(w^Tw - 1)}_{:=f(v,w)} \right\}
+\end{equation*}
+
+\begin{align*}
+    \frac{\partial f}{\partial v} &= 0 \Rightarrow C_{xy}w-\lambda_vv = 0 \\
+    \frac{\partial f}{\partial v} &= 0 \Rightarrow C_{xy}^Tv - \lambda_ww = 0 \\
+    \Rightarrow w &= \frac{1}{\lambda_v}C_{yx}v, (C_{yx}=C_{xy}^T) \\
+    \Rightarrow C_{xy}C_{yx}v &= \lambda_v\lambda_w v \Rightarrow v \text{ ist Eigenvektor von } C_{xy}C_{yx} \\
+    \Rightarrow C_{yx}C_{xy}w &= \lambda_v\lambda_w w \Rightarrow w \text{ ist Eigenvektor von } C_{yx}C_{xy}
+\end{align*}
+
+Diese Herleitung zeigt, dass die Eigenvektoren der entsprechenden Kovarianzmatritzen zu den gewünschten Vektoren führen, die das Maximierungsproblem lösen.
+Zusätzlich sind die Eigenwerte von $C_{xy}C_{yx}$ und $C_{yx}C_{xy}$ gleich.
+
+\begin{align*}
+    C_{xy}w - \lambda_vv &= 0 \Rightarrow v^TC_{xy}w - \lambda_vvv^T = 0 \Rightarrow \lambda_v = v^TC_{xy}w \\
+    C_{yx}v - \lambda_ww &= 0 \Rightarrow w^TC_{yx}v - \lambda_www^T = 0 \Rightarrow \lambda_w = w^TC_{xy}^Tv \\
+    \Rightarrow \lambda_v &= v^TC_{xy}w = (w^TC_{xy}^Tv)^T = \lambda_w
+\end{align*}
 
 \section{MLPS}
 % TODO: example pictures for erosion and dilation and opening
