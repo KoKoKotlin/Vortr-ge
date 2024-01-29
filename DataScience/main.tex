@@ -5,6 +5,9 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
+\usepackage{graphicx}
+\usepackage{subfig}
+
 \setlength{\parindent}{0mm}
 
 \newcommand{\R}[0]{\mathbb{R}}
@@ -349,8 +352,6 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Frobenius-Norm $\lVert 
 \end{proof}
 
 \subsection{Principle Component Analysis (PCA)}
-% TODO: include graphic of principle values
-
 Die PCA beruht nun aus den Erkenntnissen des Satzes von Eckard-Young. Gegeben sein eine Matrix $A \in \R^{m\times n}$. 
 Diese Matrix ist eine Matrix mit $n$ Messwerten von $m$ Messgrößen.
 Im ersten Schritt werden die Daten um den Koordinatenursprung zentriert, indem man von jeder Spalte von $A$ den Mittelwert der Spalte abzieht.
@@ -371,6 +372,17 @@ und in diesem Sinne die Daten am besten beschreibt.
 
 Ein zusätzlicher Effekt ist, dass man durch das Weglassen der Dimensionen mit besonders kleinen Singulärwerten, das Rauschen aus den Daten entfernen kann. 
 Das verbessert auch die numerische Stabilität von Analysealgorithmen, welche auf die Daten im Anschluss angewendet werden. 
+
+\begin{figure}[h!]
+    \centering
+    \subfloat[Singulärwerte der Hilbertmatrix $H_n$]{\includegraphics[width=0.45\textwidth]{./plot/hilbert15.png}}
+    \qquad
+    \subfloat[Fehler in $\lVert \cdot \rVert_F$ zwischen $H_n$ und bester Rang-$k$-Approximation]{\includegraphics[width=0.45\textwidth]{./plot/errors25.png}}
+\end{figure}
+
+Die obere Abbildung zeigt die Singulärwert und Fehler bei der Rang-$k$-Approximation der Hilbertmatrix $H_n = \left(\frac{1}{i+j-1}\right)_{i=1,j=1}^{n,n}$. 
+Man kann erkennen, dass die Singulärwerte sehr schnell abfallen und somit eine Approximation sehr kleinen Ranges bereits genügt, um die Matrix mit sehr kleinem Fehler darzustellen.
+Ab Rang 14 gibt es keine Verbesserung mehr in der Approximation durch Erhöhen des Rangs.   
 
 \subsection{Partial Least Squares Regression (PLSR)}
 
