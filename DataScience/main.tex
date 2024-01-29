@@ -374,41 +374,55 @@ Das verbessert auch die numerische Stabilität von Analysealgorithmen, welche au
 
 \subsection{Partial Least Squares Regression (PLSR)}
 
-Die PLSR kann man als eine Verallgemeinerung der PCA verstehen. Es werden nun zwei Datenmatrutzen $X\in \R^{m \times l} ,Y \in \R^{m \times n}$ betrachtet.
+Die PLSR kann man als eine Verallgemeinerung der PCA verstehen. Es werden nun zwei Datenmatrutzen $X\in \R^{m \times n} ,Y \in \R^{m \times l}$ betrachtet.
 Das Ziel ist eine Vorhersage der Daten von $Y$ aus den Informationen aus $X$. 
 Anders als bei der PCA wird nun nicht eine Dekomposition von $X^TX$ durchgeführt, um die Varianz der Daten von $X$ zu modellieren, sondern es wird die Kovarinz
-zwischen $X$ und $Y$ modelliert, in dem man die Kovarianzmatrix $Y^TX$ zerlegt.
+zwischen $X$ und $Y$ modelliert, in dem man die Kovarianzmatrix $X^TY$ zerlegt.
 
-Es folgt eine Herleitung, warum die SVD von $Y^TX$ die Kovarianz korrekt modelliert.
+Nun wird zur Vereinfachung wird, dass nur eine Größe vorhergesagt werden soll.
+D.h. $Y$ ist keine Matrix sondern nur ein Vektor ist $y \in \R^m$. Das Argument kann einfach auf eine Matrix erweitert werden.
+Das Ziel ist eine Zerlegung von $X_k = ZV^T$, welche die beste Rang $k$-Approximation von $X$ ist, die die Kovarianz zwischen $X$ und $y$ maximiert.
+Dabei heißen die Vektoren in $Z$ PLSR-Scores und die in $V^T$ PLSR-Loadings. Und $y$ wird zerlegt in $y_k = Zb$. 
+Die Approximationen von $X$ und $y$ teilen sich die Scores-Matrix. Das kann man so interpretieren, dass diese die gemeinsame Struktur der Daten modelliert.
 
-Gegeben seien $v \in \R^m, w \in \R^l$ mit $\lVert v \rVert_2 = \lVert w \rVert_2 = 1$, so dass die Korrelation zwischen $z = v^Tx, r = w^Ty$ maximiert wird.
-D.h. es muss gelten:
-
+% Source: https://allmodelsarewrong.github.io/pls.html
+Der folgende Algorithmus ist iterativ. Begonnen wird mit der richtigen Matrix $X=:X_0$ und den vorherzsuagenden Werten $y=:y_0$.
+Die Daten sollten um den Ursprung zentriert sein. Wenn das nicht der Fall ist, kann man den selben Trick anwenden wie bei der PCA.
+Als erstes wird ein Vektor mit Kovarianzen zwischen den Spalten von $X_0$ und $y_0$ berechnet.
 \begin{equation*}
-    \max\limits_{v,w} \E[z \cdot r] = \max\limits_{v,w} \E[v^Tx \cdot w^Ty] = \max\limits_{v,w} v^T\E[x \cdot y]w = \max\limits_{v,w} v^T C_{xy} w, \: (v \in \R^m, w\in\R^l)
+    \tilde{w}_1 = (x_1^Ty, \: x_2^Ty, \: \cdots, \: x_m^Ty)
 \end{equation*}
 
-Das Maximierungsproblem mit Nebenbediengung kann mit Hilfe der Lagrange-Multiplikatorenmethode wie folgt gelöst werden:
+Dieser Vektor muss normiert werden:
 \begin{equation*}
-    (v^0, w^0) = \arg\max\limits_{v,w} \left\{ \underbrace{v^TC_{xy}w - \frac{1}{2}\lambda_v(v^Tv - 1) - \frac{1}{2}\lambda_w(w^Tw - 1)}_{:=f(v,w)} \right\}
+    w_1 = \frac{\tilde{w}_1}{\lVert \tilde{w}_1 \rVert_2}
 \end{equation*}
 
+Dann werden die Spalten von $X_0$ auf $w_1$ projeziert:
+\begin{equation*}
+    z_1 = \frac{X_0^Tw_1}{w_1^Tw_1}
+\end{equation*}
+Damit erhält man den ersten Scores-Vektor der Zerlegung der Kovarianzmatrix. 
+
+Denn ersten Loadings-Vektor erhält man durch eine Projektion der Spalten von $X_0$ auf $z_1$:
+\begin{equation*}
+    v_1 = \frac{X_0^Tz_1}{z_1^Tz_1}
+\end{equation*}
+Die Rang-$1$-Approximation von $X$ lässt sich nun darstellen durch: $\hat{X}_1 = z_1v_1^T$.
+
+Den ersten Regression-Parameter für $y$ erhält man durch eine Projektion von $y$ auf $z_1$:
+\begin{equation*}
+    b_1 = \frac{y^Tz_1}{z_1^Tz_1}
+\end{equation*}
+Und somit bekommt man die erste Approximation von $y$ durch: $\hat{y}_1 = b_1z_1$.
+
+Nun berechnet man die verbleibenden Daten für den nächsten Iterationsschritt:
 \begin{align*}
-    \frac{\partial f}{\partial v} &= 0 \Rightarrow C_{xy}w-\lambda_vv = 0 \\
-    \frac{\partial f}{\partial v} &= 0 \Rightarrow C_{xy}^Tv - \lambda_ww = 0 \\
-    \Rightarrow w &= \frac{1}{\lambda_v}C_{yx}v, (C_{yx}=C_{xy}^T) \\
-    \Rightarrow C_{xy}C_{yx}v &= \lambda_v\lambda_w v \Rightarrow v \text{ ist Eigenvektor von } C_{xy}C_{yx} \\
-    \Rightarrow C_{yx}C_{xy}w &= \lambda_v\lambda_w w \Rightarrow w \text{ ist Eigenvektor von } C_{yx}C_{xy}
+    X_1 = X_0 - \hat{X}_1 \\
+    y_1 = y_0 - \hat{y}_1
 \end{align*}
 
-Diese Herleitung zeigt, dass die Eigenvektoren der entsprechenden Kovarianzmatritzen zu den gewünschten Vektoren führen, die das Maximierungsproblem lösen.
-Zusätzlich sind die Eigenwerte von $C_{xy}C_{yx}$ und $C_{yx}C_{xy}$ gleich.
-
-\begin{align*}
-    C_{xy}w - \lambda_vv &= 0 \Rightarrow v^TC_{xy}w - \lambda_vvv^T = 0 \Rightarrow \lambda_v = v^TC_{xy}w \\
-    C_{yx}v - \lambda_ww &= 0 \Rightarrow w^TC_{yx}v - \lambda_www^T = 0 \Rightarrow \lambda_w = w^TC_{xy}^Tv \\
-    \Rightarrow \lambda_v &= v^TC_{xy}w = (w^TC_{xy}^Tv)^T = \lambda_w
-\end{align*}
+Nach $k$-Schritten erhält man so die beste Rang-$k$-Approximation von $X$ bezüglich der Kovarianz zwischen $X$ und $y$.
 
 \section{MLPS}
 % TODO: example pictures for erosion and dilation and opening
