@@ -36,7 +36,7 @@ Für folgende Definitionen sei $n \in \mathbb{N} \setminus \{ 0 \}$.
 
 \begin{defin}
     Seien $f,g \in L^1(\R^n)$. \\
-    Dann ist die \textbf{Konvolution} von $f$ mit $g$ für $x \in \Omega$ definiert als:
+    Dann ist die \textbf{Konvolution} von $f$ mit $g$ für $x \in \R^n$ definiert als:
     \begin{equation}
         (f \star g)(x) := \int_{\R^n} f(x - y) g(y) dy
     \end{equation}
@@ -109,8 +109,8 @@ man folgenden Algorithmus nutzen, um $f$ zu berechnen:
 
 Durch die Berechnung im 2. Schritt wird sofort deutlich, dass $\hat{g}$ keine Nullstellen besitzen darf,
 da ansonsten der Quotient nicht existiert. Zusätzlich muss man auch über Stetigkeitseigenschaften der Methode nachdenken,
-da man Komponenten von hohen Frequenzen von $w$ potentiell stark aufgebläht werden 
-und damit auch potentielle Messfehler verstärt werden können.
+da Komponenten mit hohen Frequenzen von $w$ potentiell stark aufgebläht werden 
+und damit auch potentielle Messfehler verstärkt werden können.
 
 Für konkrete Berechnungen benötigt man die diskrete Fouriertransformation. 
 Sei dafür $u \in C^0(\R)$ mit $supp(u) := \{x \in \R \: | \: u(x) \neq 0 \} \subseteq [-a, a], a > 0$. Diese Funktion wird an $N \in \mathbb{N}_{>0}$ äquidistanten Stellen betrachtet, 
@@ -163,7 +163,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
     \begin{equation}
         A = U \Sigma V^T
     \end{equation}
-    wobei $U \in \R^{m \times m}, \; \Sigma \in \R^{m \times n}, \; V \in \R^{m \times m}$.
+    wobei $U \in \R^{m \times m}, \; \Sigma \in \R^{m \times n}, \; V \in \R^{n \times n}$.
     Die Spalten von $U$ nennt man die \textbf{Links-Singulärvektoren} und die von $V$ die \textbf{Rechts-Singulärvektoren} von $A$. $U, V$ sind orthogonale Matritzen.
     $\Sigma$ ist eine Diagonalmatrix deren Einträge $\sigma_i$ $(i \in \{1, \cdots, r\})$ die \textbf{Singulärwerte} von $A$ genannt werden.
     
@@ -184,7 +184,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
     \end{align}
     Diese beiden Matritzen sind symmetrische, quadratische Matritzen und haben somit
     nicht-negative Eigenwerte. Man kann also beide Matritzen in der Form $Q \Lambda Q^T$ darstellen.
-    Dabei ist $V = Q$ für Gleichung (12) und $U = Q$ für Gleichung (13). Und somit sind $V$ bzw. $U$ die Eigenwerte
+    Dabei ist $V = Q$ für Gleichung (12) und $U = Q$ für Gleichung (13). Und somit sind $V$ bzw. $U$ die Eigenvektoren
     von $A^TA$ bzw. $AA^T$ und insbesondere orthogonale Matritzen.
 
     \textbf{Konstruktion von $V$}: Wähle orthonormale Eigenvektoren $v_1, \cdots, v_r$ von $A^TA$.
@@ -218,7 +218,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
     und dasselbe gilt für die so gewählten $u_i$. 
 \end{proof}
 
-\begin{thm} \textbf{Satz von Eckard-Young}
+\begin{thm} \textbf{Satz von Eckart-Young}
     
     Sei $A \in \R^{m\times n}$ eine Rang $r$ Matrix. Weiterhin sei $A_k = \sum\limits_{i=1}^k u_i\sigma_iv_i^T$. 
     Wobei $\sigma_i$ die ersten $k$ Singulärwerte von A sind, wobei gilt $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r \geq 0$. Die $u_i, v_i$ sind die dazugehörigen Singulärvektoren. 
@@ -229,7 +229,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
 \end{thm}
 
 Diese Formulierung gilt für eine ganze Reihe von verschiedenen Operatornormen.
-Nachfolgend ist exemplarisch der Beweis des Satzes von Eckard-Young für die Spektralnorm.
+Nachfolgend ist exemplarisch der Beweis des Satzes von Eckart-Young für die Spektralnorm.
 Dieser illustriert auf natürliche Weise die Aussage das Satzes.
 
 \begin{defin}
@@ -262,7 +262,7 @@ Dieser illustriert auf natürliche Weise die Aussage das Satzes.
     somit ist das Maximum von $\frac{\lVert Ax \rVert}{\lVert x \rVert}$ gleich $\sqrt{\lambda_1} = \sigma_1$ wobei $\lambda_1$ der größte Eigenwert von $A^TA$ ist.
 \end{proof}
 
-\begin{thm} \textbf{Satz von Eckard-Young für die Spektralnorm}
+\begin{thm} \textbf{Satz von Eckart-Young für die Spektralnorm}
 
     Seien $A, B \in \R^{m \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$. Dann gilt:
     \begin{equation}
@@ -303,7 +303,7 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Frobenius-Norm $\lVert 
     Der Rest folgt aus dem Beweis für die SVD.
 \end{proof}
 
-\begin{thm} \textbf{Satz von Eckard-Young für die Frobenius-Norm}
+\begin{thm} \textbf{Satz von Eckart-Young für die Frobenius-Norm}
 
     Seien $A, B \in \R^{m \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$. Dann gilt:
     \begin{equation}
@@ -352,13 +352,13 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Frobenius-Norm $\lVert 
 \end{proof}
 
 \subsection{Principle Component Analysis (PCA)}
-Die PCA beruht nun aus den Erkenntnissen des Satzes von Eckard-Young. Gegeben sein eine Matrix $A \in \R^{m\times n}$. 
+Die PCA beruht nun aus den Erkenntnissen des Satzes von Eckart-Young. Gegeben sein eine Matrix $A \in \R^{m\times n}$. 
 Diese Matrix ist eine Matrix mit $n$ Messwerten von $m$ Messgrößen.
 Im ersten Schritt werden die Daten um den Koordinatenursprung zentriert, indem man von jeder Spalte von $A$ den Mittelwert der Spalte abzieht.
 Die PCA führt nun eine Zerlegung der so entstandenen Matrix durch die SVD durch. 
 Man erhält nun die Singulärvektoren $u_i$ und die Singulärwerte $\sigma_i$.
-Der Satz von Eckard-Young besagt, dass $A$ am besten durch $A_k$ approximiert wird.
-Die Daten in $A_k$ sind auf einen $k$-dimensionalen Unterraum projeziert wurden. 
+Der Satz von Eckart-Young besagt, dass $A$ am besten durch $A_k$ approximiert wird.
+Die Daten in $A_k$ sind auf einen $k$-dimensionalen Unterraum projeziert worden. 
 D.h. man hat die Dimension von $m$ auf $k$ reduziert und kann so Rechneraufwand einsparen, 
 weil die $m$ ursprünglichen Messgrößen auf $k$ Messgrößen reduziert hat, welche die Daten aber am besten beschreiben.
 Was \glqq am besten beschreiben\dq \space bedeutet soll nun erläutert werden:
@@ -366,8 +366,8 @@ Was \glqq am besten beschreiben\dq \space bedeutet soll nun erläutert werden:
 Die Totale Varianz der Daten $T$ ist gegeben durch $T = \lVert A \rVert_F^2 / (n-1) = (\sigma_1^2 + \cdots + \sigma_r^2) / (n-1)$.
 Als Erinnerung: Die Singulärwerte sind der größe nach absteigend sortiert. Somit gilt, dass die Totale Varianz der Daten in Richtung des ersten Singulärvektors $u_1$ maximal ist.
 Das kann man so interpretieren, dass sich die Daten im Unterraum, der durch $u_1$ aufgespannt wird, am stärsten voneinander unterscheiden. Sie streuen dort am stärsten.
-Den Grund dafür liefert der Satz von Eckard-Young: Er besagt, dass $A_1$ die beste Rang-1-Approximation von $A$ ist. Es folgt: $\lVert A_1 \rVert_F^2 / (n-1) = \sigma_1^2 / (n-1)$.
-Diese Argument kann man erweitern auf beliebige $k$. Eckard-Young stellt immer sicher, dass der Unterraum, der durch die Spalten von $A_k$ aufgespannt wird, die Totale Varianz T maximiert 
+Den Grund dafür liefert der Satz von Eckart-Young: Er besagt, dass $A_1$ die beste Rang-1-Approximation von $A$ ist. Es folgt: $\lVert A_1 \rVert_F^2 / (n-1) = \sigma_1^2 / (n-1)$.
+Diese Argument kann man erweitern auf beliebige $k$. Eckart-Young stellt immer sicher, dass der Unterraum, der durch die Spalten von $A_k$ aufgespannt wird, die Totale Varianz T maximiert 
 und in diesem Sinne die Daten am besten beschreibt.
 
 Ein zusätzlicher Effekt ist, dass man durch das Weglassen der Dimensionen mit besonders kleinen Singulärwerten, das Rauschen aus den Daten entfernen kann. 
@@ -386,20 +386,20 @@ Ab Rang 14 gibt es keine Verbesserung mehr in der Approximation durch Erhöhen d
 
 \subsection{Partial Least Squares Regression (PLSR)}
 
-Die PLSR kann man als eine Verallgemeinerung der PCA verstehen. Es werden nun zwei Datenmatrutzen $X\in \R^{m \times n} ,Y \in \R^{m \times l}$ betrachtet.
+Die PLSR kann man als eine Verallgemeinerung der PCA verstehen. Es werden nun zwei Datenmatritzen $X\in \R^{m \times n} ,Y \in \R^{m \times l}$ betrachtet.
 Das Ziel ist eine Vorhersage der Daten von $Y$ aus den Informationen aus $X$. 
 Anders als bei der PCA wird nun nicht eine Dekomposition von $X^TX$ durchgeführt, um die Varianz der Daten von $X$ zu modellieren, sondern es wird die Kovarinz
 zwischen $X$ und $Y$ modelliert, in dem man die Kovarianzmatrix $X^TY$ zerlegt.
 
-Nun wird zur Vereinfachung wird, dass nur eine Größe vorhergesagt werden soll.
+Nun wird zur Vereinfachung angenommen, dass nur eine Größe vorhergesagt werden soll.
 D.h. $Y$ ist keine Matrix sondern nur ein Vektor ist $y \in \R^m$. Das Argument kann einfach auf eine Matrix erweitert werden.
 Das Ziel ist eine Zerlegung von $X_k = ZV^T$, welche die beste Rang $k$-Approximation von $X$ ist, die die Kovarianz zwischen $X$ und $y$ maximiert.
 Dabei heißen die Vektoren in $Z$ PLSR-Scores und die in $V^T$ PLSR-Loadings. Und $y$ wird zerlegt in $y_k = Zb$. 
 Die Approximationen von $X$ und $y$ teilen sich die Scores-Matrix. Das kann man so interpretieren, dass diese die gemeinsame Struktur der Daten modelliert.
 
 % Source: https://allmodelsarewrong.github.io/pls.html
-Der folgende Algorithmus ist iterativ. Begonnen wird mit der richtigen Matrix $X=:X_0$ und den vorherzsuagenden Werten $y=:y_0$.
-Die Daten sollten um den Ursprung zentriert sein. Wenn das nicht der Fall ist, kann man den selben Trick anwenden wie bei der PCA.
+Der folgende Algorithmus ist iterativ. Begonnen wird mit der ursprünglichen Datenmatrix $X=:X_0$ und den vorherzusagenden Messwerten $y=:y_0$.
+Die Daten sollten um den Ursprung zentriert sein. Wenn das nicht der Fall ist, kann man die selbe Methode zur Zentrierung anwenden wie bei der PCA.
 Als erstes wird ein Vektor mit Kovarianzen zwischen den Spalten von $X_0$ und $y_0$ berechnet.
 \begin{equation*}
     \tilde{w}_1 = (x_1^Ty, \: x_2^Ty, \: \cdots, \: x_m^Ty)
@@ -441,7 +441,7 @@ Nach $k$-Schritten erhält man so die beste Rang-$k$-Approximation von $X$ bezü
 
 Der letzte Abschnitt beschreibt eine speziellen Algorithmus zur Hintergrundkorrektur von spektralen Daten.
 Spektrale Daten sind z.B. physikalische Messwerte aus einem Spektrum beispielsweise dem Lichtspektrum. 
-Sie bestehen aus Intensitäten bestimmter Wellenlängen aus dem das gemessene Signal besteht. 
+Sie setzt sich zusammen aus Intensitäten bestimmter Wellenlängen aus dem das gemessene Signal besteht. 
 Misst man beispielsweise mit einem Lichtspektrometer, welches die Intensitäten der Wellenlängen einer bestimmten Lichtquelle bestimmt, das Licht einer blauen LED,
 so wird man sehen, dass hauptsächlich die Wellenlängen im Signal einen großen Einfluss haben, die blauem Licht zuzuordnen sind. Andere Wellenlängen haben keinen oder nur einen sehr geringen Einfluss.
 
@@ -460,7 +460,7 @@ Die beiden Hauptoperationen, die in der mathematischen Morphologie genutzt werde
 Aus diesen können anschließend alle anderen Operationen zusammengestellt werden. Insbesondere die Operation der Öffnung, welche dann im MLPS-Algorithmus verwendet wird.
 
 
-Bei der beschreibung der folgenden Operationen wird eine Strukturmaske $B \subseteq \R^2$ (meistens eine Kreisfläche) verwendet und welche als Teilmenge des Bildes $A \in \R^2$ aufgefasst wird.
+Bei der Beschreibung der folgenden Operationen wird eine Strukturmaske $B \subseteq \R^2$ (meistens eine Kreisfläche) verwendet und welche als Teilmenge des Bildes $A \in \R^2$ aufgefasst wird.
 $B_x$ bezeichnet dann die Translation der Strukturmaske zum Punkt $x$. Dafür muss wird ein bestimmter Referenzpunkt $b \in B$ festgelegt, der nach der Translation identisch zum Punkt $x$ sein soll.
 Beispielsweise könnte man für die Kreisscheibe den Mittelpunkt als Referenzpunkt wählen, sodass $B_x$ dann die Kreisscheibe mit dem Zentrum $x$ ist.
 
@@ -469,7 +469,7 @@ Beispielsweise könnte man für die Kreisscheibe den Mittelpunkt als Referenzpun
     {\rm Dil}(A) := \bigcup\limits_{x \in A} B_x
 \end{equation}
 
-Diese Operation transliert die Strukturmaske an jeden Punkt des Bildes $A$ und vereinigt alle Translate $B_x$. Das führt zu einem "Aufblähen" des Originalbilds um die Strukturmaske.
+Diese Operation transliert die Strukturmaske an jeden Punkt des Bildes $A$ und vereinigt alle Translate $B_x$. Das führt zu einem Aufblähen des Originalbilds um die Strukturmaske.
 
 \subsubsection{Erosion}
 \begin{equation}
@@ -477,7 +477,7 @@ Diese Operation transliert die Strukturmaske an jeden Punkt des Bildes $A$ und v
 \end{equation}
 
 Diese Operation transliert die Strukturmaske ebenfalls an jeden Punkt des Bildes, vereinigt jedoch nur die Translate, welche sich vollständig im Ursprünglichen Bild befinden.
-Das führt zu einer "Verkleinerung" des Bildes. Lange dünne Spitzen, die aus dem Bild herausragen, werden je nach Größe und Form der Strukturmaske abgeschnitten.
+Das führt zu einer Verkleinerung des Bildes. Lange dünne Spitzen, die aus dem Bild herausragen, werden je nach Größe und Form der Strukturmaske abgeschnitten.
 
 \subsubsection{Öffnung}
 
@@ -503,7 +503,7 @@ Für die Dilatation wird dann das Maximum über die im Fenster befindlichen Mess
 \end{align}
 
 Die Definition def Öffnung bleibt gleich, wie im 2 dimensionalen Fall.
-Für echte Daten muss dieses Definition noch diskretisiert werden, weil die Messwerte nicht durch eine Funktion $f$ die auf ganz $\R$ existiert, definiert sind, sondern eine diskrete Menge von Punktion $X := \{(x_i,y_i) \in \R^2 \: | \: n\in \mathbb{N}, i=1,\cdots,n \}$.
+Für echte Daten muss dieses Definition noch diskretisiert werden, weil die Messwerte nicht durch eine Funktion $f$ die auf ganz $\R$ existiert, definiert sind, sondern eine diskrete Menge von Punkten $X := \{(x_i,y_i) \in \R^2 \: | \: n\in \mathbb{N}, i=1,\cdots,n \}$.
 
 Die beiden Operatoren ändern sich für jedes $i\in \{1,\cdots,n\}$ zu:
 \begin{align}
@@ -514,7 +514,7 @@ Die beiden Operatoren ändern sich für jedes $i\in \{1,\cdots,n\}$ zu:
 Dabei ist $w \in \mathbb{N}$ nun eine diskrete Fenstergröße.
 
 \subsection{Penalized Least Squares}
-Penalized Least Squared ist eine Variante der Least Squares Optimierung.
+Penalized Least Square ist eine Variante der Least Squares Optimierung.
 
 \begin{align}
     Ax = b \label{eq:ls} \\ 
@@ -524,7 +524,7 @@ $x \in \R^n, b \in \R^m, A \in \R^{m\times n}$.
 
 Das gewöhnliche Least-Squares-Verfahren wird verwendet, um ein lineares Gleichugssystem zu lösen. 
 Dieses kann als Matrix-Vektor-Produkt dargestellt werden wie in Gleichung \ref{eq:ls}. 
-Aus dieser kann man das Minimierungsproblem herleiten, welches in Gleichung \ref{eq:minls}.
+Aus dieser kann man das Minimierungsproblem herleiten wie in Gleichung \ref{eq:minls}.
 Dabei sei erwähnt, dass die Matrix $A$ nicht invertierbar sein muss und sich $b$ auch nicht im Spaltenraum von $A$ befinden muss.
 Das führt dazu, dass es keine eindeutige beste Approximation einer Lösung geben muss.
 Least Squares liefert jedoch immer eine eindeutige Lösung der Form $\hat{x} = A^{\dagger} b$, wobei $A^{\dagger}$ die Moore-Pensrose-Pseudoinverse ist.
@@ -544,7 +544,7 @@ $\ell^2$ hält die Norm der Lösung beschränkt, sodass es keine besonders groß
 
 \subsection{Signal Hintergrundkorrektur}
 
-Im folgenden Abschnitt bezeichnet gilt: $x \in R^n$ ist der Vektor der Messwerte eines Signals. 
+Im folgenden Abschnitt gilt: $x \in \R^n$ ist der Vektor der Messwerte eines Signals. 
 
 Als erstes führt der Algorithmus eine diskrete morphologische Öffnung mit den Messwerten $x$ durch. Dabei muss eine Fenstergröße $w$ für den Algorithmus festgelegt werden.
 In der wissenschaftlichen Arbeit wurde mit den verschiedenen Fenstergrößen ($w=11,13,15$) experiementiert, welche alle zu einem sehr ähnlichen Ergebnis führten.
@@ -571,6 +571,6 @@ Die Lösung dieses neuen Problems ist dann gegeben durch:
 
 Die Lösung $\hat{x}$ ist nun das approximierte Hintergrundspektrum.
 
-Man kann nun erkennen, dass nach der Regression die Plateaus verschwunden sind und der Hintergrund besser approximiert wird also durch die isolierte Anwendung der morphologischen Methoden. 
+Man kann erkennen, dass nach der Regression die Plateaus verschwunden sind und der Hintergrund besser approximiert wird als durch die isolierte Anwendung der morphologischen Methoden. 
 
 \end{document}
