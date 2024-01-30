@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{hyperref}
 
 \usepackage{graphicx}
 \usepackage{subfig}
@@ -26,6 +27,9 @@
 \newtheorem{thm}{Satz}
 
 \begin{document}
+
+\nocite{*}
+
 \maketitle
 
 \section{Inverse Faltung}
@@ -75,7 +79,7 @@ Der Nachweis der Wohldefiniertheit funktioniert genauso, wie bei der Fouriertran
         \mathcal{F}(f \star g) = \mathcal{F}f \cdot \mathcal{F}g
     \end{equation}
 
-    \begin{proof}
+    \begin{proof} \cite[S. 371f.]{howell2016principles}
         Der Beweis ist abgeschlossen, wenn gezeigt wurde, dass $\F^{-1} (\F f \cdot \F g) = f \star g$. 
         
         Sei $F(\omega) := \F f(\omega)$ und $G(\omega) := \F g(\omega)$. Dann gilt: \\
@@ -146,6 +150,8 @@ Dabei sind die $U_k$ nun die diskreten Fourierkoeffizienten von $u$ zu den entsp
 Diese diskrete Variante der Transformation kann nun verwendet werden, um die Inverse Faltung wie oben beschrieben für konkrete Messwerte zu berechnen. 
 Es handelt sich allerdings um ein schlecht gestelltes Problem und man muss Regularisierungen anwenden, um die die schlechten Stetigkeitseigenschaften der Methode zu verbessern. 
 
+\cite[S. 61ff.]{richter2021inverse}
+
 \section{PLSR}
 
 \subsection{Singulärwert-Zerlegung (SVD)}
@@ -176,7 +182,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
     Diese Zerlegung existiert für jede beliebige Matrix $A \in \R^{m \times n}$.
 \end{definthm}
 
-\begin{proof}
+\begin{proof} \cite[S. 56f., 58f.]{strang2019linear}
     Betrachte
     \begin{align}
         A^TA = (V \Sigma^T U^T) (U \Sigma V^T) &= V \Sigma^T \Sigma V^T \\
@@ -218,7 +224,7 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
     und dasselbe gilt für die so gewählten $u_i$. 
 \end{proof}
 
-\begin{thm} \textbf{Satz von Eckart-Young}
+\begin{thm} \textbf{Satz von Eckart-Young} \cite[S. 58f.]{strang2019linear}
     
     Sei $A \in \R^{m\times n}$ eine Rang $r$ Matrix. Weiterhin sei $A_k = \sum\limits_{i=1}^k u_i\sigma_iv_i^T$. 
     Wobei $\sigma_i$ die ersten $k$ Singulärwerte von A sind, wobei gilt $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r \geq 0$. Die $u_i, v_i$ sind die dazugehörigen Singulärvektoren. 
@@ -247,7 +253,7 @@ Dieser illustriert auf natürliche Weise die Aussage das Satzes.
     \end{equation}
 \end{lemma}
 
-\begin{proof}
+\begin{proof}\cite[S. 62f.]{strang2019linear}
     Sei $S = A^TA$. Es gilt $\lVert Ax \rVert_2^2 = x^TA^TAx$ und $\lVert x \rVert_2^2 = x^Tx$.
     Durch einfache Differentation nach $x_i$ und der Quotientenregel erhält man:
     \begin{equation}
@@ -271,7 +277,7 @@ Dieser illustriert auf natürliche Weise die Aussage das Satzes.
     Im Fall $k = r$ ist $\sigma_{r+1} = 0$.
 \end{thm}
 
-\begin{proof}
+\begin{proof} \cite[S. 72f.]{strang2019linear}
     Nach Lemma 1 ist $\lVert A - A_k \rVert_2 = \sigma_{k+1}$. Wähle $x \neq 0$ so, dass $Bx = 0$ und $x = \sum\limits_{i=1}^{k+1} c_i^2v_i$.
 
     Wegen ${\rm dim}(\mathcal{N}(B)) = n - k$ und ${\rm dim}({\rm span}\{v_1, \cdots, v_{k+1}\}) = k + 1$ hat der Schnitt von $\mathcal{N}(B)$ und ${\rm span}\{v_1, \cdots, v_{k+1}\}$ mindestens Dimension $1$. 
@@ -298,7 +304,7 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Frobenius-Norm $\lVert 
     \end{equation}
 \end{bem}
 
-\begin{proof}
+\begin{proof} \cite[S. 73]{strang2019linear}
     Die Gleichheit (*) gilt, da für $\forall i\in \{1, \cdots, n\}$ gilt: $(A^TA)_{ii} = a_i^Ta_i = \lVert a_i \rVert^2_2$, wobei $a_i$ die i-te Spalte von A ist.
     Der Rest folgt aus dem Beweis für die SVD.
 \end{proof}
@@ -311,7 +317,7 @@ Für die PCA und die PLSR wird die Fourmulierung mit der Frobenius-Norm $\lVert 
     \end{equation}
 \end{thm}
 
-\begin{proof}
+\begin{proof} \cite[S. 74]{strang2019linear}
     Seien $A,B \in \R^{m \times n}$ mit ${\rm Rang}(B) \leq k \leq {\rm Rang(A)} = r$, sodass für alle $C \in \R^{m \times n}$ gilt: 
     \begin{equation*}
         \lVert A - C \rVert_F \geq \lVert A - B \rVert_F
@@ -368,7 +374,7 @@ Als Erinnerung: Die Singulärwerte sind der größe nach absteigend sortiert. So
 Das kann man so interpretieren, dass sich die Daten im Unterraum, der durch $u_1$ aufgespannt wird, am stärsten voneinander unterscheiden. Sie streuen dort am stärsten.
 Den Grund dafür liefert der Satz von Eckart-Young: Er besagt, dass $A_1$ die beste Rang-1-Approximation von $A$ ist. Es folgt: $\lVert A_1 \rVert_F^2 / (n-1) = \sigma_1^2 / (n-1)$.
 Diese Argument kann man erweitern auf beliebige $k$. Eckart-Young stellt immer sicher, dass der Unterraum, der durch die Spalten von $A_k$ aufgespannt wird, die Totale Varianz T maximiert 
-und in diesem Sinne die Daten am besten beschreibt.
+und in diesem Sinne die Daten am besten beschreibt. \cite[Kapitel I.9]{strang2019linear}
 
 Ein zusätzlicher Effekt ist, dass man durch das Weglassen der Dimensionen mit besonders kleinen Singulärwerten, das Rauschen aus den Daten entfernen kann. 
 Das verbessert auch die numerische Stabilität von Analysealgorithmen, welche auf die Daten im Anschluss angewendet werden. 
@@ -382,7 +388,7 @@ Das verbessert auch die numerische Stabilität von Analysealgorithmen, welche au
 
 Die obere Abbildung zeigt die Singulärwert und Fehler bei der Rang-$k$-Approximation der Hilbertmatrix $H_n = \left(\frac{1}{i+j-1}\right)_{i=1,j=1}^{n,n}$. 
 Man kann erkennen, dass die Singulärwerte sehr schnell abfallen und somit eine Approximation sehr kleinen Ranges bereits genügt, um die Matrix mit sehr kleinem Fehler darzustellen.
-Ab Rang 14 gibt es keine Verbesserung mehr in der Approximation durch Erhöhen des Rangs.   
+Ab Rang 14 gibt es keine Verbesserung mehr in der Approximation durch Erhöhen des Rangs. \cite[]{}
 
 \subsection{Partial Least Squares Regression (PLSR)}
 
@@ -435,9 +441,12 @@ Nun berechnet man die verbleibenden Daten für den nächsten Iterationsschritt:
 \end{align*}
 
 Nach $k$-Schritten erhält man so die beste Rang-$k$-Approximation von $X$ bezüglich der Kovarianz zwischen $X$ und $y$.
+\cite{AMAW}
 
 \section{MLPS}
 % TODO: example pictures for erosion and dilation and opening
+Der folgende Abschnitt basiert bezieht sich auf folgende wissenschaftliche Veröffentlichung: \cite{li2013morphological}
+\break
 
 Der letzte Abschnitt beschreibt eine speziellen Algorithmus zur Hintergrundkorrektur von spektralen Daten.
 Spektrale Daten sind z.B. physikalische Messwerte aus einem Spektrum beispielsweise dem Lichtspektrum. 
@@ -451,7 +460,7 @@ Wenn der Signal-Rauschen-Abstand zu groß wird, dann ist die gesamte Messung wer
 
 Die Arbeit beschreibt einen Algorithmus, welcher Methoden aus der mathematischen Morphologie und Penalized Least Squares verbindet.
 
-\subsection{Mathematische Morphologie}
+\subsection{Mathematische Morphologie} 
 Die mathematische Morphologie ist eine Technik zur Analyse geometrischer Eigenschaften.
 Sie verwendet dafür topologische und megentheoretische Hilfsmittel. Zum Einsatz kommt sie hauptsächlich im Kontext der Analyse von Bildern also 2 dimensionalen Daten.
 Die wissenschaftliche Arbeit hat eine Variante entwickelt, diese Technik ebenfalls auf eindimensionale Daten wie zum Beispiel spektrale Messwerte anzuwenden.
@@ -487,6 +496,7 @@ Die Öffnung ist die Hintereinanderausführung von Erosion und Dilatation, also:
 \end{equation}
 
 Wie beschrieben entfernt die Erosion Spitzen, die aus dem Bild herausragen und die anschließende Dilatation macht die Errosion an dem verbleibenden Stellen wieder rückgängig.
+\cite[Kapitel 12]{sichtprufungautomatische}
 
 \subsubsection{Im Kontext von MLPS}
 
@@ -542,6 +552,8 @@ Spezielle zu erwähnen sind die LASSO und $\ell^2$-Regularisierungen. Für LASSO
 LASSO liefert dabei dünnbesetzte Lösungen mit vielen Nulleinträgen. 
 $\ell^2$ hält die Norm der Lösung beschränkt, sodass es keine besonders großen Werte in $\hat{x}$ gibt.
 
+\cite[S. 184f.]{strang2019linear}
+
 \subsection{Signal Hintergrundkorrektur}
 
 Im folgenden Abschnitt gilt: $x \in \R^n$ ist der Vektor der Messwerte eines Signals. 
@@ -572,5 +584,9 @@ Die Lösung dieses neuen Problems ist dann gegeben durch:
 Die Lösung $\hat{x}$ ist nun das approximierte Hintergrundspektrum.
 
 Man kann erkennen, dass nach der Regression die Plateaus verschwunden sind und der Hintergrund besser approximiert wird als durch die isolierte Anwendung der morphologischen Methoden. 
+
+\clearpage
+\bibliographystyle{alpha}
+\bibliography{ref} % see references.bib for bibliography management
 
 \end{document}
