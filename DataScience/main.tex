@@ -15,8 +15,14 @@
 \newcommand{\N}[0]{\mathbb{N}}
 \newcommand{\F}[0]{\mathcal{F}}
 \newcommand{\E}[0]{\mathbb{E}}
+\newcommand{\Ssp}[0]{\mathcal{S}}
+\newcommand{\C}[0]{C^{\infty}_0}
 
-\title{Datascience}
+\DeclareRobustCommand{\loongrightarrow}{%
+  \DOTSB\relbar\joinrel\relbar\joinrel\rightarrow
+}
+
+\title{Applied Problems in Data Science}
 \author{Yannik Höll}
 \date{\today}
 
@@ -25,6 +31,8 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{definthm}{Definition \& Satz}
 \newtheorem{thm}{Satz}
+
+\DeclareMathOperator{\esssup}{esssup}
 
 \begin{document}
 
@@ -40,11 +48,56 @@ Für folgende Definitionen sei $n \in \mathbb{N} \setminus \{ 0 \}$.
 
 \begin{defin}
     Seien $f,g \in L^1(\R^n)$. \\
-    Dann ist die \textbf{Konvolution} von $f$ mit $g$ für $x \in \R^n$ definiert als:
+    Dann ist die \textbf{Faltung} von $f$ mit $g$ für $x \in \R^n$ definiert als:
     \begin{equation}
         (f \star g)(x) := \int_{\R^n} f(x - y) g(y) dy
     \end{equation}
 \end{defin}
+
+\begin{thm}\label{thm:konvmap}
+    Die Faltung $\_ \star \_$ ist eine wohldefinierte Abbildung von $L^1(\R^n) \times L^1(\R^n)$ nach $L^1(\R^n)$.
+\end{thm}
+
+\begin{proof}
+    Seien $f,g \in L^1(\R^n)$ und sei $F: \R^n \times \R^n \to \R, (x,y) \mapsto f(x - y)g(y)$. Die Funktion $F$ ist messbar,
+    weil $g$ messbar ist und weil $\tilde{f} = f \circ \tau_{-y}$ mit $\tau_y: \R^n \to \R, x \mapsto x + y$ eine Komposition messbarer Funktionen ist
+    und somit messbar. Ferner gilt $F = \tilde{f}g$ und damit ist $F$ das Produkt messbarer Funktionen.
+
+    Nun kann man schließen:
+    \begin{align*}
+        \hspace{-23px}\int_{\R^n \times \R^n} \left| F(x,y)\right| d(x,y) &\overset{(*)}{=} \int_{\R^n}\int_{\R^n} \left| F(x,y)\right| dxdy \\
+        &= \int_{\R^n}\int_{\R^n} \left|f(x - y)g(y)\right| dxdy \\
+        &= \int_{\R^n}\int_{\R^n} \left| f(x - y) \right| \left| g(y) \right| dx dy \\
+        &= \int_{\R^n} \underbrace{\left(\int_{\R^n} \left| f(x - y) \right| dx \right)}_{=\lVert f \rVert_1} \left| g(y) \right| dy \\
+        &= \lVert f \rVert_1 \left(\int_{\R^n} \left| g(x) \right| dx\right) \\ 
+        &= \lVert f \rVert_1 \lVert g \rVert_1 < \infty
+    \end{align*}
+    Die Gleicheit $(*)$ folgt aus dem Satz von Fubini-Tonelli, weil $F$ messbar ist.
+
+    Somit ist $F \in L^1(\R^n \times \R^n)$.
+    
+    Aus dem Satz von Fubini folgt, dass die Abbildung $x \mapsto \int_{\R^n} F(x,y) dy = (f\star g)(x)$ im $L^1(\R^n)$ liegt.
+\end{proof}
+
+\begin{lemma}\label{lem:convsym}
+    Für $f,g \in L^1(\R^n)$ gilt: $f \star g = g \star f$.
+\end{lemma}
+
+\begin{proof}
+    Seien $f,g \in L^1(\R)$ und $x \in \R$, dann folgt:
+    \begin{align*}
+        (f \star g)(x) &= \int_{-\infty}^{\infty} f(x - y) g(y) dy \\
+        &= \int_{\infty}^{-\infty} f(\tilde{y}) g(x - \tilde{y}) (-1)d\tilde{y}, \hspace{20px} \tilde{y} = x - y \\
+        &= \int_{-\infty}^{\infty} f(\tilde{y}) g(x - \tilde{y}) d\tilde{y} \\
+        &= (g \star f)(x)
+    \end{align*}
+    Somit gilt die Kommutativität der Faltung für den Fall $n=1$. Die Kommutativität für alle $n$ folgt nun aus Satz \ref{thm:konvmap}, da nämlich
+    $f \star g \in L^1(\R)$ gilt:
+    \begin{equation*}
+        (f \star g)(x) = \int_{\R^n} f(x - y)g(y) dy = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} f(x_1 - y_1, x_2 - y_2, \cdots, x_n - y_n) g(y_1, y_2, \cdots, y_n) dy_1 dy_2 \cdots dy_n
+    \end{equation*}
+    und man kann die Substitution wie oben auf jede Diemension einzeln anwenden.
+\end{proof}
 
 \begin{defin} Die \textbf{Fourier-Transformation} einer Funktion $f \in L^1(\R^n)$ ist definiert durch:
     \begin{equation}
@@ -53,28 +106,46 @@ Für folgende Definitionen sei $n \in \mathbb{N} \setminus \{ 0 \}$.
     für $x, \xi \in \R^n$. Dabei ist $x \cdot \xi$ das Skalarprodukt im $\R^n$.
 \end{defin}
 
-Die Fouriertransformation ist wohldefiniert, weil $f \in L^1(\R^n)$.
+\begin{thm}\label{thm:ft-map}
+    Die Fouriertransformation ist eine wohldefinierte Abbildung von $L^1(\R^n) \to L^{\infty}(\R^n)$.
+\end{thm}
+
 \begin{proof}
     Sei $f \in L^1(\R^n)$, dann gilt:
     \begin{align*}
-        \Bigg\lvert \int_{\R^n} f(x) \cdot e^{-2\pi i x \cdot \xi} dx \Bigg\rvert &\leq \int_{\R^n} \lvert f(x) \rvert \lvert e^{-2\pi i x \cdot \xi} \rvert dx \\
+        \forall \xi \in \R^n: |\mathcal{F}f(\xi)| &= \Bigg\lvert \int_{\R^n} f(x) \cdot e^{-2\pi i x \cdot \xi} dx \Bigg\rvert \\
+        &\leq \int_{\R^n} \lvert f(x) \rvert \lvert e^{-2\pi i x \cdot \xi} \rvert dx \\
         &= \int_{\R^n} \lvert f(x) \rvert dx \\
         &= \lVert f \rVert_{L^1(\R^n)} < \infty
     \end{align*}
+    Daraus folgt nun: $\lVert\mathcal{F}f\rVert_{\infty} = \esssup\limits_{\xi \in \R^n} |\mathcal{F}f(\xi)| \leq \lVert f \rVert_{L^1(\R^n)} < \infty$
 \end{proof}
 
 \begin{defin}
     Die \textbf{Inverse Fouriertransformation} einer Funktion $f \in L^1(\R^n)$ ist definiert durch:
     \begin{equation}
-        (\mathcal{F}f)(\xi) := \int_{\R^n} f(x) \cdot e^{2\pi i x \cdot \xi} dx
+        (\mathcal{F}^{-1}f)(\xi) := \int_{\R^n} f(x) \cdot e^{2\pi i x \cdot \xi} dx
     \end{equation}
     für $x, \xi \in \R^n$. Dabei ist $x \cdot \xi$ das Skalarprodukt im $\R^n$.
 \end{defin}
 Der Nachweis der Wohldefiniertheit funktioniert genauso, wie bei der Fouriertransformation.
 
-\begin{thm}
-    \textbf{Faltungssatz} \\
-    Seien $f,g \in L^1(\R^n)$ und $\mathcal{F}f \cdot \mathcal{F}g \in L^1(\R^n)$. Dann gilt:
+\begin{lemma}\label{lem:l1linfty}
+    Seien $f\in L^1(\R^n), g \in L^{\infty}(\R^n)$, dann gilt: $f \cdot g \in L^1(\R^n)$.
+\end{lemma}
+
+\begin{proof}
+    \begin{align*}
+        \lVert f \cdot g \rVert_1 &= \int_{\R^n} |f(x)g(x)| dx \\
+        &\leq \int_{\R^n} |f(x)| \lVert g(x) \rVert_{\infty} dx \\
+        &= \lVert g(x) \rVert_{\infty} \int_{\R^n} |f(x)| dx \\
+        &= \lVert g(x) \rVert_{\infty} \lVert f(x) \rVert_1 < \infty
+    \end{align*}
+\end{proof}
+
+\begin{thm}\label{thm:convinvl1}
+    \textbf{Faltungssatz im $L^1(\R^n)$} \\
+    Seien $f,g \in L^1(\R^n)$ und $\mathcal{F}g \in L^1(\R^n)$. Dann gilt:
     \begin{equation}
         \mathcal{F}(f \star g) = \mathcal{F}f \cdot \mathcal{F}g
     \end{equation}
@@ -82,24 +153,264 @@ Der Nachweis der Wohldefiniertheit funktioniert genauso, wie bei der Fouriertran
     \begin{proof} \cite[S. 371f.]{howell2016principles}
         Der Beweis ist abgeschlossen, wenn gezeigt wurde, dass $\F^{-1} (\F f \cdot \F g) = f \star g$. 
         
-        Sei $F(\omega) := \F f(\omega)$ und $G(\omega) := \F g(\omega)$. Dann gilt: \\
+        Sei $F(\omega) := \F f(\omega)$ und $G(\omega) := \F g(\omega)$. Als erstes ist festzustellen, dass $\F^{-1} (F(\omega) G(\omega))$ existiert, weil
+        $G \in L^1(\R^n)$ ist und nach Lemma \ref{lem:l1linfty} somit $F \cdot G \in L^1(\R^n)$ ist. Es folgt: \\
         \begin{align*}
             \F^{-1} (F(\omega) G(\omega)) &= \int_{\R^n} F(\omega) G(\omega) \cdot e^{2\pi i \omega \cdot t} d\omega \\
-            &= \int_{\R^n} \Bigg\lbrack \int_{\R^n} f(s) \cdot e^{-2\pi i s \cdot \omega} ds \Bigg\rbrack G(\omega) \cdot e^{2\pi i \omega \cdot} d\omega \\
+            &= \int_{\R^n} \Bigg\lbrack \int_{\R^n} f(s) \cdot e^{-2\pi i s \cdot \omega} ds \Bigg\rbrack G(\omega) \cdot e^{2\pi i \omega \cdot t} d\omega \\
             &= \int_{\R^n} \int_{\R^n} f(s) G(\omega) \cdot e^{2\pi i \omega \cdot (s - t)} ds d\omega
         \end{align*}
-        Nach dem Satz von Fubini kann die Integrationsreihenfolge vertauscht werden:
+        Seien $s,t \in \R^n$, dann gilt:
+        \begin{equation*}
+            \forall \xi \in \R^n: |e^{2\pi i \omega \cdot (s - t)}| = 1 \Rightarrow \esssup\limits_{\omega \in \R^n} |e^{2\pi i \omega \cdot (s - t)}| = 1 < \infty
+        \end{equation*}
+        Und somit ist $e^{2\pi i \omega \cdot (s - t)} \in L^{\infty}(\R^n)$ bezüglich $\omega$ und aus mit einem ähnlichen Argument auch bezüglich $s$.
+        Daraus und aus Lemma \ref{lem:l1linfty} folgt, dass $f(s) G(\omega) \cdot e^{2\pi i \omega \cdot (s - t)} \in L^1(\R^n \times \R^n)$ bezüglich $\omega$ und $s$ ist.
+        Somit sind die Vorraussetzungen des Satzes von Fubini erfüllt und man kann die Integrationsreihenfolge vertauschen:
         \begin{align*}
             \F^{-1} (F(\omega) G(\omega)) &= \int_{\R^n} \int_{\R^n} f(s) G(\omega) \cdot e^{2\pi i \omega \cdot (s - t)} d\omega ds \\
             &= \int_{\R^n} f(s) \Bigg \lbrack \int_{\R^n} G(\omega) \cdot e^{2\pi i \omega \cdot (t - s)} d\omega \Bigg \rbrack ds \\
-            &= \int_{\R^n} f(s) g(t-s) ds = f \star g
+            &\overset{*}{=} \int_{\R^n} f(s) g(t-s) ds = g \star f \overset{\text{Lemma \ref{lem:convsym}}}{=} f \star g
         \end{align*}
+        Die Gleichheit $(*)$ folgt aus der Tatsache, dass sowohl $g(x)$ als auch $G(\omega)$ im $L^1(\R^n)$ liegen.
     \end{proof}
 \end{thm}
 
-\subsection{Diskrete Fouriertransformation}
+Man kann an der zusätzlich benötigten Bediengung $\mathcal{F}g \in L^1(\R^n)$ im Faltungssatz erkennen, dass der $L^1(\R^n)$ nicht der natürlichste Raum ist, um die Fouriertransformation zu definieren.
+Deswegen wird im folgenden die Definition auf einem alternativem Raum vorgenommen, auf dem die Transformation bessere Eigenschaften hat.
 
-Mit Satz 1 ist es nun theoretisch möglich, die Faltung von zwei Funktionen umzukehren, unter der Vorraussetzung, 
+\subsection{Umkehrformel im $L^2$}
+
+\begin{defin}
+    Eine Funktion $f \in C^{\infty}$ heißt \textbf{schnell fallend}, wenn $\forall \alpha \in \N^n: \lim\limits_{|x| \to \infty} x^{\alpha}f(x) = 0$.
+
+    Der \textbf{Schwartz-Raum} ist wie folgt definiert:
+    \begin{equation*}
+        \Ssp(\R^n) := \{ f \in C^{\infty}(\R^n) \: | \: \forall \alpha,\beta \in \N^n: \sup\limits_{x \in \R^n} \left| x^\alpha\partial_{\beta}f(x) \right| < \infty \}
+    \end{equation*}
+\end{defin}
+Anders formuliert sind Schwartz-Funktionen beliebig oft differenzierbare schnell fallende Funktionen, bei denen jede Ableitung ebenfalls eine schnell fallende Funktion ist.
+
+\begin{bem}\label{bem:C0sub}
+    $C^{\infty}_0(\R^n) \subseteq \Ssp(\R^n)$
+\end{bem}
+
+\begin{proof}
+    Sei $f \in \C(\R^n)$. Da $f$ stetig ist und ein kompakten Träger besitzt folgt: $\sup\limits_{x \in \R^n} |f(x)| < \infty$.
+
+    Für $\forall \beta \in \N^n: \partial_x^{\beta} f \in \C(\R^n) \Rightarrow \sup\limits_{x \in \R^n} |\partial_x^{\beta}f(x)| < \infty$.
+
+    Sei $\alpha \in \N^n$. Sei ${\rm supp} f$ der Träger von $f$ und wähle $a \in \R_{\geq 0}$, sodass ${\rm supp}f \subseteq [-a, a]$, dann gilt für $\forall x \notin [-a, a]$:
+    \begin{equation}
+        x^{\alpha}f(x) = 0
+    \end{equation}
+
+    Und da $x \mapsto x^{\alpha} \in C^{\infty}(\R^n)$ gilt $x \mapsto x^{\alpha}f(x) \in \C(\R^n)$ für $\forall \alpha \in \N^n$.
+    
+    Daraus kann man nun schließen, dass $\forall \alpha, \beta \in \N^n: \sup\limits_{x \in \R^n} |x^{\alpha}\partial_x^{\beta}f(x)| < \infty$.
+\end{proof}
+
+\begin{lemma}\label{lem:C0dense}
+    $\C(\R^n)$ liegt dicht im Raum $L^2(\R^n)$.
+\end{lemma}
+
+\begin{proof}
+    Siehe \cite[S. 115, Satz 2.15(3)]{alt2016linear}.
+\end{proof}
+
+\begin{lemma}\label{lem:slp}
+    $\forall 1 \leq p < \infty: \Ssp(\R^n) \subseteq L^p(\R^n)$
+\end{lemma}
+
+\begin{proof}\cite[S. 230f.]{werner2006funktionalanalysis}
+    Sei $f \in \Ssp(\R^n)$ und $1 \leq p < \infty$. Es gilt die Abschätzung:
+    \begin{equation}
+        \forall x\in \R^n, m\in \N\exists c>0: |f(x)|^p \leq \left(\frac{c}{1 + |x|^m}\right)^p
+    \end{equation}
+
+    Dann folgt für $pm - (n-1) > 1$:
+    \begin{align*}
+        \int_{\R^n} |f(x)|^p dx &\leq \int_{\R^n} \left(\frac{c}{1 + |x|^m}\right)^p dx \\
+        &= c^p \omega_{n - 1} \int_{0}^{\infty} \left(\frac{1}{1 + r^m}\right)^pr^{n - 1}dr \\
+        &= c^p \omega_{n - 1} \int_{0}^{\infty} \underbrace{\left(\frac{r^{\frac{n-1}{p}}}{1 + r^m}\right)^p}_{\sim o(\frac{1}{1+r})} dr < \infty
+    \end{align*}
+    wobei $\omega_{n-1}$ der Oberflächeninhalt der $n$-Späre ist.
+\end{proof}
+
+\begin{defin}
+    Die \textbf{Fouriertransformation} auf dem Schwartz-Raum ist für $f \in \Ssp(\R^n), \xi \in \R^n$ definiert durch:
+    \begin{equation}
+        \F f(\xi) := \int_{\R^n} f(x) \exp^{-2\pi i x \cdot \xi} dx
+    \end{equation}
+    Dabei ist $x \cdot \xi$ wieder das Skalarprodukt im $\R^n$.
+    Die inverse Transformation wird auch analog wie bei $L^1(\R^n)$ definiert.
+\end{defin}
+
+\begin{thm}
+    Die Fouriertransformation ist eine stetige Abbildung von $\Ssp(\R^n)$ nach $\Ssp(\R^n)$.
+\end{thm}
+
+\begin{proof}\cite[S. 424, Theorem 24.1.1]{ebert2018methods}
+    Sei $f \in \Ssp(\R^n)$ und $\alpha, \beta \in \N^n$. Dann gilt:
+    \begin{align*}
+        \xi^{\beta}\partial_{\xi}^{\alpha}\F f(\xi) &= \int_{\R^n} (-2\pi i x)^{\alpha} \xi^{\beta} f(x) e^{-2\pi i x \cdot \xi} dx \\
+        &= (2\pi)^{|\alpha| - |\beta|} \int_{\R^n} i^{|\beta|} \partial_{x}^{\beta}(e^{-2\pi i x \cdot \xi}) (-ix)^{\alpha} f(x) dx \\
+        &\overset{\text{*}}{=}i^{|\beta|}(2\pi)^{|\alpha| - |\beta|} \int_{\R^n} e^{-2\pi i x \cdot \xi} \partial_{x}^{\beta}((-ix)^{\alpha}f(x)) dx \\
+        &= i^{|\beta|}(2\pi)^{|\alpha| - |\beta|} \int_{\R^n} e^{-2\pi i x \cdot \xi} (1+|x|^2)^{-\frac{n+1}{2}} (1+|x|^2)^{\frac{n+1}{2}} \partial_{x}^{\beta}((-ix)^{\alpha}f(x)) dx
+    \end{align*}
+    Die Gleichheit bei $(*)$ kommt durch die Partielle Integration, wobei $\partial_{x}^{\beta}(e^{-2\pi i x \cdot \xi})$ integriert wird und $(-ix)^{\alpha} f(x)$ differenziert wird. Die entstehenden Randterme veschwinden, weil $f, x \mapsto e^{-2\pi i x\cdot \xi} \in \Ssp(\R^n)$.
+    
+    Setze nun $C := i^{|\beta|}(2\pi)^{|\alpha| - |\beta|} \sup\limits_{x \in \R^n} |(1+|x|)^{\frac{n+1}{2}} \partial_{x}^{\beta}((-ix)^{\alpha}f(x))|$. 
+    
+    Das Supremum existiert, da $f \in \Ssp(\R^n)$. Es gilt die Abschätzung:
+    
+    \begin{equation*}
+        |\xi^{\beta}\partial_{\xi}^{\alpha}\F f(\xi)| \leq C \int_{\R^n} (1+|x|^2)^{-\frac{n+1}{2}} dx < \infty
+    \end{equation*}
+
+    Daher folgt, dass $\forall \alpha, \beta\in \N^n: \sup\limits_{\xi \in \R^n} \left|\xi^{\beta}\partial_{\xi}^{\alpha}\F f(\xi)\right| < \infty \Rightarrow \F f \in \Ssp(\R^n)$
+
+    Sei nun $\{f_k\}_{k\in\N} \subseteq \Ssp(\R^n)$ eine Folge von Schwartz-Funktionen, die gegen einen Grenzwert $f \in \Ssp(\R^n)$ konvergiert, 
+    d.h. $\forall \alpha,\beta\in\N^n: \sup\limits_{x \in \R^n} |x^{\alpha}\partial_x^{\beta}(f_k - f)| \overset{k \to \infty}{\loongrightarrow} 0$.
+    Mit der gleichen Abschätzung nun für $f_k - f$ erhält man auch $\forall \alpha,\beta\in\N^n: \sup\limits_{x \in \R^n} |x^{\alpha}\partial_x^{\beta}(\F f_k - \F f)| \overset{k \to \infty}{\loongrightarrow} 0$.
+    Daraus folgt die Stetigkeit der Abbildung.
+\end{proof}
+
+\begin{thm}
+    Die Fouriersche Umkehrformel gilt in $\Ssp(\R^n)$, d.h.: $\forall f\in \Ssp(\R^n): (\F^{-1} \circ \F)(f) = f$.
+\end{thm}
+
+\begin{proof}\cite[S. 424, Theorem 24.1.1]{ebert2018methods}
+    Sei $g \in C^{\infty}_0(\R^n)$ und für $\varepsilon > 0$ definiere $g_{\varepsilon} := \varepsilon^{-n} g(\frac{1}{\varepsilon})$.
+
+    Dann gilt für $f \in \Ssp(\R^n), x \in \R^n$:
+    \begin{equation}\label{eq:mol}
+        \lim\limits_{\varepsilon \to 0} \lVert (g_{\varepsilon} \star f) - f\rVert_2 = 0
+    \end{equation}
+    Zusätzlich gilt $g_{\varepsilon} \star f \in C^{\infty}(\R^n)$.
+    Ein Beweis der Gleichung \ref{eq:mol} befindet sich in \cite[S. 183ff.]{walter1966analysis}.
+
+    Sei nun $f \in \Ssp(\R^n)$ und sei $\chi(x) = \begin{cases}
+        1, |x| \leq 1, \\
+        0, |x| \geq 2
+    \end{cases}$ mit $\chi \in C^{\infty}_0(\R^n)$ also mit einem glatten Übergang im Intervall $(1, 2)$.
+
+    Es folgt:
+    \begin{align*}
+        (\F^{-1} \circ \F)(f)(x) &= \int_{\R^n} \int_{\R^n} e^{-2\pi (x - y) \cdot \xi} f(y) dy d\xi \\
+        &= \lim\limits_{\varepsilon \to 0} \int_{\R^n} \int_{\R^n} e^{-2\pi (x - y) \cdot \xi} f(y) \chi(\varepsilon \xi) dy d\xi \\
+        &= \lim\limits_{\varepsilon \to 0} \int_{\R^n} \int_{\R^n} f(y) \varepsilon^{-n} e^{-2 \pi \frac{x - y}{\varepsilon} \cdot z}\chi(z) dy dz, \hspace*{20px} z = \varepsilon \xi \\
+        &\overset{*}{=} \lim\limits_{\varepsilon \to 0} \int_{\R^n} f(y) \varepsilon^{-n} \int_{\R^n} e^{-2 \pi \frac{x - y}{\varepsilon} \cdot z}\chi(z) dz dy\\
+        &= \lim\limits_{\varepsilon \to 0} (f \star g_{\varepsilon})(x) \hspace*{20px} (\star)
+    \end{align*}
+    mit $g(x) = \int_{\R^n}e^{-2\pi ix \cdot z} \chi(z) dz$. Das ist eine $C^{\infty}_0(\R^n)$ Funktion, weil $z \mapsto e^{-2\pi ix \cdot z} \chi(z) \in C^{\infty}_0(\R^n)$ 
+    ist das Integral die Regularität nicht verschlechtert und der kompakte Träger bleibt erhalten, weil $\chi(z) = 0, \forall z \in \R^n: |z| \geq 2$.
+
+    Die Intergrationsreihenfolge bei $(*)$ kann vertauscht werden durch den Satz von Fubini,
+    da $(y, z) \mapsto f(y) e^{-2 \pi \frac{x - y}{\varepsilon} \cdot z}\chi(z) \in L^1(\R^n \times \R^n)$, weil $e^{-2 \pi \frac{x - y}{\varepsilon} \cdot z} \in L^{\infty}(\R^n)$ und $\chi \in L^1(\R^n),f \in \Ssp(\R^n) \subseteq L^1(\R^n)$.
+    
+    Aus Gleichung \ref{eq:mol}, $(\star)$ und $f \star g_{\varepsilon} \in C^{\infty}(\R^n)$ folgt nun $(\F^{-1} \circ \F)(f)(x) = f(x)$.
+\end{proof}
+
+\begin{lemma}\label{lem:Ssp1}
+    Seien $f,g \in \Ssp(\R^n)$:
+    \begin{enumerate}
+        \item $\int_{\R^n}\F^{-1}f(x)\overline{g(x)}dx = \int_{\R^n}f(\xi)\overline{\F g(\xi)} d\xi \iff (\F f, g)_2 = (f, \F^{-1}g)_2$
+        \item $\int_{\R^n}\F f(x)\overline{g(x)}dx = \int_{\R^n}f(\xi)\overline{\F^{-1} g(\xi)} d\xi \iff (\F^{-1} f, g)_2 = (f, \F g)_2$
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}\cite[S. 427f.]{ebert2018methods}
+    
+    Beweis von 1.:\\
+    \begin{align*}
+        \int_{\R^n}\F^{-1}f(x)\overline{g(x)}dx &= \int_{\R^n} \left[ \int_{\R^n} f(\xi) e^{2 \pi i x \cdot \xi} d\xi \right] \overline{g(x)}dx \\
+        &= \int_{\R^n} \int_{\R^n} f(\xi) e^{2 \pi i x \cdot \xi} \overline{g(x)} d\xi dx \\
+        &= \int_{\R^n} \int_{\R^n} f(\xi) \overline{g(x) e^{-2 \pi i x \cdot \xi}} d\xi dx \\
+        &= \int_{\R^n} f(\xi) \int_{\R^n} \overline{g(x) e^{-2 \pi i x \cdot \xi}} dx d\xi = \int_{\R^n}f(\xi)\overline{\F g(\xi)} d\xi
+    \end{align*}
+
+    Das Austauschen der Integrationsreihenfolge ist wieder durch den Satz von Fubini möglich, da für $f,g \in L^1(\R^n), h: \R^n \times \R^n, (x,y) \mapsto f(x)g(y)$ gilt:
+    \begin{align*}
+        \lVert h \rVert_1 &= \int_{\R^n \times \R^n} |h(x, y)| d(x,y) \\
+        &\overset{*}{=} \int_{\R^n} \int_{\R^n} |f(x)| |g(y)| dx dy \\
+        &= \int_{\R^n} |f(x)| dx \int_{\R^n} |g(y)| dy = \lVert f \rVert_1 \lVert g \rVert_1 \leq \infty
+    \end{align*}
+    Die Gleicheit $(*)$ folgt aus dem Satz von Fubini-Tonelli.
+    
+    Somit ist $(x,y) \mapsto f(\xi) \overline{g(x) e^{-2 \pi i x \cdot \xi}} \in L^1(\R^n \times \R^n)$ und der Satz von Fubini kann angewandt werden.
+
+    Beweis von 2.:\\
+    Gleiche Umformung wie bei 1. nur das $e^{2 \pi i x \cdot \xi}$ und $e^{-2 \pi i x \cdot \xi}$ vertauscht sind.
+    
+\end{proof}
+
+\begin{thm}\label{thm:riesz} \textbf{Darstellungssatz von Riesz}
+    
+    Sei $X$ ein Hilbertraum mit Skalarprodukt $(\cdot, \cdot)_X: X \times X \to \R$, dann ist 
+    \begin{equation}
+        \varPhi: X \to X', \: x \mapsto (x, \cdot)_X
+    \end{equation}
+    ein isometrischer, konjugiert linearer Isomorphismus. $X'$ ist dabei der Dualraum von $X$, also der Raum der linearen, stetigen Funktionale auf $X$. 
+\end{thm}
+
+\begin{proof}
+    Siehe \cite[S. 171, Satz 4.1]{alt2016linear}.
+\end{proof}
+
+\begin{lemma}\label{lem:Text}
+    Sei X ein Banachraum und sei $Z \subset X$ ein dichter Unterraum und $T: Z \to \R$ ein lineares, stetiges Funktional. Dann existiert eine eindeutige Fortsetzung zu $\tilde{T}: X \to \R$ lineares, stetiges Funktional auf dem gesamten Raum.
+\end{lemma}
+
+\begin{proof}
+    % file:///home/yannik/Documents/978-3-642-22261-0.pdf, 168
+    Siehe \cite[S. 168, U 3.3]{alt2016linear}.
+\end{proof}
+
+Nun sind alle Resultate zusammengetragen, um die Fouriertransformation im $L^2$ zu definieren. Sei dazu $f \in L^2(\R^2)$.
+
+Durch Lemma \ref{lem:Ssp1} ist bekannt, dass für beliebige Funktinen $g_1, g_2 \in \Ssp(\R^n)$ gilt, dass $(\F g_1, g_2)_2 = (g_1, \F^{-1}g_2)_2$ gilt.
+Angenommen es gelte $(\F f, g) = (f, \F^{-1}g)$ wobei $g \in \Ssp(\R^n)$ liegt. Die rechte Seite dieser Gleichung ist wohldefiniert, aber die linke Seite nicht, weil noch nicht klar ist, wie $\F f$ definiert ist.
+
+Jetzt definiere $\tilde{T}: \Ssp(\R^n) \to \R, \: g \mapsto (f, \F^{-1}g)$. Diese Abbildung ist ein lineares, stetiges Funktional auf $\Ssp(\R^n)$. 
+Da der $\Ssp(\R^n)$ dicht im $L^2(\R^n)$ liegt (Lemma \ref{lem:slp} + Bemerkung \ref{bem:C0sub} + Lemma \ref{lem:C0dense}) kann Lemma \ref{lem:Text} angewandt werden.
+Durch dieses erhält man eine eindeutig bestimmte lineare Fortsetzung $T: L^2(\R^n) \to \R$ von $\tilde{T}$. 
+Der Darstellungssatz von Riesz (Satz \ref{thm:riesz}) besagt nun, dass es eine eindeutig bestimmtes Element $h \in L^2(\R^n)$ gibt, sodass für $\forall g \in L^2(\R^n)$ gilt:
+\begin{equation}
+    T(g) = (h, g)_2
+\end{equation}
+
+Diese $h \in L^2(\R^n)$ ist die Fouriertransformierte von $f$. \cite[S. 428f.]{ebert2018methods}
+
+\begin{defin}
+    Die \textbf{Fouriertransformierte} von $f \in L^2(\R^n)$ ist das eindeutig bestimmte Element $\F f \in L^2(\R^n)$, für das gilt:
+    \begin{equation}
+        \forall g \in \Ssp(\R^n): (\F f, g)_2 = (f, \F^{-1}g)_2
+    \end{equation}
+    Existenz und Eindeutigkeit folgen durch die vorangegangene Diskussion.
+    Entsprechend kann die \textbf{Inverse Transformation} definiert werden.
+\end{defin}
+
+\begin{thm}
+    Es gilt die Fouriersche Umkehrformel im $L^2(\R^n)$, d.h.: $\forall f \in L^2(\R^n): (\F^{-1} \circ \F)(f) = f$.
+\end{thm}
+
+\begin{proof}\cite[S. 428, Theorem 24.1.2]{ebert2018methods}
+    
+    Sei $f \in L^2(\R^n)$ und sei $g \in \Ssp(\R^n)$, dann gilt:
+    \begin{equation}
+        ((\F^{-1}(\F f), g)_2 = (\F f, \F g)_2 = (f, \F^{-1}(\F g))_2 = (f, g)_2
+    \end{equation}
+
+    Da $g \in \Ssp(\R^n)$ beliebig gewählt war, gilt die Beziehung für alle Funktionen aus dem $\Ssp(\R^n)$. 
+    
+    Daraus folgt, dass die linearen Funktionale $\Ssp(\R^n) \to \R^n, g \mapsto ((\F^{-1} \circ F)(f), g)$ und $\Ssp(\R^n) \to \R^n, g \mapsto (f, g)$ gleich sind.
+    Durch Satz \ref{thm:riesz} folgt $(\F^{-1} \circ \F)(f) = f$.
+\end{proof}
+
+\subsection{Umkerung der Faltung zweier Funktionen}
+
+Mit Satz \ref{thm:convinvl1} ist es nun theoretisch möglich, die Faltung von zwei Funktionen umzukehren, unter der Vorraussetzung, 
 dass eine der beiden Funktionen bekannt ist. Dafür kann man die Fouriertransformation wie folgt nutzen:
 
 Seien $w: \R \to \R$ und $f, g \in L^1(\R)$, sodass gilt: $w = f \star g$. Dabei sind $w$ und $g$ bekannt und $f$ ist die gesuchte Funktion.
@@ -111,7 +422,7 @@ man folgenden Algorithmus nutzen, um $f$ zu berechnen:
     \item Berechne $f := \mathcal{F}^{-1}\hat{f}$.
 \end{enumerate}
 
-Durch die Berechnung im 2. Schritt wird sofort deutlich, dass $\hat{g}$ keine Nullstellen besitzen darf,
+Durch die Berechnung im 2. Schritt wird sofort deutlich, dass $g \neq 0$ fast überall im Sinne des Lebesgue-Maßes sein muss,
 da ansonsten der Quotient nicht existiert. Zusätzlich muss man auch über Stetigkeitseigenschaften der Methode nachdenken,
 da Komponenten mit hohen Frequenzen von $w$ potentiell stark aufgebläht werden 
 und damit auch potentielle Messfehler verstärkt werden können.
@@ -122,19 +433,19 @@ die z.B. Messwerte darstellen können. Sei dafür $u_j = u(t_j), t_j := jh, h:= 
 
 Dann kann $u$ durch lineare B-Splines approximiert werden durch:
 \begin{equation}
-    B_2(t) := \begin{cases}
+    B_1(t) := \begin{cases}
         t + 1, &-1 \leq t \leq 0, \\
         1 - t, &0 \leq t \leq 1, \\
         0, &{\rm sonst}.
     \end{cases} \\
 \end{equation}
 \begin{equation}
-    u_N(t) := \sum\limits_{j=-N/2}^{N/2-1} u_j B_2 \left(\frac{t}{h} - j\right)
+    u_N(t) := \sum\limits_{j=-N/2}^{N/2-1} u_j B_1 \left(\frac{t}{h} - j\right)
 \end{equation}
 
 Durch Fouriertransformation erhält man:
 \begin{equation}
-    \mathcal{F}(u_N)(y) := \left(\frac{{\rm sin}(\pi h y)}{\pi h y}\right) \cdot \underbrace{\left(h \sum\limits_{j=-N/2}^{N/2-1} u_j e^{-2\pi i jhy}\right)}_{:=U(y)}
+    \mathcal{F}(u_N)(y) := \left(\frac{{\rm sin}(\pi h y)}{\pi h y}\right) \cdot \underbrace{\left(h \sum\limits_{j=-N/2}^{N/2-1} u_j e^{-2\pi i jhy}\right)}_{=U(y)}
 \end{equation}
 
 Wählt man $y := \frac{k}{2a}, \: k \in \mathbb{Z}$, dann sind die Stellen, an denen man die Funktion $u$ und die Transformierte $\mathcal{F}(u_N)$
@@ -157,7 +468,7 @@ Es handelt sich allerdings um ein schlecht gestelltes Problem und man muss Regul
 \subsection{Singulärwert-Zerlegung (SVD)}
 \textbf{Notation}:
 \begin{enumerate}
-    \item $A \in \R^{m \times n}: \: \mathcal{N}(A) := \{x \in \R^n \: | \: Ax = 0\}$ ist der \textbf{Nullraum} der Matrix $A$
+    \item $A \in \R^{m \times n}: \: \mathcal{N}(A) = \{x \in \R^n \: | \: Ax = 0\}$ ist der \textbf{Nullraum} der Matrix $A$
 \end{enumerate}
 
 Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung einer Matrix, die auch auf nicht-quadratische, singuläre Matritzen angewandt werden kann.
@@ -388,7 +699,7 @@ Das verbessert auch die numerische Stabilität von Analysealgorithmen, welche au
 
 Die obere Abbildung zeigt die Singulärwert und Fehler bei der Rang-$k$-Approximation der Hilbertmatrix $H_n = \left(\frac{1}{i+j-1}\right)_{i=1,j=1}^{n,n}$. 
 Man kann erkennen, dass die Singulärwerte sehr schnell abfallen und somit eine Approximation sehr kleinen Ranges bereits genügt, um die Matrix mit sehr kleinem Fehler darzustellen.
-Ab Rang 14 gibt es keine Verbesserung mehr in der Approximation durch Erhöhen des Rangs. \cite[]{}
+Ab Rang 14 gibt es keine Verbesserung mehr in der Approximation durch Erhöhen des Rangs.
 
 \subsection{Partial Least Squares Regression (PLSR)}
 
