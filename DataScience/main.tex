@@ -985,28 +985,53 @@ Im folgenden Abschnitt gilt: $x \in \R^n$ ist der Vektor der Messwerte eines Sig
 Als erstes führt der Algorithmus eine diskrete morphologische Öffnung mit den Messwerten $x$ durch. Dabei muss eine Fenstergröße $w$ für den Algorithmus festgelegt werden.
 In der wissenschaftlichen Arbeit wurde mit den verschiedenen Fenstergrößen ($w=11,13,15$) experiementiert, welche alle zu einem sehr ähnlichen Ergebnis führten.
 Die Öffnung bringt nun eine grobe erste Schätzung für das Hintergrundspektrum, welches entfernt werden soll.
-An die Peaks der Messung kann man jedoch erkenne, dass sich durch die Öffnung Plateaus formen, sodass das Hintergrundspektrum dort nur sehr schlecht approximiert ist.
+An den Peaks der Messung kann man jedoch erkenne, dass sich durch die Öffnung Plateaus formen, sodass das Hintergrundspektrum dort nur sehr schlecht approximiert ist.
 
-Deswegen wird nun zusätzlich eine Penalized-Least-Square-Regression mit den lokalen Minima um die Peaks durchgeführt.
-Diese Minima bestimmt man, indem man die als erstes die Start und Endpunkte dieser Plateaus bei den Peaks bestimmt.
+Um diesen Effekt zu mindern, wird nun PLSR zusätzlich angewandt.
+
+Als Regularisierungsfunktional nutzt MLPS die Rauhigkeit der Least-Squares-Lösung.
+\begin{equation}
+    R: \R^n \ni x \mapsto \sum_{i=2}^{n} (x_i - x_{i-1})^2 = \lVert Dx \rVert_2
+\end{equation}
+wobei $D \in \R^{n\times n}$ definiert ist durch $(d_{ij})_{i=1,j=1}^{n-1,n} = (\delta_{i,j-1} - \delta_{i,j})_{i=1,j=1}^{n-1,n}$ ($\delta_{i,j}$ ist das Kronecker-Delta).
+
+Ohne die morphologische Analyse wäre das PLSR-Minimierungsproblem folgendes:
+\begin{equation}\label{eq:plsreq}
+    \min\limits_{z \in \R^n} F + \lambda R = \min\limits_{z \in \R^n} \lVert x - z \rVert_2^2 + \lambda \lVert Dz \rVert_2    
+\end{equation}
+wobei $\lambda \in R_{\geq0}$ ein Hyperparameter ist, denn man wählen. Umso größer man ihn wählt, umso glatter wird die Lösung.
+$F$ ist dabei die Summe der quadratischen Abstände zwischen $x$ und $z$.
+
+Nun wird zusätzlich die Information der morphologischen Öffnung eingebracht.
+Man bestimmt die Minima zwischen den Plateaus, die durch die Öffnung der analytischen Daten entstehen. 
+Als erstes werden die Start- und Endpunkte dieser Plateaus bei den Peaks bestimmt.
 Sei $s_k \in \N$ der Index des Startpunkts und $e_k \in \N$ der Index des Endpunktes des Plateaus am $k$-ten Peaks. Das $k$-te Minimum ist nun definiert durch:
 \begin{equation}
     M_k = \arg\min \{x_j \: | \: j=e_k,\cdots s_{k+1}\}
 \end{equation}
+Sei $M := \{M_k \: | \: k \in \{0, \cdots, p\}\}$, wobei $p \in \mathbb{N}$ die Anzahl der Peaks in den Daten $x$ angibt.
 
-MLPS nutzt die Rauhigkeit der Least-Squares-Lösung als Regularisierungsfunktional.
+Nun erstellt man einen Vektor mit Gewichten $w \in \R^n$. Die $i$-te Stelle des Vektors sei $w_i$. Dann ist dieser Vektor wie folgt definiert:
 \begin{equation}
-    R: \R^n \ni x \mapsto \sum_{i=2}^{n} (x_i - x_{i-1})^2 = \lVert Dx \rVert_2
-\end{equation}
-wobei $D \in \R^{n\times n}$ definiert ist durch $(d_{ij})_{i=1,j=1}^{n-1,n} = (\delta_{i,j-1} - \delta_{i,j})_{i=1,j=1}^{n-1,n}$, wobei $\delta_{i,j}$ das Kronecker-Delta ist.
+    w_i = \begin{cases}
+        1, \: i \in M, \\
+        \varepsilon, \: i \notin M.
+    \end{cases}
+\end{equation} 
+mit $\varepsilon \in [0, 1)$ klein gewählt, z.B. $\varepsilon = 0$.
 
-Die Lösung dieses neuen Problems ist dann gegeben durch:
+Man gewichtet nun die Summe der qudratischen Differenzen mit einer Matrix $W := (\delta_{ij} w_i)_{i=1, j=1}^{m,m}$. Also ist $F$ nun:
+\begin{equation}\label{eq:Fmod}
+    F = \sum\limits_{i=1}^m (x-z)^TW(x-z)
+\end{equation}
+Diese Gewichtung bevorzugt die Stellen, an denen ein lokales Minimum vorherrscht und korregiert somit die Plateaus, die über das Spektrum hinausragen, nach unten.
+
+Wenn man nun in das Optimierungsproblem aus Gleichung \ref{eq:plsreq} die gewichtete Version von $F$ aus Gleichung \ref{eq:Fmod} einsetzt und das Problem löst, erhält man folgenden Lösungsvektor:
 \begin{equation}
-    \hat{x} = (W + \lambda D^TD)^{-1}Wb
+    z = (W + \lambda D^TD)^{-1}Wx
 \end{equation}
 
-Die Lösung $\hat{x}$ ist nun das approximierte Hintergrundspektrum.
-
+Die Lösung $z$ ist nun das ein glattes, approximierte Hintergrundspektrum der Daten in $x$.
 Man kann erkennen, dass nach der Regression die Plateaus verschwunden sind und der Hintergrund besser approximiert wird als durch die isolierte Anwendung der morphologischen Methoden. 
 
 \clearpage
