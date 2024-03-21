@@ -26,11 +26,14 @@
 \author{Yannik Höll}
 \date{\today}
 
-\newtheorem{defin}{Definition}
-\newtheorem{bem}{Bemerkung}
-\newtheorem{lemma}{Lemma}
-\newtheorem{definthm}{Definition \& Satz}
-\newtheorem{thm}{Satz}
+\theoremstyle{plain}
+\newtheorem{thm}{Satz}[section]
+
+\theoremstyle{definition}
+\newtheorem{defin}[thm]{Definition}
+\newtheorem{bem}[thm]{Bemerkung}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{definthm}[thm]{Definition \& Satz}
 
 \DeclareMathOperator{\esssup}{esssup}
 
@@ -375,7 +378,7 @@ Angenommen es gelte $(\F f, g) = (f, \F^{-1}g)$ wobei $g \in \Ssp(\R^n)$ liegt. 
 Jetzt definiere $\tilde{T}: \Ssp(\R^n) \to \R, \: g \mapsto (f, \F^{-1}g)$. Diese Abbildung ist ein lineares, stetiges Funktional auf $\Ssp(\R^n)$. 
 Da der $\Ssp(\R^n)$ dicht im $L^2(\R^n)$ liegt (Lemma \ref{lem:slp} + Bemerkung \ref{bem:C0sub} + Lemma \ref{lem:C0dense}) kann Lemma \ref{lem:Text} angewandt werden.
 Durch dieses erhält man eine eindeutig bestimmte lineare Fortsetzung $T: L^2(\R^n) \to \R$ von $\tilde{T}$. 
-Der Darstellungssatz von Riesz (Satz \ref{thm:riesz}) besagt nun, dass es eine eindeutig bestimmtes Element $h \in L^2(\R^n)$ gibt, sodass für $\forall g \in L^2(\R^n)$ gilt:
+Der Darstellungssatz von Riesz (Satz \ref{thm:riesz}) besagt nun, dass es ein eindeutig bestimmtes Element $h \in L^2(\R^n)$ gibt, sodass für $\forall g \in L^2(\R^n)$ gilt:
 \begin{equation}
     T(g) = (h, g)_2
 \end{equation}
@@ -388,7 +391,7 @@ Diese $h \in L^2(\R^n)$ ist die Fouriertransformierte von $f$. \cite[S. 428f.]{e
         \forall g \in \Ssp(\R^n): (\F f, g)_2 = (f, \F^{-1}g)_2
     \end{equation}
     Existenz und Eindeutigkeit folgen durch die vorangegangene Diskussion.
-    Entsprechend kann die \textbf{Inverse Transformation} definiert werden.
+    Entsprechend kann die \textbf{Inverse Transformierte} definiert werden.
 \end{defin}
 
 \begin{thm}
@@ -396,7 +399,7 @@ Diese $h \in L^2(\R^n)$ ist die Fouriertransformierte von $f$. \cite[S. 428f.]{e
 \end{thm}
 
 \begin{proof}\cite[S. 428, Theorem 24.1.2]{ebert2018methods}
-    
+
     Sei $f \in L^2(\R^n)$ und sei $g \in \Ssp(\R^n)$, dann gilt:
     \begin{equation}
         ((\F^{-1}(\F f), g)_2 = (\F f, \F g)_2 = (f, \F^{-1}(\F g))_2 = (f, g)_2
@@ -467,8 +470,11 @@ Es handelt sich allerdings um ein schlecht gestelltes Problem und man muss Regul
 
 \subsection{Singulärwert-Zerlegung (SVD)}
 \textbf{Notation}:
+Sei $A \in \R^{m \times n}$:
 \begin{enumerate}
-    \item $A \in \R^{m \times n}: \: \mathcal{N}(A) = \{x \in \R^n \: | \: Ax = 0\}$ ist der \textbf{Nullraum} der Matrix $A$
+    \item $\mathcal{N}(A) = \{x \in \R^n \: | \: Ax = 0\}$ ist der \textbf{Nullraum} der Matrix $A$
+    \item $R(A) = \{y \in \R^m \: | \: \exists x \in \R^n: Ax = y\}$ ist das \textbf{Bild} (engl. \textit{range}) der Matrix $A$
+    \item Für $X \subseteq \R^n$ ist $X^{\bot} = \{y \in \R^m \: | \: \forall x \in X: y^Tx = 0\}$ ist das \textbf{orthogonale Komplement} der Teilmenge $X$
 \end{enumerate}
 
 Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung einer Matrix, die auch auf nicht-quadratische, singuläre Matritzen angewandt werden kann.
@@ -481,20 +487,20 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
         A = U \Sigma V^T
     \end{equation}
     wobei $U \in \R^{m \times m}, \; \Sigma \in \R^{m \times n}, \; V \in \R^{n \times n}$.
-    Die Spalten von $U$ nennt man die \textbf{Links-Singulärvektoren} und die von $V$ die \textbf{Rechts-Singulärvektoren} von $A$. $U, V$ sind orthogonale Matritzen.
+    Die Spalten von $U$ nennt man \textbf{Links-Singulärvektoren} und die von $V$ \textbf{Rechts-Singulärvektoren} von $A$. $U, V$ sind orthogonale Matritzen.
     $\Sigma$ ist eine Diagonalmatrix deren Einträge $\sigma_i$ $(i \in \{1, \cdots, r\})$ die \textbf{Singulärwerte} von $A$ genannt werden.
     
     Die Matritzen erfüllen folgendes Gleichungssystem:
     \begin{align}
-        &Mv_i = \sigma_i u_i, \:&&\forall i \in \{1, \cdots, r\} \\
-        &Mv_i = 0, \: &&\forall i \in \{r + 1, \cdots, n\}
+        &Mv_i = \sigma_i u_i, \: &&M^Tu_i = \sigma_iv_i \hspace*{52px} \forall i \in \{1, \cdots, r\} \\
+        &Mv_i = 0, \: &&M^Tu_i = 0, \hspace*{60px} \forall i \in \{r + 1, \cdots, n\}
     \end{align}
 
-    Diese Zerlegung existiert für jede beliebige Matrix $A \in \R^{m \times n}$.
+    Diese Zerlegung existiert für jede beliebige Matrix $A \in \R^{m \times n}$ und die Singulärwerte sind eindeutig bis auf die Reihenfolge bestimmt.
 \end{definthm}
 
 \begin{proof} \cite[S. 56f., 58f.]{strang2019linear}
-    Betrachte
+    Betrachte die Matritzen $A^TA$ und $AA^T$. Angenommen, die SVD existiert für die Matrix $A$, d.h. $A = U \Sigma V^T$ wie oben, dann gilt:
     \begin{align}
         A^TA = (V \Sigma^T U^T) (U \Sigma V^T) &= V \Sigma^T \Sigma V^T \\
         AA^T = (U \Sigma V^T) (V \Sigma^T U^T) &= U \Sigma \Sigma^T U^T
@@ -532,20 +538,21 @@ Die Singulärwertzerlegung ist eine Verallgemeinerung der Eigenwertzerlegung ein
     Man wählt eine Orthonormalbasis für den Nullraum von $A$ und diese bilden dann die fehlenden Vektoren für $V$ 
     und weiterhin wählt man eine Orthonormalbasis für den Nullraum von $A^T$ und diese bilden die fehlenden Vektoren für $U$.
     Die so gewählten Vektoren $v_i$ sind automatisch orthogonal zu den bereits gewählten $v_1, \cdots, v_r$ 
-    und dasselbe gilt für die so gewählten $u_i$. 
+    und dasselbe gilt für die so gewählten $u_i$.
+
+    Die Eindeutigkeit der Singulärwerte folgt direkt aus der Eindeutigkeit der Eigenwerte von $A^TA$.
 \end{proof}
 
 \begin{thm} \textbf{Satz von Eckart-Young} \cite[S. 58f.]{strang2019linear}
-    
     Sei $A \in \R^{m\times n}$ eine Rang $r$ Matrix. Weiterhin sei $A_k = \sum\limits_{i=1}^k u_i\sigma_iv_i^T$. 
-    Wobei $\sigma_i$ die ersten $k$ Singulärwerte von A sind, wobei gilt $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r \geq 0$. Die $u_i, v_i$ sind die dazugehörigen Singulärvektoren. 
-    Dann gilt für $\forall B \in \R^{m \times n}$ mit Rang $k$:
+    Wobei $\sigma_i$ die ersten $k$ Singulärwerte von A sind, wobei gilt $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_r \geq 0$. Die $u_i, v_i$ sind dazugehörige Singulärvektoren. 
+    Dann gilt für $\forall B \in \R^{m \times n}$ mit Rang $k \leq r$:
     \begin{equation}
         \lVert A - B \rVert \geq \lVert A - A_k \rVert
     \end{equation}
 \end{thm}
 
-Diese Formulierung gilt für eine ganze Reihe von verschiedenen Operatornormen.
+Diese Formulierung gilt im Allgemeinen für unitär invariante Normen, siehe \cite[S. 53, Kapitel 3]{mirsky1960symmetric}.
 Nachfolgend ist exemplarisch der Beweis des Satzes von Eckart-Young für die Spektralnorm.
 Dieser illustriert auf natürliche Weise die Aussage das Satzes.
 
@@ -581,7 +588,7 @@ Dieser illustriert auf natürliche Weise die Aussage das Satzes.
 
 \begin{thm} \textbf{Satz von Eckart-Young für die Spektralnorm}
 
-    Seien $A, B \in \R^{m \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$. Dann gilt:
+    Seien $A, B \in \R^{m \times n}$ mit ${\rm Rang}(A) = r$ und ${\rm Rang}(B) \leq k \leq r$ und seien $\sigma_1, \cdots, \sigma_r \geq 0$ die Singulärwerte der Matrix $B$. Dann gilt:
     \begin{equation}
         \lVert A - B \rVert_2 \geq \sigma_{k+1}
     \end{equation}
@@ -711,6 +718,7 @@ zwischen $X$ und $Y$ modelliert, in dem man die Kovarianzmatrix $X^TY$ zerlegt.
 Nun wird zur Vereinfachung angenommen, dass nur eine Größe vorhergesagt werden soll.
 D.h. $Y$ ist keine Matrix sondern nur ein Vektor ist $y \in \R^m$. Das Argument kann einfach auf eine Matrix erweitert werden.
 Das Ziel ist eine Zerlegung von $X_k = ZV^T$, welche die beste Rang $k$-Approximation von $X$ ist, die die Kovarianz zwischen $X$ und $y$ maximiert.
+Diese ist ein Vektor $\tilde{w} = ({\rm cov}(x_1,y), \cdots, {\rm cov}(x_m,y)) = (x_1^Ty, \cdots, x_m^Ty)$ mit $x_i$ sind die Zeilen von $X_k$. Es wird also die euklidische Norm dieses Vektors maximiert.
 Dabei heißen die Vektoren in $Z$ PLSR-Scores und die in $V^T$ PLSR-Loadings. Und $y$ wird zerlegt in $y_k = Zb$. 
 Die Approximationen von $X$ und $y$ teilen sich die Scores-Matrix. Das kann man so interpretieren, dass diese die gemeinsame Struktur der Daten modelliert.
 
@@ -837,6 +845,8 @@ Dabei ist $w \in \mathbb{N}$ nun eine diskrete Fenstergröße.
 \subsection{Penalized Least Squares}
 Penalized Least Square ist eine Variante der Least Squares Optimierung.
 
+\subsubsection{Least Squares}
+Seien folgende Gleichungen gegeben:
 \begin{align}
     Ax = b \label{eq:ls} \\ 
     \min\limits_{x \in \R^n} \lVert b - Ax \rVert \label{eq:minls}
@@ -846,11 +856,114 @@ $x \in \R^n, b \in \R^m, A \in \R^{m\times n}$.
 Das gewöhnliche Least-Squares-Verfahren wird verwendet, um ein lineares Gleichugssystem zu lösen. 
 Dieses kann als Matrix-Vektor-Produkt dargestellt werden wie in Gleichung \ref{eq:ls}. 
 Aus dieser kann man das Minimierungsproblem herleiten wie in Gleichung \ref{eq:minls}.
-Dabei sei erwähnt, dass die Matrix $A$ nicht invertierbar sein muss und sich $b$ auch nicht im Spaltenraum von $A$ befinden muss.
-Das führt dazu, dass es keine eindeutige beste Approximation einer Lösung geben muss.
-Least Squares liefert jedoch immer eine eindeutige Lösung der Form $\hat{x} = A^{\dagger} b$, wobei $A^{\dagger}$ die Moore-Pensrose-Pseudoinverse ist.
+
+Wenn $A$ nicht invertierbar ist und $b$ nicht im Spaltenraum von $A$ liegt, dann existiert keine Lösung für Gleichung \ref{eq:ls}.
+Das Minimierungsproblem \ref{eq:minls} liefert dann eine beste Approximation der Lösung der Gleichung. 
+Diese Approximation muss aber nicht notwendig eindeutig bestimmt sein. 
+Denn angenommen $\hat{x}$ löst das Minimierungsproblem \ref{eq:minls}, dann gilt für $\forall y \in \mathcal{N}(A)$:
+\begin{equation}
+    \min\limits_{x \in \R^n} \lVert b - A(\hat{x} + y) \rVert = \min\limits_{x \in \R^n} \lVert b - A\hat{x} - Ay \rVert = \min\limits_{x \in \R^n} \lVert b - A\hat{x} \rVert
+\end{equation}
+
+Um dieses Problem zu vermeiden, wird der Nullraum von $A$ verworfen. 
+Man erhält eine Abbildung $f: \mathcal{N}(A)^{\bot} \to R(A)$.
+
+\begin{lemma}\label{lem:fbij}
+    Die Abbildung $f: \mathcal{N}(A)^{\bot} \to R(A),\: x \mapsto Ax$ ist bijektiv und linear.
+\end{lemma}
+
+\begin{proof}
+    Die Linearität von $f$ folgt direkt aus der Definition von $f$.
+
+    \textit{Surjektivität}: Sei $y \in R(A)$. Das heißt es existiert ein Element $x \in \R^n$, sodass $Ax = y$. 
+    
+    Aus $\R^n = \mathcal{N}(A) \oplus \mathcal{N}(A)^{\bot}$ folgt, dass es $x_1 \in \mathcal{N}(A), x_2 = \mathcal{N}(A)^{\bot}$ mit $x = x_1 + x_2$.
+
+    \begin{equation}
+        y = Ax = A(x_1 + x_2) = Ax_1 + Ax_2 = Ax_2
+    \end{equation}
+    Also $Ax_2 = f(x_2) = y$ mit $x_2 \in \mathcal{N}(A)^{\bot}$.
+
+    \textit{Injektivität}: Seien $x_1, x_2 \in \mathcal{N}(A)^{\bot}$ mit $f(x_1) = f(x_2) = y \in R(A)$. Daraus folgt, dass $Ax_1 - Ax_2 = A(x_1 - x_2) = 0$ und somit $x_1 - x_2 \in \mathcal{N}(A)$.
+    
+    Nach Wahl von $x_1$ und $x_2$ folgt: $x_1 - x_2 \in \mathcal{N}(A)^{\bot} \cap \mathcal{N}(A) = \{0\} \Rightarrow x_1 = x_2$.
+
+\end{proof}
+
+Nach Lemma \ref{lem:fbij} existiert eine eindeutig bestimmte Inverse $f^{-1}: R(A) \to \mathcal{N}(A)^{\bot}$. Das rechtfertigt nun folgende Definition:
+\begin{defin}\label{defin:pinv}
+    Sei $A \in \R^{m \times n}$. Die \textbf{Moore-Penrose-Pseudoinverse} $A^{\dagger}$ (aufgefasst als Abbildung $x \mapsto A^{\dagger}x$) der Matrix $A$ 
+    ist definiert als die eindeutig bestimmte lineare Fortsetzung von $f^{-1}: R(A) \to \mathcal{N}(A)^{\bot}$ mit ${\rm Ker}A^{\dagger} = R(A)^{\bot}$.
+    Dabei ist $f$ wie oben definiert also $f: \mathcal{N}(A)^{\bot} \to R(A),\: x \mapsto Ax$.
+\end{defin}
+
+\begin{lemma}\label{lem:pinvp}
+    Für $A \in \R^{m \times n}$ gilt: $A^{\dagger}A = P_{\mathcal{N}(A)^{\bot}}, \: AA^{\dagger} = P_{R(A)}$, wobei $P_X$ der orthogonale Projektor auf den Unterraum $X$ ist.
+\end{lemma}
+
+\begin{proof}\cite[S. 255, Satz 4.8.5.1]{stoer2005numerisch}
+    Sei $f^{-1}: R(A) \to \mathcal{N}(A)^{\bot}$ die Abbildung aus Definition \ref{defin:pinv}. Sei $x \in R^{m} = R(A) \oplus R(A)^{\bot}$, 
+    also existieren $x_1 \in R(A), x_2 \in R(A)^{\bot}$ mit $x = x_1 + x_2$. Nach Definition von $A^{\dagger}$ folgt:
+    \begin{equation}
+        A^{\dagger}x = A^{\dagger}(x_1 + x_2) = A^{\dagger}x_1 + A^{\dagger}x_2 = A^{\dagger}x_1 = f^{-1}(x_1)
+    \end{equation}
+    
+    Somit gilt die Gleichung für $\forall x \in \R^n$:
+    \begin{equation}
+        A^{\dagger}x = (f^{-1} \circ P_{R(A)})(x)
+    \end{equation}
+    und damit folgt:
+    \begin{equation}
+        A^{\dagger}Ax = f^{-1}(P_{R(A)}(Ax)) = f^{-1}(Ax) = P_{\mathcal{N}(A)^{\bot}}x
+    \end{equation}
+
+    Nun sei $y \in \R^m$:
+    \begin{equation}
+        AA^{\dagger}y = A(f^{-1}(P_{R(A)}x)) = P_{R(A)}y
+    \end{equation}
+\end{proof}
+
+\begin{thm}\label{thm:pinvu}
+    Sei $A \in \R^{m \times n}$ und $y \in \R^m$. Dann gilt für $\hat{x} = A^{\dagger}y$:
+    \begin{enumerate}
+        \item $\lVert Ax - y \rVert_2 \geq \lVert A\hat{x} - y \rVert_2$ für $\forall x \in \R^m$,
+        \item Sei $x \in \R^n$: $\lVert Ax - y \rVert_2 = \lVert A\hat{x} - y \rVert_2 \Rightarrow \lVert x \rVert_2 > \lVert \hat{x} \rVert_2$
+    \end{enumerate}
+\end{thm}
+
+\begin{proof}\cite[S. 256, Satz 4.8.5.4]{stoer2005numerisch}
+    
+    Beweis von 1.:
+    
+    Sei $y \in R^m$ und $\hat{x} = A^{\dagger}y$. Nach Lemma \ref{lem:pinvp} gilt $AA^{\dagger} = P_{R(A)}$. Somit gilt für $\forall x \in \R^n$:
+    \begin{align}
+        &Ax - y = u - v \\
+        &u := A(x - A^{\dagger}y) \in R(A), \: v:=(I-AA^{\dagger}) = y - A\hat{x} \in R(A)^{\bot}
+    \end{align}
+    Es folgt:
+    \begin{equation}
+        \lVert Ax - y \rVert^2_2 = \lVert u \rVert^2_2 + \lVert v \rVert^2_2 \geq \lVert v \rVert^2_2 = \lVert A\hat{x} - y\rVert^2_2
+    \end{equation}
+    Gleichheit gilt, genau dann wenn $u = 0$, also $Ax = AA^{\dagger}y$.
+
+    Beweis von 2.:
+
+    Nach Lemma \ref{lem:pinvp} gilt auch noch, dass $A^{\dagger}A = P_{\mathcal{N}(A)^{\bot}}$. Es gilt für alle $\forall x \in \R^n$ 
+    mit $Ax = AA^{\dagger}y$:
+    \begin{align}
+        &x = u_1 + v_1 \\
+        &u_1 := A^{\dagger}A x = A^{\dagger}AA^{\dagger}y = A^{\dagger}y = \hat{x} \in \mathcal{N}(A)^{\bot} \\
+        &v_1 := x - u_1 = x - \hat{x} \in \mathcal{N}(A)
+    \end{align}
+    und damit $\lVert x \rVert^2_2 > \lVert \hat{x} \rVert^2_2$ für $\forall x \in \R^n: x \neq \hat{x}$ mit $\lVert Ax - y \rVert_2 = \lVert A\hat{x} - y\rVert_2$.
+
+
+\end{proof}
+
+Durch Satz \ref{thm:pinvu} kann man nun die Lösung des Least Squares Optimierungsproblems darstellen mithilfe der Pseudoinversen, also $\hat{x} = A^{\dagger} b$.
 Diese ist die eindeutig bestimmte Lösung, die \ref{eq:minls} erfüllt und von allen Lösungen, die ebenfalls \ref{eq:minls} erfüllen, besitzt $\hat{x}$ die kleinste Norm.
 
+\subsubsection{Penalized Least Squares als Erweiterung von Least Squares}
 Penalized-Least-Squares erweitert das Optimierungsproblem aus \ref{eq:minls} nun um ein Regularisierungsfunktional der Form $R: \R^n \to \R$.
 Die neue Optimierungsproblem hat dann die Form:
 
