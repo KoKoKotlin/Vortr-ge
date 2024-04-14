@@ -4,6 +4,8 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{hyperref}
+\usepackage{colonequals}
+\usepackage{xfrac}
 
 \usepackage{graphicx}
 \usepackage{subfig}
@@ -12,10 +14,11 @@
 
 \newcommand{\R}[0]{\mathbb{R}}
 \newcommand{\N}[0]{\mathbb{N}}
-\newcommand{\F}[0]{\mathcal{F}}
-\newcommand{\E}[0]{\mathbb{E}}
-\newcommand{\Ssp}[0]{\mathcal{S}}
-\newcommand{\C}[0]{C^{\infty}_0}
+\newcommand{\T}[0]{\mathcal{T}}
+\newcommand{\NB}[0]{\mathcal{N}}
+\newcommand*{\logeq}{\ratio\Leftrightarrow}
+\newcommand*{\longeq}{\ratio\Longleftrightarrow}
+\newcommand*{\bigdot}{\mathpalette\bigcdot@{.5}}
 
 \DeclareRobustCommand{\loongrightarrow}{%
   \DOTSB\relbar\joinrel\relbar\joinrel\rightarrow
@@ -25,10 +28,16 @@
 \author{Yannik Höll}
 \date{\today}
 
-\theoremstyle{plain}
+\newtheoremstyle{break}%
+{7pt}{7pt}%
+{}{}%
+{\bfseries}{:}% % Note that final punctuation is omitted.
+{\newline}{}
+
+\theoremstyle{break}
 \newtheorem{thm}{Theorem}[section]
 
-\theoremstyle{definition}
+\theoremstyle{break}
 \newtheorem{defin}[thm]{Definition}
 \newtheorem{rem}[thm]{Remark}
 \newtheorem{lemma}[thm]{Lemma}
@@ -42,9 +51,96 @@
 % TODO: add introduction with a summary of the main questions of the paper 
 % i.e. can the fundamental group be recovered as a limit of discrete fundametal groups 
 
-\section{Basic topological definitions}
+\section{Basic topological definitions} \label{section-basic-defs}
 
 % TODO: only some defins, ref to def of topology, topological space, etc. 
+
+\textbf{Notation:}
+\begin{enumerate}
+  \item Let $Y$ be a topological space with the topology $\T_Y$,
+  \item Let $X$ be a metric space with the metric $d_X$ which is also a topological space with the topology induced by its metric,
+  \item If $Z_1, Z_2$ are topological spaces then $C(Z_1, Z_2)$ is the set of all continous maps from $Z_1$ to $Z_2$,
+  \item Let $y \in Y$ then $\NB_y$ is the set of all neighbourhoods of the element $y$.
+  \item Let $\varepsilon \in \R_{>0}$ and let $x \in X$: $B_{\varepsilon}(x) := \{ y\in X \: | \: d_X(x, y) < \varepsilon\}$
+\end{enumerate}
+
+\begin{defin}
+  A \textbf{path} $\gamma$ in $X$ is a continuous map $\R \supseteq [0,1] \to Y$.
+\end{defin}
+
+\begin{defin}
+  Let $\gamma_1, \gamma_2 \in C([0, 1], Y)$. A \textbf{free homotopy} $H: [0,1]^2 \to Y$ between $\gamma_1$ and $\gamma_2$ is a continuous map such that:
+  \begin{equation*}
+    \forall s \in [0,1]: H(s, 0) = \gamma_1(s) \: \land \: H(s, 1) = \gamma_2(s)
+  \end{equation*}
+
+  Now let $\gamma_1, \gamma_2 \in C([0, 1], Y)$ such that $\gamma_1(0) = \gamma_2(0) \: \land \: \gamma_1(1) = \gamma_2(1)$ i.e. that paths start and end at the same point.
+  The homotopy $H \in C([0,1]^2, Y)$ is called \textbf{endpoint preserving} if it is a free homotopy between $\gamma_1$ and $\gamma_2$ and additionally it should have the following property: 
+  \begin{equation*}
+    \forall t\in[0,1]\forall i\in \{1,2\}: H(0, t) = \gamma_i(0) \: \land \: H(1, t) = \gamma_i(1)
+  \end{equation*}
+
+  If a free homotopy $H$ between the two paths $\gamma_1$ and $\gamma_2$ exists they are called \textbf{freely homotopic} $\gamma_1 \overset{\cdot}{\sim}_H \gamma_2$.
+  If the two paths $\gamma_1$ and $\gamma_2$ have the same start and end point and there exists a endpoint preserving homotopy $H$ between them then they are called 
+  \textbf{homotopic} $\gamma_1 \sim_H \gamma_2$. If a path is (freely) homotopic to a constant path ($[0,1] \to Y, t \mapsto y \in Y$) then it is called \textbf{null-homotopic}.
+\end{defin}
+
+In this thesis all homotopies are endpoint preserving if it is not explicitly stated that they should be free homotopies.
+
+\begin{defin} \label{def:connectedness}
+  \begin{itemize}
+    \item[] % this has to be here because of the newline after the defition label
+    \item $Y$ \textbf{connected} $\;\longeq\; \exists A,B \in \T_Y\setminus \{\emptyset\}: A \cap B = \emptyset \: \land \: Y = A \cup B \Rightarrow A = \emptyset \: \lor \: B = \emptyset$
+    \item $Y$ \textbf{path-connected} $\;\longeq\; \forall x,y \in Y \exists\gamma \in C([0,1], Y): \gamma(0) = x \: \land \: \gamma(1) = y$
+    \item $Y$ \textbf{locally (path-)connected} $\;\longeq\; \forall y \in Y\forall U \in \NB_y\exists V\in \NB_y: V \subseteq U \: \land \: V$ (path-)connected
+  \end{itemize}
+\end{defin}
+
+The following definitions only work in metric spaces:
+
+\begin{defin}
+  \begin{itemize}
+    \item[] % this has to be here because of the newline after the defition label
+    \item $X$ \textbf{uniformly locally path-connected} (u.l.p.c.) $\: \longeq \\ \forall \varepsilon \in \R_{>0} \exists \delta \in \R_{>0}\forall x \in X: \forall x_1, x_2 \in B_{\delta}(x)\exists \gamma \in C([0,1], B_{\varepsilon}(x)): \gamma(0) = x_1 \: \land \: \gamma(1) = x_2$
+    \item $X$ \textbf{semi-locally simply connected} (s.l.s.c) $\: \longeq \\ \forall x\in X\exists \varepsilon \in \R_{>0}$: Every loop in $B_{\varepsilon}(x)$ is null-homotopic in $X$
+    \item $X$ \textbf{uniformly semi-locally simply connected} (u.s.l.s.c) $\: \longeq \\ \exists \varepsilon \in \R_{>0}\forall x\in X$: Every loop in $B_{\varepsilon}(x)$ is null-homotopic in $X$
+  \end{itemize}
+  \vspace*{10pt}
+  For clarification, the difference between semi-locally simply connectedness and uniformly semi-locally simply connected is 
+  that in the first case $\varepsilon$ is choosen dependend on $x$ and in the latter case it is chosen independently for all $x$.
+\end{defin}
+
+\begin{lemma} \label{lem:homotopy-equivalence}
+  The homotopy relation $\sim$ of paths is an equivalence relation on the set $C([0,1],Y)$.
+\end{lemma}
+
+\begin{proof}
+  
+\end{proof}
+
+\begin{defin}
+  Let $y_0 \in Y$. The \textbf{fundamental group} of the topological space $Y$ with basepoint $y_0$ is defined as follows:
+  \begin{equation*}
+    \pi_1(Y, y_0) := (\{\gamma \in C([0,1],Y) \: | \: \gamma(0) = \gamma(1) = y_0\}/_{\sim}, \: *)
+  \end{equation*}
+  where 
+  \begin{equation*} 
+    *: C([0,1], Y) \times C([0,1], Y) \to C([0,1], Y), (\gamma_1, \gamma_2) \mapsto \begin{cases}
+    \gamma_1(2t),   &t \in [0, {1 \over 2}], \\
+    \gamma_2(2t-1), &t \in [{1 \over 2}, 1],
+  \end{cases}
+\end{equation*}
+is the concatenation of paths. The case $t = {1\over2}$ is included in both cases because the operation is only defined for pahts $\gamma_1, \gamma_2$ if $\gamma_1(1) = \gamma_2(0)$. 
+In the case of the fundamental group this is fullfilled for every path because all paths are loops that start and end at the same basepoint. 
+\end{defin}
+
+\begin{thm}
+  Let $y_0 \in Y$. The fundamental group $\pi_1(Y, y_0)$ is a well-defined group. 
+\end{thm}
+
+\begin{proof}
+  
+\end{proof}
 
 \section{Discretization of the fundamental group}
 
