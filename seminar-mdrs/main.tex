@@ -65,7 +65,7 @@
 \end{enumerate}
 
 \begin{defin}
-  A \textbf{path} $\gamma$ in $X$ is a continuous map $\R \supseteq [0,1] \to Y$.
+  A \textbf{path} $\gamma$ in $Y$ is a continuous map $\R \supseteq [0,1] \to Y$.
 \end{defin}
 
 \begin{defin}
@@ -83,6 +83,11 @@
   If a free homotopy $H$ between the two paths $\gamma_1$ and $\gamma_2$ exists they are called \textbf{freely homotopic} $\gamma_1 \overset{\cdot}{\sim}_H \gamma_2$.
   If the two paths $\gamma_1$ and $\gamma_2$ have the same start and end point and there exists a endpoint preserving homotopy $H$ between them then they are called 
   \textbf{homotopic} $\gamma_1 \sim_H \gamma_2$. If a path is (freely) homotopic to a constant path ($[0,1] \to Y, t \mapsto y \in Y$) then it is called \textbf{null-homotopic}.
+
+  Lastly define the homotpy relation $\sim$ on $C([0,1], Y)$ where 
+  \begin{equation*}
+    \gamma_1, \gamma_2 \in C([0,1], Y): \gamma_1 \sim \gamma_2 \iff \exists H \text{ homotopy between } \gamma_1 \text{ and } \gamma_2.
+  \end{equation*}
 \end{defin}
 
 In this thesis all homotopies are endpoint preserving if it is not explicitly stated that they should be free homotopies.
@@ -115,7 +120,41 @@ The following definitions only work in metric spaces:
 \end{lemma}
 
 \begin{proof}
+  Let $\gamma_1, \gamma_2, \gamma_3 \in C([0,1],Y)$ with $\gamma_1(0) = \gamma_2(0) = \gamma_3(0)$ and $\gamma_1(1) = \gamma_2(1) = \gamma_3(1)$.
   
+  \textit{Reflexivity:}
+  Consinder the homotopy $H: [0,1]^2 \to Y, \: (s, t) \mapsto \gamma_1(s)$. 
+  
+  It holds that $\forall s\in [0,1]: H(s, 0) = \gamma_1(s),\: H(s, 1) = \gamma_1(s)$. And thus $\gamma_1 \sim_H \gamma_1 \Rightarrow \gamma_1 \sim \gamma_1$.
+
+  \textit{Symmetry:} 
+  Assume that $\gamma_1 \sim \gamma_2$. This means there exists a homotopy $H$ such that $\gamma_1 \sim_H \gamma_2$. 
+  Now define the homotopy $F: [0,1]^2 \to Y, \: (s, t) \mapsto H(s, 1-t)$. 
+  
+  From this definition it follows that $\forall s \in [0,1]:$
+  \begin{align*}
+    F(s, 0) &= H(s, 1 - 0) = \gamma_2(s) \\
+    F(s, 1) &= H(s, 1 - 1) = \gamma_1(s)
+  \end{align*}
+  and hence $\gamma_2 \sim_F \gamma_1 \Rightarrow \gamma_2 \sim \gamma_1$.
+
+  \textit{Transitivity:}
+  Assume that $\gamma_1 \sim \gamma_2$ and $\gamma_2 \sim \gamma_3$. Let $H$ be a homotopy between $\gamma_1$ and $\gamma_2$ and let $F$ be a homotopy between $\gamma_2$ and $\gamma_3$. 
+  Define the homotopy
+  \begin{equation*} 
+    G: [0,1]^2 \to Y, \: (s,t) \mapsto \begin{cases}
+      H(s, 2t), &t \in [0, {1 \over 2}], \\
+      F(s, 2t - 1), &t \in [{1 \over 2}, 1].
+    \end{cases}
+  \end{equation*}
+
+  Then the following equations hold:
+  \begin{align*}
+    G(s,0) &= H(s,0) = \gamma_1(s), \\
+    G\left(s,{1 \over 2}\right) &= H(s, 1) = \gamma_2(s) = F(s, 0), \\
+    G(s, 1) &= F(s, 1) = \gamma_3(s).
+  \end{align*}
+  and thus $\gamma_1 \sim_G \gamma_3 \Rightarrow \gamma_1 \sim \gamma_3$.
 \end{proof}
 
 \begin{defin}
@@ -131,7 +170,7 @@ The following definitions only work in metric spaces:
   \end{cases}
 \end{equation*}
 is the concatenation of paths. The case $t = {1\over2}$ is included in both cases because the operation is only defined for pahts $\gamma_1, \gamma_2$ if $\gamma_1(1) = \gamma_2(0)$. 
-In the case of the fundamental group this is fullfilled for every path because all paths are loops that start and end at the same basepoint. 
+In the case of the fundamental group this is fulfilled for every path because all paths are loops that start and end at the same basepoint. 
 \end{defin}
 
 \begin{thm}
@@ -139,7 +178,8 @@ In the case of the fundamental group this is fullfilled for every path because a
 \end{thm}
 
 \begin{proof}
-  
+  By lemma \ref{lem:homotopy-equivalence} $\sim$ is a well-defined equivalence relation and thus the quotient in the definition is well-defined and the set of loops based at $y_0$ is decomposed into equivalence classes.
+  Thus it remains to be shown that the set of equivalence classes of loops up to homotopy together with the concatenation operation $*$ fulfills the group axioms.
 \end{proof}
 
 \section{Discretization of the fundamental group}
