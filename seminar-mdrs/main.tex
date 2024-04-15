@@ -157,6 +157,23 @@ The following definitions only work in metric spaces:
   and thus $\gamma_1 \sim_G \gamma_3 \Rightarrow \gamma_1 \sim \gamma_3$.
 \end{proof}
 
+\begin{rem} \label{rem:reparam}
+  Let $\alpha: [0,1] \to [0,1]$ be a continuous map with $\alpha(0) = 0, \alpha(1) = 1$ and let $\gamma \in C([0,1], Y)$. Then it follows that $\gamma \sim \gamma \circ \alpha$.
+\end{rem}
+
+\begin{proof}
+  Let $F: [0,1]^2 \to Y, (s, t) \mapsto \gamma((1 - t)s + t\alpha(s))$.
+
+  At first fix $s \in [0,1]$ then $s, \alpha(s) \in [0,1]$ and $(1 - t)s + t\alpha(s)$ is a convex combination of the two points. 
+  $[0,1]$ is a convex set and thus $\forall t\in[0,1]: (1 - t)s + t\alpha(s) \in [0,1]$. Because of the continuity of the operations $+$ and $\cdot$ in $[0,1]$ 
+  and the continuity of $\alpha$ the map $F$ is continuous and the following hold:
+  \begin{align*}
+    F(s, 0) &= \gamma(s), \\
+    F(s, 1) &= \gamma(\alpha(s)),
+  \end{align*}
+  and thus $F$ is a homotopy between $\gamma \sim \gamma \circ \alpha$.
+\end{proof}
+
 \begin{defin}
   Let $y_0 \in Y$. The \textbf{fundamental group} of the topological space $Y$ with basepoint $y_0$ is defined as follows:
   \begin{equation*}
@@ -164,22 +181,87 @@ The following definitions only work in metric spaces:
   \end{equation*}
   where 
   \begin{equation*} 
-    *: C([0,1], Y) \times C([0,1], Y) \to C([0,1], Y), (\gamma_1, \gamma_2) \mapsto \begin{cases}
+    *: C([0,1], Y) \times C([0,1], Y) \to C([0,1], Y), (\gamma_1, \gamma_2) \mapsto \left(t \mapsto \begin{cases}
     \gamma_1(2t),   &t \in [0, {1 \over 2}], \\
     \gamma_2(2t-1), &t \in [{1 \over 2}, 1],
-  \end{cases}
+  \end{cases}\right)
 \end{equation*}
 is the concatenation of paths. The case $t = {1\over2}$ is included in both cases because the operation is only defined for pahts $\gamma_1, \gamma_2$ if $\gamma_1(1) = \gamma_2(0)$. 
-In the case of the fundamental group this is fulfilled for every path because all paths are loops that start and end at the same basepoint. 
+In the case of the fundamental group this is fulfilled for every path because all paths are loops that start and end at the same basepoint.
+
+The operation $*: \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is defined as follows:
+\begin{equation*}
+  ([\gamma_1]_{\sim}, [\gamma_2]_{\sim}) \mapsto [\gamma_1]_{\sim} * [\gamma_2]_{\sim} = [\gamma_1 * \gamma_2]_{\sim}
+\end{equation*} 
 \end{defin}
 
 \begin{thm}
   Let $y_0 \in Y$. The fundamental group $\pi_1(Y, y_0)$ is a well-defined group. 
 \end{thm}
 
+% TODO: pictures of reparams
 \begin{proof}
   By lemma \ref{lem:homotopy-equivalence} $\sim$ is a well-defined equivalence relation and thus the quotient in the definition is well-defined and the set of loops based at $y_0$ is decomposed into equivalence classes.
   Thus it remains to be shown that the set of equivalence classes of loops up to homotopy together with the concatenation operation $*$ fulfills the group axioms.
+
+  Therefore let $\gamma_1, \gamma_2$ be loops in $Y$ based at $y_0 \in Y$. From the definition of $*$ it is clear that $\gamma_1 * \gamma_2$ is again a loop in $Y$ based at $y_0$.
+  Now let $\tilde{\gamma_1}$ be another loop based at $y_0$ that is homotopic to $\gamma_1$ via the homotopy $H$. Define $F: [0,1]^2 \to Y$ as follows:
+  \begin{equation*}
+    (s, t) \mapsto \begin{cases}
+      H(2s, t), &s \in [0,{1 \over 2}], \\
+      \gamma_2(s), &s \in [{1 \over 2}, 1].
+    \end{cases}
+  \end{equation*}
+  This is a well-defined homotopy between $\gamma_1 * \gamma_2$ and $\tilde{\gamma_1} * \gamma_2$ because of:
+  \begin{align*}
+    F(s, 0) &= \gamma_1 * \gamma_2, \\
+    F(s, 1) &= \tilde{\gamma_1} * \gamma_2,
+  \end{align*}
+  There is no problem for $t = {1 \over 2}$ because the homotopy is endpoint preserving. Thus it holds that $\gamma_1 \sim \tilde{\gamma_1} \Rightarrow \gamma_1 * \gamma_2 \sim \tilde{\gamma_1} * \gamma_2$.
+  And a similiar argument shows $\gamma_1 \sim \tilde{\gamma_1} \Rightarrow \gamma_2 * \gamma_1 \sim  \gamma_2 * \tilde{\gamma_1}$. 
+  This proofs that the group operations is not dependend on the choice of representative of the particular equivalence class which means that the group operation is well-defined.
+
+  Now let $\gamma_3$ be another loop in $Y$ based at $y_0$. 
+  
+  Consider the map $\alpha: [0,1] \to [0,1]$ which is defined as:
+  \begin{equation*}
+    t \mapsto \begin{cases}
+      2t, &t \in [0, {1 \over 4}], \\
+      t + {1 \over 4}, &t \in [{1\over4}, {1\over2}], \\
+      {1\over2}t + {1\over2}, &t\in[{1\over2}, 1],
+    \end{cases}
+  \end{equation*}
+  
+  then $\alpha(0) = 0, \alpha(1) = 1$ and $((\gamma_1 * \gamma_2) * \gamma_3) \circ \alpha = \gamma_1 * (\gamma_2 * \gamma_3)$ and thus $(\gamma_1 * \gamma_2) * \gamma_3 \sim \gamma_1 * (\gamma_2 * \gamma_3)$ by Remark \ref{rem:reparam}.
+  Hence the operation $*$ is associative.
+
+  Next consider the constant path $e_{y_0}: [0,1] \to Y, \: t \mapsto y_0$ at $y_0$. 
+  
+  \vspace*{5pt}
+  Define $\alpha_1: [0,1] \to [0,1], \: t \mapsto \begin{cases}
+    0, &t\in[0, {1\over2}],\\
+    2t, &t\in[{1\over2}, 1],
+  \end{cases}$ and $\alpha_2: [0,1]\to [0,1], \: t \mapsto \begin{cases}
+    2t, &t\in[0, {1\over2}],\\
+    0, &t\in[{1\over2}, 1],
+  \end{cases}$
+  \vspace*{5pt}
+  with $\alpha_1(0) = \alpha_2(0) = 0$ and $\alpha_1(1) = \alpha_2(1) = 1$.
+
+  It follows for a loop $\gamma$ in $Y$ based at $y_0$ that: $e_{y_0} * \gamma = \gamma \circ \alpha_1$ and $\gamma * e_{y_0} = \gamma \circ \alpha_2$ and thus by Remark \ref{rem:reparam}:
+  \begin{equation*}
+    \gamma * e_{y_0} \sim \gamma \sim e_{y_0} * \gamma
+  \end{equation*}
+  This means that $e_{y_0}$ is the identity element with respect to $*$.
+
+  Now let $\gamma^-$ be a loop in $Y$ based at $y_0$ with $\forall t \in [0,1]: \gamma^-(t) = \gamma(1 - t)$ and consider the homotopy $G: [0,1]^2 \to Y$ with 
+  \begin{equation*}
+    (s, t) \mapsto \begin{cases}
+      \gamma(2s(1-t)), &t \in [0, {1\over2}], \\
+      \gamma(2(1-s)(1-t)), &t \in [{1\over2}, 1] 
+    \end{cases}
+  \end{equation*}
+  is a homotopy between $\gamma * \gamma^-$ and $e_{y_0}$ which means $[\gamma] * [\gamma^-] = [\gamma * \gamma^-] = [e_{y_0}]$ and thus $[\gamma^-] = [\gamma]^{-1}$. 
 \end{proof}
 
 \section{Discretization of the fundamental group}
