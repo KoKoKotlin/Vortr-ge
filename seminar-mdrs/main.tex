@@ -8,7 +8,7 @@
 \usepackage{xfrac}
 
 \usepackage{graphicx}
-\usepackage{subfig}
+\usepackage{caption}
 
 \setlength{\parindent}{0mm}
 
@@ -199,7 +199,6 @@ The operation $*: \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is defin
   Let $y_0 \in Y$. The fundamental group $\pi_1(Y, y_0)$ is a well-defined group. 
 \end{thm}
 
-% TODO: pictures of reparams
 \begin{proof}
   By lemma \ref{lem:homotopy-equivalence} $\sim$ is a well-defined equivalence relation and thus the quotient in the definition is well-defined and the set of loops based at $y_0$ is decomposed into equivalence classes.
   Thus it remains to be shown that the set of equivalence classes of loops up to homotopy together with the concatenation operation $*$ fulfills the group axioms.
@@ -217,12 +216,13 @@ The operation $*: \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is defin
     F(s, 0) &= \gamma_1 * \gamma_2, \\
     F(s, 1) &= \tilde{\gamma_1} * \gamma_2,
   \end{align*}
+  
   There is no problem for $t = {1 \over 2}$ because the homotopy is endpoint preserving. Thus it holds that $\gamma_1 \sim \tilde{\gamma_1} \Rightarrow \gamma_1 * \gamma_2 \sim \tilde{\gamma_1} * \gamma_2$.
   And a similiar argument shows $\gamma_1 \sim \tilde{\gamma_1} \Rightarrow \gamma_2 * \gamma_1 \sim  \gamma_2 * \tilde{\gamma_1}$. 
   This proofs that the group operations is not dependend on the choice of representative of the particular equivalence class which means that the group operation is well-defined.
 
   Now let $\gamma_3$ be another loop in $Y$ based at $y_0$. 
-  
+
   Consider the map $\alpha: [0,1] \to [0,1]$ which is defined as:
   \begin{equation*}
     t \mapsto \begin{cases}
@@ -231,9 +231,9 @@ The operation $*: \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is defin
       {1\over2}t + {1\over2}, &t\in[{1\over2}, 1],
     \end{cases}
   \end{equation*}
-  
   then $\alpha(0) = 0, \alpha(1) = 1$ and $((\gamma_1 * \gamma_2) * \gamma_3) \circ \alpha = \gamma_1 * (\gamma_2 * \gamma_3)$ and thus $(\gamma_1 * \gamma_2) * \gamma_3 \sim \gamma_1 * (\gamma_2 * \gamma_3)$ by Remark \ref{rem:reparam}.
   Hence the operation $*$ is associative.
+  
 
   Next consider the constant path $e_{y_0}: [0,1] \to Y, \: t \mapsto y_0$ at $y_0$. 
   
@@ -265,6 +265,81 @@ The operation $*: \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is defin
 \end{proof}
 
 \section{Discretization of the fundamental group}
+
+The notion of the fundamental group introduced in the previous chapter is very a useful tool for detemining if two topological spaces are \textbf{not} homeomorphic.
+The fundamental group has this ability because it is a functor from the category of topological spaces with a fixed basepoint to the category of groups. 
+And if the images of a functor are not isomorphic than the arguments that mapped to these images can not be isomorphic in their category because functors preserve isomorphims.
+
+A major disadvantage of the fundamental group is that it is very computationally difficult to calculate.
+Thats the reason why there exist many other branches of algebraic topology concerned with other topological invariants that are invariant under homeomorphisms. 
+Another fruitful idea would be to reduce the difficulty in calculating the fundamental group by approximating it via discrete fundamental groups. 
+This concept it explored further in the following chapter.
+
+% TODO: illustration theta path
+\begin{defin}
+  Let $\theta \in \R_{>0}$ and $n \in \N$. A \textbf{discrete path} is a map $Z: \R \supseteq [n] \to X$ that is $\theta$-lipschitz, i.e. for $\forall n_1, n_2 \in [n]$:
+  \begin{equation}
+    d_X(Z(n_2), Z(n_1)) \leq \theta |n_2 - n_1|
+  \end{equation}
+  where $[n] := \{0, 1, \cdots, n\}$. An important special case is $n_2 = n_1 + 1$ for $n_1, n_2 \in [n]$ for which holds: $d_X(Z(n_1), Z(n_2)) \leq \theta$. This motivates a second
+  definition if the discrete path namely as a sequence of points $(z_i)_{i=0}^n$ with $z_i \in X$ and for $\forall i \in \{0, 1, \cdots n-1\}$:
+  \begin{equation}
+    d_X(z_i, z_{i+1}) \leq \theta
+  \end{equation}
+
+  Let $m \in \N$ with $m \geq n$ and let $Z': [m] \to X$ be a discrete path. $Z'$ is called a \textbf{lazification} of $Z$ if there exists a surjective, monotone map 
+  $f: [m] \to [n]$ such that $Z' = Z \circ f$.
+\end{defin}
+
+\begin{defin}
+  Let $\theta \in \R_{>0}$, $n,m \in \N$ and let $Z_1: [n] \to X, Z_2: [n] \to X$ be two discrete $\theta$-paths in $X$. 
+  A \textbf{(free) $\theta$-grid homotopy} is a $\theta$-lipschitz map $H: [n] \times [m] \to X$ such that:
+  \begin{equation*}
+    H(\cdot, 0) = Z_1 \: \land \: H(\cdot, m) = Z_2
+  \end{equation*}
+  where the product $[n] \times [m]$ is a metric space with the $\ell_1$ metric\footnote{i.e. for $x = (x_1, x_2), y = (y_1, y_2) \in [n] \times [m]: d_{\ell_1}(x, y) = |x_1 - y_1| + |x_2 - y_2|$}.
+
+  A free $\theta$-grid homotopy is a $\theta$-grid homotopy if it preserves the endpoints of the discrete paths i.e.: $\forall t\in [m]$:
+  \begin{equation*}
+    H(0,t) = Z_1(0) = Z_2(0) \: \land \: H(n,t) = Z_1(n) = Z_2(n)
+  \end{equation*}
+  for paths $Z_1, Z_2$ with the same start and end points. 
+\end{defin}
+
+\begin{defin}
+  Let $\theta \in \R_{>0}$ and let $Z_1, Z_2$ be discrete $\theta$-paths. $Z_1$ and $Z_2$ are said to be $\theta$-homotopic 
+  if there exist lazifications $Z_1'$ of $Z_1$ and $Z_2'$ of $Z_2$ with the same length and a $\theta$-grid homotopy between $Z_1'$ and $Z_2'$.
+  
+  This is denoted as $Z_1 \sim_{\theta} Z_2$.
+\end{defin}
+
+\begin{lemma} \label{lem:discrete-homotopy}
+  Let $\theta \in \R_{>0}$ then the $\theta$-grid homotopy relation $\sim_{\theta}$ on the set $C(\mathcal{P}(\N), X)$ is a equivalence relation.
+\end{lemma}
+
+% TODO: look up proof in BCW14
+\begin{proof}
+  Similiar to proof of \ref{lem:homotopy-equivalence}.
+\end{proof}
+
+If there are two discrete paths $Z_1: [n] \to X$ and $Z_2: [m] \to X$ $(n,m \in \N)$ with $Z_1(n) = Z_2(0)$ 
+then we can define the binary operation of path concatenation $*$ similiar to the continous case. This means that:
+\begin{equation*}
+  Z_1 * Z_2: [n + m] \to X, k \mapsto \begin{cases}
+    Z_1(k), & k \in [n], \\
+    Z_2(k - n), & k - n \in [m].
+  \end{cases}
+\end{equation*}
+The neutral element of this operation is the constant path and for every discrete path there is the path $Z_1^{-}: [n] \to X, k \mapsto Z_1(n - k)$ 
+which is the canonical inverse of $Z_1$.
+
+\begin{defin}
+  Let $\theta \in \R_{>0}$ and let $x_0 \in X$. With the previous discussion of $*$ in mind it is now possible to define the \textbf{discrete fundamental group} at scale $\theta$
+  $\pi_{1,\theta}(X, x_0)$ as the set of $\theta$-homotopy classes\footnote{Equivalence classes of $\sim_{\theta}$} of closed paths starting and ending at $x_0$. 
+  The group operation is the concatenation of discrete paths $*$.
+  
+  Because of lemma \ref{lem:discrete-homotopy} and the discussion preceding this definition $\pi_{1,\theta}(X, x_0)$ is a well-defined group.
+\end{defin}
 
 \section{Inverse Limit}
 
