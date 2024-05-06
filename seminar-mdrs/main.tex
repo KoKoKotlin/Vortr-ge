@@ -277,7 +277,7 @@ This concept it explored further in the following chapter.
 
 % TODO: illustration theta path
 \begin{defin}
-  Let $\theta \in \R_{>0}$ and $n \in \N$. A \textbf{discrete path} is a map $Z: \R \supseteq [n] \to X$ that is $\theta$-lipschitz, i.e. for $\forall n_1, n_2 \in [n]$:
+  Let $\theta \in \R_{>0}$ and $n \in \N$. A \textbf{discrete path} ($\theta$-path) is a map $Z: \R \supseteq [n] \to X$ that is $\theta$-lipschitz, i.e. for $\forall n_1, n_2 \in [n]$:
   \begin{equation}
     d_X(Z(n_2), Z(n_1)) \leq \theta |n_2 - n_1|
   \end{equation}
@@ -291,6 +291,7 @@ This concept it explored further in the following chapter.
   $f: [m] \to [n]$ such that $Z' = Z \circ f$.
 \end{defin}
 
+% Better definition of homotopy in BCW14
 \begin{defin}
   Let $\theta \in \R_{>0}$, $n,m \in \N$ and let $Z_1: [n] \to X, Z_2: [n] \to X$ be two discrete $\theta$-paths in $X$. 
   A \textbf{(free) $\theta$-grid homotopy} is a $\theta$-lipschitz map $H: [n] \times [m] \to X$ such that:
@@ -306,6 +307,24 @@ This concept it explored further in the following chapter.
   for paths $Z_1, Z_2$ with the same start and end points. 
 \end{defin}
 
+\pagebreak
+
+% source BCW14
+\begin{rem}
+  Let $(x_0, x_1, \cdots x_n = x_0)$ and $(y_0, y_1, \cdots y_n = y_0)$ with $n \in \N$ be two closed $\theta$-paths in $X$. 
+  One can imagine a $\theta$-grid homotopy as the following grid:
+  \begin{equation*}
+    \begin{matrix}
+      x_0 & x_1 & x_2 & \cdots & x_n \\
+      z_0^1 & z_1^1 & z_2^1 & \cdots & z_n^1 \\
+      \vdots & \vdots & \vdots & \vdots & \vdots \\
+      z_0^{t} & z_1^{t} & z_2^{t} & \cdots & z_n^{t} \\
+      y_0 & y_1 & y_2 & \cdots & y_n \\
+    \end{matrix}
+  \end{equation*}
+  where the rows are $\theta$-loops in $X$ and the columns are $\theta$-paths in $X$ and $t\in \N$.
+\end{rem}
+
 \begin{defin}
   Let $\theta \in \R_{>0}$ and let $Z_1, Z_2$ be discrete $\theta$-paths. $Z_1$ and $Z_2$ are said to be $\theta$-homotopic 
   if there exist lazifications $Z_1'$ of $Z_1$ and $Z_2'$ of $Z_2$ with the same length and a $\theta$-grid homotopy between $Z_1'$ and $Z_2'$.
@@ -313,6 +332,7 @@ This concept it explored further in the following chapter.
   This is denoted as $Z_1 \sim_{\theta} Z_2$.
 \end{defin}
 
+% TODO: look up proper definition in BCW14
 \begin{lemma} \label{lem:discrete-homotopy}
   Let $\theta \in \R_{>0}$ then the $\theta$-grid homotopy relation $\sim_{\theta}$ on the set $C(\mathcal{P}(\N), X)$ is a equivalence relation.
 \end{lemma}
@@ -333,6 +353,7 @@ then we can define the binary operation of path concatenation $*$ similiar to th
 The neutral element of this operation is the constant path and for every discrete path there is the path $Z_1^{-}: [n] \to X, k \mapsto Z_1(n - k)$ 
 which is the canonical inverse of $Z_1$.
 
+% Look in BCW14 for the equivalence relation needed to invert lazification and xyx situations
 \begin{defin}
   Let $\theta \in \R_{>0}$ and let $x_0 \in X$. With the previous discussion of $*$ in mind it is now possible to define the \textbf{discrete fundamental group} at scale $\theta$
   $\pi_{1,\theta}(X, x_0)$ as the set of $\theta$-homotopy classes\footnote{Equivalence classes of $\sim_{\theta}$} of closed paths starting and ending at $x_0$. 
@@ -340,6 +361,24 @@ which is the canonical inverse of $Z_1$.
   
   Because of lemma \ref{lem:discrete-homotopy} and the discussion preceding this definition $\pi_{1,\theta}(X, x_0)$ is a well-defined group.
 \end{defin}
+
+\begin{rem}
+  For $\theta' \leq \theta$ there exists a natural homomorphism $\pi_{1,\theta'}(X, x_0) \to \pi_{1,\theta}(X, x_0)$ 
+  because every $\theta'$-path is also a $\theta$-path and every $\theta'$-grid homotopy is also a $\theta$-grid homotopy.
+\end{rem}
+
+\begin{rem}
+  Every closed $\theta$-path with length $\leq 4\theta$ is $\theta$-homotopic to a constant path.
+\end{rem}
+
+\begin{proof}
+  Consider a closed $\theta$-path $(z_0, z_1, z_2, z_3, z_4 = z_0)$ in $X$. 
+  Define the constant path $e_{z_0}: [0] \to X, 0 \mapsto z_0$ and the lazification $Z': [4] \to X, i \mapsto z_0$ of $Z$.
+
+  Then $(z_0, z_1, z_2, z_3, z_4 = z_0) \sim_{\theta} (z_0, z_1, z_1, z_0, z_0)\sim_{\theta} (z_0, z_0, z_0, z_0, z_0) = Z'$. The remark follows from the fact that $\sim_{\theta}$ is an equivalence relation.
+\end{proof}
+
+In this sense one can imagine that $\pi_{1,\theta}$ is isomorphic to a factor of $\pi_1$ where loops shorter than $4\theta$ are all in the equivalence class of the constant loop.
 
 \section{Inverse Limit}
 
