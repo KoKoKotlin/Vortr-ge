@@ -1,5 +1,5 @@
-\documentclass{article}
-\usepackage[left=3cm,right=3cm,top=2cm,bottom=2cm]{geometry}
+\documentclass[a4paper, 11pt, twoside]{article}
+\usepackage[outer={2.5cm},inner={3cm},tmargin={2.5cm},bmargin={2cm}]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
@@ -11,6 +11,7 @@
 \usepackage{caption}
 
 \setlength{\parindent}{0mm}
+\setcounter{MaxMatrixCols}{100}
 
 \newcommand{\R}[0]{\mathbb{R}}
 \newcommand{\N}[0]{\mathbb{N}}
@@ -265,6 +266,11 @@ The operation $*: \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is defin
 \end{proof}
 
 \section{Discretization of the fundamental group}
+\textbf{Notation:}
+\begin{enumerate}
+  \item Let $n \in \N$: $[n] := \{0, 1, \cdots, n\}$,
+  \item Let $n,m \in \N$ with $n \leq m$: $[n,m] := \{n, n+1, \cdots, m\}$.
+\end{enumerate}
 
 The notion of the fundamental group introduced in the previous chapter is very a useful tool for detemining if two topological spaces are \textbf{not} homeomorphic.
 The fundamental group has this ability because it is a functor from the category of topological spaces with a fixed basepoint to the category of groups. 
@@ -275,13 +281,12 @@ Thats the reason why there exist many other branches of algebraic topology conce
 Another fruitful idea would be to reduce the difficulty in calculating the fundamental group by approximating it via discrete fundamental groups. 
 This concept it explored further in the following chapter.
 
-% TODO: illustration theta path
-\begin{defin}
-  Let $\theta \in \R_{>0}$ and $n \in \N$. A \textbf{discrete path} ($\theta$-path) is a map $Z: \R \supseteq [n] \to X$ that is $\theta$-lipschitz, i.e. for $\forall n_1, n_2 \in [n]$:
+\begin{defin} \label{def:discrete-path}
+  Let $\theta \in \R_{>0}$ and $n \in \N$. A \textbf{discrete path} ($\theta$-path) with length $n$ is a map $Z: \R \supseteq [n] \to X$ that is $\theta$-lipschitz, i.e. for $\forall n_1, n_2 \in [n]$:
   \begin{equation}
     d_X(Z(n_2), Z(n_1)) \leq \theta |n_2 - n_1|
   \end{equation}
-  where $[n] := \{0, 1, \cdots, n\}$. An important special case is $n_2 = n_1 + 1$ for $n_1, n_2 \in [n]$ for which holds: $d_X(Z(n_1), Z(n_2)) \leq \theta$. This motivates a second
+  An important special case is $n_2 = n_1 + 1$ for $n_1, n_2 \in [n]$ for which holds: $d_X(Z(n_1), Z(n_2)) \leq \theta$. This motivates a second
   definition if the discrete path namely as a sequence of points $(z_i)_{i=0}^n$ with $z_i \in X$ and for $\forall i \in \{0, 1, \cdots n-1\}$:
   \begin{equation}
     d_X(z_i, z_{i+1}) \leq \theta
@@ -307,8 +312,6 @@ This concept it explored further in the following chapter.
   for paths $Z_1, Z_2$ with the same start and end points. 
 \end{defin}
 
-\pagebreak
-
 % source BCW14
 \begin{rem}
   Let $(x_0, x_1, \cdots x_n = x_0)$ and $(y_0, y_1, \cdots y_n = y_0)$ with $n \in \N$ be two closed $\theta$-paths in $X$. 
@@ -332,9 +335,26 @@ This concept it explored further in the following chapter.
   This is denoted as $Z_1 \sim_{\theta} Z_2$.
 \end{defin}
 
-% TODO: look up proper definition in BCW14
+\begin{defin}
+  Let $\theta \in \R_{>0}$ and $x_0 \in X$. $\mathcal{C}_{\theta}(X, x_0)$ is the set of all discrete closed $\theta$-paths in $X$ starting and ending at $x_0$. Now take $x, y \in \mathcal{C}_{\theta}(X, x_0)$.
+  
+  By the definition \ref{def:discrete-path} there are $m,n \in \N$ such that we can write: 
+  \begin{equation*}
+    x = (x_0, x_1, \cdots x_n = x_0), \: y = (y_0, y_1, \cdots y_m = y_0)
+  \end{equation*} where $\forall i \in [n]: x_i \in X$ and $\forall i \in [m]: y_i \in X$.
+
+  Now define the concatenation of paths $*: \mathcal{C}_{\theta}(X, x_0) \times \mathcal{C}_{\theta}(X, x_0) \to \mathcal{C}_{\theta}(X, x_0), (x, y) \to x * y$ where
+  \begin{equation*}
+    x * y = (x_0, x_1, \cdots, x_n = y_0, y_1, \cdots, y_m)
+  \end{equation*}
+  i.e. $x * y: [n+m] \to X, t \mapsto \begin{cases}
+    x_t, &t \in [n], \\
+    y_{t-n}, &t \in \{n, \cdots, n+m\}
+  \end{cases}$.
+\end{defin}
+
 \begin{lemma} \label{lem:discrete-homotopy}
-  Let $\theta \in \R_{>0}$ then the $\theta$-grid homotopy relation $\sim_{\theta}$ on the set $C(\mathcal{P}(\N), X)$ is a equivalence relation.
+  Let $\theta \in \R_{>0}$ then the $\theta$-grid homotopy relation $\sim_{\theta}$ on the set $\mathcal{C}_{\theta}(X, x_0)$ is a equivalence relation.
 \end{lemma}
 
 % TODO: look up proof in BCW14
@@ -342,25 +362,77 @@ This concept it explored further in the following chapter.
   Similiar to proof of \ref{lem:homotopy-equivalence}.
 \end{proof}
 
-If there are two discrete paths $Z_1: [n] \to X$ and $Z_2: [m] \to X$ $(n,m \in \N)$ with $Z_1(n) = Z_2(0)$ 
-then we can define the binary operation of path concatenation $*$ similiar to the continous case. This means that:
-\begin{equation*}
-  Z_1 * Z_2: [n + m] \to X, k \mapsto \begin{cases}
-    Z_1(k), & k \in [n], \\
-    Z_2(k - n), & k - n \in [m].
-  \end{cases}
-\end{equation*}
-The neutral element of this operation is the constant path and for every discrete path there is the path $Z_1^{-}: [n] \to X, k \mapsto Z_1(n - k)$ 
-which is the canonical inverse of $Z_1$.
-
-% Look in BCW14 for the equivalence relation needed to invert lazification and xyx situations
 \begin{defin}
-  Let $\theta \in \R_{>0}$ and let $x_0 \in X$. With the previous discussion of $*$ in mind it is now possible to define the \textbf{discrete fundamental group} at scale $\theta$
-  $\pi_{1,\theta}(X, x_0)$ as the set of $\theta$-homotopy classes\footnote{Equivalence classes of $\sim_{\theta}$} of closed paths starting and ending at $x_0$. 
-  The group operation is the concatenation of discrete paths $*$.
-  
-  Because of lemma \ref{lem:discrete-homotopy} and the discussion preceding this definition $\pi_{1,\theta}(X, x_0)$ is a well-defined group.
+  Let $\theta \in \R_{>0}$ and let $x_0 \in X$. $\pi_{1,\theta}(X, x_0) := (\mathcal{C}_{\theta}(X, x_0)/_{\sim_{\theta}}, *)$ is called the \textbf{discrete fundamental group} as scale $\theta$,
+  with $*: \pi_{1,\theta}(X, x_0) \times \pi_{1,\theta}(X, x_0) \to \pi_{1,\theta}(X, x_0), ([x]_{\theta}, [y]_{\theta}) \mapsto [x * y]_{\theta}$.
 \end{defin}
+
+\begin{proof}
+  Firstly the set $\mathcal{C}_{\theta}(X, x_0)/_{\sim_{\theta}}$ is well-defined because of lemma \ref{lem:discrete-homotopy}.
+
+  Now let $[x]_{\theta}, [y]_{\theta} \in \pi_{1, \theta}(X, x_0)$. Let $x, \tilde{x} \in [x]_{\theta}$ and $y \in [y]_{\theta}$.
+  Then there exist lazifications $x', \tilde{x}'$ of $x, \tilde{x}$ and $y'$ of $y$ with the same length $m \in \N$ 
+  and a $\theta$-grid homotopy $H: [n] \times [m] \to X$ with  between $x'$ and $\tilde{x}'$ ($n \in \N$).
+
+  Let $k \in N$ and define the map $\tilde{H}: [n] \times [2m] \to X$ as follows:
+  \begin{equation*}
+    \tilde{H}(s, t) = \begin{cases}
+       H(s, t), &t \in [m], \\
+       y'(t-m), &t \in [m,2m].
+    \end{cases}
+  \end{equation*}
+  Since the maps $H$ and $y'$ are $\theta$-lipschitz and $\forall s \in [n]: x_0 = H(s,m) = y(0)$ 
+  it follows from the pasting lemma for $\theta$-lipschitz maps (\cite[Thm. 1]{kvalheim2021pasting}) that $\tilde{H}$ is $\theta$-lipschitz.
+  Since $\forall t \in [2m]: \tilde{H}(0, t) = (x' * y')(t)$ and $\tilde{H}(n, t) = (\tilde{x}' * y')(t)$ it follows that $x * y \sim_{\theta} \tilde{x} * y$ and thus $[x * y]_{\theta} = [\tilde{x} * y]_\theta$.
+
+  And similiar argument can be made for the right argument. 
+  
+  It follows that $[x * y]_{\theta} = [\tilde{x} * \tilde{y}]_{\theta}$ if $\tilde{y} \in [y]_\theta$ 
+  which means that the group operation is independent from the choice of representative.
+
+  \textit{Associativity:}
+    Let $[x]_{\theta}, [y]_{\theta}, [z]_{\theta} \in \pi_{1,\theta}(X, x_0)$ 
+    and let $x', y', z'$ be lazifications of the discrete paths with length $m$ which is the maximum of the lengths of $x,y,z$. Consider:
+    \begin{align*}
+      f(t) := (x' * y') * z' &= \begin{cases}
+        (x' * y')(t), &t \in [2m], \\
+        z'(t - 2m), &t \in [2m, 3m],
+      \end{cases}\\
+      g(t) := x' * (y' * z') &= \begin{cases}
+        x'(t), &t \in [m], \\
+        (y' * z')(t - m), &t \in [m, 3m]
+      \end{cases}
+    \end{align*}
+  \begin{enumerate}
+    \item $t \in [m]: f(t) = (x' * y')(t) = x'(t) = g(t)$
+    \item $t \in [m,2m]: f(t) = (x' * y')(t) = y'(t - m) = (y' * z')(t - m) = g(t)$
+    \item $t \in [2m,3m]: f(t) = z'(t - 2m) = (y' * z')(t - m) = g(t)$
+  \end{enumerate}
+  and thus $f = g\:$ i.e. $[x]_{\theta} * ([y]_{\theta} * [z]_{\theta}) = [x * (y * z)]_{\theta} = [(x * y) * z]_{\theta} = ([x]_{\theta} * [y]_{\theta}) * [z]_{\theta}$.
+  
+  \textit{Identity:}
+  Let $e_{x_0}: [0] \to X, 0 \mapsto x_0$ be the constant path at $x_0$. Then $x * e_{x_0} = x'$ $e_{x_0} * x = x''$ with $x'$ and $x''$ lazifications of $x$ 
+  and hence $e_{x_0} \sim_{\theta} x \sim_{\theta} e_{x_0}$.
+  It follows that $[x]_{\theta} * [e_{x_0}]_{\theta} = [x * e_{x_0}]_{\theta} = [x]_{\theta}$ and $[e_{x_0}]_{\theta} * [x]_{\theta} = [e_{x_0} * x]_{\theta} = [x]_{\theta}$.
+  
+  \textit{Inverse:}
+  Let $x \in \mathcal{C}_{\theta}(X, x_0)$ with length $m$. Define the path $x^-: [m] \to X, t \mapsto x(m - t)$ where $n$ is the length of $x$.
+
+  Define $H: [m] \times [2m] \to X$ given by the following schema:
+  \begin{equation*}
+    \begin{matrix}
+      x_0 & x_1 & x_2 & \cdots & x_{m-2} & x_{m-1} & x_m = x_0 & x_{m-1} & x_{m-2} & \cdots & x_1 & x_0 \\
+      x_0 & x_1 & x_2 & \cdots & x_{m-2} & x_{m-1} & x_{m-1} & x_{m-1} & x_{m-2} & \cdots & x_1 & x_0 \\
+      x_0 & x_1 & x_2 & \cdots & x_{m-2} & x_{m-2} & x_{m-2} & x_{m-2} & x_{m-2} & \cdots & x_1 & x_0 \\
+      \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+      x_0 & x_0 & x_0 & \cdots & x_0 & x_0 & x_0 & x_0 & x_0 & \cdots & x_0 & x_0 \\
+    \end{matrix}
+  \end{equation*}
+  The $n$-th row contains the path $x$ up to $t = m-n$ and then $2n-1$ copies of $x_{m-n}$ follow and after that the paths continuous with $x_{m-n}$ up to $x_0$.
+  It is trivial to show that each row is a correct $\theta$-loop. It remains to show that each column is a $\theta$-path. To this end let $i \in [m]$ and define the $i-th$ row as $r: [m] \to X$.
+  % TODO: show friedrich martin
+  Then if $\forall t \in [m-i]: r(t) = x_t$ and $\forall t \in [m-i+1, m]: r(t) = x_{m-(t-i)}$ and thus $d_X(r(i), r(i+1)) \leq \theta$ and hence $r$ is a $\theta$-path.
+\end{proof}
 
 \begin{rem}
   For $\theta' \leq \theta$ there exists a natural homomorphism $\pi_{1,\theta'}(X, x_0) \to \pi_{1,\theta}(X, x_0)$ 
