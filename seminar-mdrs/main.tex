@@ -6,6 +6,8 @@
 \usepackage{hyperref}
 \usepackage{colonequals}
 \usepackage{xfrac}
+\usepackage{tikz}
+\usepackage{tikz-cd}
 
 \usepackage{graphicx}
 \usepackage{caption}
@@ -20,7 +22,6 @@
 \newcommand*{\logeq}{\ratio\Leftrightarrow}
 \newcommand*{\longeq}{\ratio\Longleftrightarrow}
 \newcommand*{\bigdot}{\mathpalette\bigcdot@{.5}}
-
 \DeclareRobustCommand{\loongrightarrow}{%
   \DOTSB\relbar\joinrel\relbar\joinrel\rightarrow
 }
@@ -367,6 +368,10 @@ This concept it explored further in the following chapter.
   with $*: \pi_{1,\theta}(X, x_0) \times \pi_{1,\theta}(X, x_0) \to \pi_{1,\theta}(X, x_0), ([x]_{\theta}, [y]_{\theta}) \mapsto [x * y]_{\theta}$.
 \end{defin}
 
+\begin{thm}
+  Let $\theta \in \R_{>0}$ and $x_0 \in X$. The discrete fundamental group $\pi_{1,\theta}(X, x_0)$ is a well-defined group.
+\end{thm}
+
 \begin{proof}
   Firstly the set $\mathcal{C}_{\theta}(X, x_0)/_{\sim_{\theta}}$ is well-defined because of lemma \ref{lem:discrete-homotopy}.
 
@@ -453,6 +458,116 @@ This concept it explored further in the following chapter.
 In this sense one can imagine that $\pi_{1,\theta}$ is isomorphic to a factor of $\pi_1$ where loops shorter than $4\theta$ are all in the equivalence class of the constant loop.
 
 \section{Inverse Limit}
+
+The following definition of the inverse limit is the special case in the category of groups. 
+But keep in mind that this notion can be generalized to arbitrary categories.
+% maybe add inverse system definition
+\begin{defin}
+  Let $(I, \leq)$ be a directed poset\footnote{Directed partially ordered set}, 
+  $(G_i)_{i\in I}$ be a family of groups and let $(\varphi_{ij})_{i,j \in I, i \leq j}$ be a family of group homomorphisms $\varphi_{ij}: G_j \to G_i$ such that $\forall i,j,k \in I$ with $i \leq j \leq k$:
+  \begin{equation*}
+    \varphi_{ii} = \text{id}_{G_i} \: \land \: \varphi_{ij} \circ \varphi_{jk} = \varphi_{ik}
+  \end{equation*}
+  Then the \textbf{inverse limit} of the family $(G_i)_{i\in I}$ with respect to the homomorphisms $(\varphi_{ij})_{i,j \in I, i \leq j}$ is defined as:
+  \begin{equation*}
+    \varprojlim_{i\in I} G_i := \left\{(g_i)_{i\in I} \in \prod_{i\in I} G_i \: \middle| \: \forall i,j \in I, i \leq j: \varphi_{ij}(g_j) = g_i\right\}
+  \end{equation*}
+  with the group operation $(g_i)_{i\in I}, (h_i)_{i\in I} \mapsto (g_i \cdot h_i)_{i\in I}$.
+\end{defin}
+
+The construction of such inverse limits is very useful because it has the following \textit{universal property}:
+\begin{figure}[ht!]
+  \centering
+  % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZAJgBoAGAXVJADcBDAGwFcYkQAJEAX1PU1z5CKMsWp0mrdgB1pDAE5p5EAFaMsAWwD6wLLKxgABAEluhgOJasPPiAzY8BIuVIBmcQxZtEISypv8DkJEACxuHpLevlY84jBQAObwRKAAZsoaSC4gOBBIAIw0nlI+smjYIDSM9ABGMIwACgKOwiAG2LABIOkQmYjZuUhkEl4y0uVYWv5VtfVNQU4+7VidvGkZWTSDiK5FkWMTMTN1jc3BS2AdbGvdG4iFOXmIw8VRZZPTINUn84KLbZcVtdbD0+g9trsRiUQO8jl9ZqcFq1lqsQXdhhC9qNSnJ6IoABaTXQqbiVeE-M7-FHXSjcIA
+  \begin{tikzcd}
+    &  & H \arrow[dd, dashed, "\exists!\psi" description] \arrow[llddd, "\psi_j" description] \arrow[rrddd, "\psi_i" description] &  &     \\
+    &  &                                                                                                          &  &     \\
+    &  & \varprojlim_{i\in I} G_i \arrow[lld, "\pi_j" description] \arrow[rrd, "\pi_i" description]               &  &     \\
+  G_j \arrow[rrrr, "\varphi_{ij}" description] &  &                                                                                                          &  & G_i
+  \end{tikzcd}
+  \caption{Universal property of the inverse limit}\label{fig:inverse-limit}
+\end{figure}
+
+\begin{defin}
+  Let $(I, \leq)$ be a directed poset, $(G_i)_{i\in I}$ be a family of groups and let $(\varphi_{ij})_{i,j \in I, i \leq j}$ be a family of group homomorphisms $\varphi_{ij}: G_j \to G_i$.
+  Addionally let $\pi_i$ be the projection maps from the direct product to the $i$-th component.
+  
+  Then the inverse limit $\varprojlim_{i\in I} G_i$ has the following universal property:
+  If there exits a group $H$ and a family of group homomorphisms $(\psi_i)_{i\in I}: H \to G_i$ such that $\forall i,j \in I, i \leq j: \varphi_{ij} \circ \psi_j = \psi_i$ then there exists a unique group homomorphism $\psi: H \to \varprojlim_{i\in I} G_i$ such that $\forall i \in I: \pi_i \circ \psi = \psi_i$.
+  The commutative diagram in figure \ref{fig:inverse-limit} illustrates this property.
+\end{defin}
+
+% \pi_{1,\theta} has inverse limit
+% universal property says that there is a unique homomorphism from the inverse limit to the discrete fundamental group
+
+In order to use this useful property of the inverse limit we need to define maps from $\pi_1$ to $\pi_{1,\theta}$ for $\forall \theta \in (0,\infty)$. This will be done in the following way:
+\begin{defin}
+  Let $\theta \in \R_{>0}$, $\gamma: [0,1] \to X$ be a continuous path in $X$ and let $0 = t_0 \leq t_1 \leq \cdots \leq t_n = 1$ for $n \in \N$.
+
+  The sequence $(\gamma(t_i))_{i=0}^n$ is called a \textbf{$\theta$-discretization} of $\gamma$ if $\forall i \in \{1, \cdots, n\}$ it holds that:
+  \begin{equation*}
+    d_X(\gamma(t_{i}), \gamma(t_{i-1})) \leq \theta
+  \end{equation*}
+  The discretization of $\gamma$ is denoted as $\widehat{\gamma}^{\theta}_{(t_0, \cdots, t_n)}$.
+\end{defin}
+
+This definition is only useful if the following lemma can be proven:
+
+\begin{lemma}\label{lem:discretization}
+  Every continuous path admits a unique $\theta$-discretization up to $\theta$-homotopy. If the paths $\alpha, \beta: [0,1] \to X$ are homtopic then any two $\theta$-discretizations 
+  $\widehat{\alpha}^{\theta}_{(t_0, \cdots, t_n)}$, $\widehat{\beta}^{\theta}_{(t_0', \cdots, t_m')}$ are $\theta$-homotopic ($n,m \in \N$).
+\end{lemma}
+
+% TODO: maybe define B(x, r)
+% TODO: Lesbegue number lemma in footnote
+\begin{proof}
+  Let $\theta \in (0, \infty]$, $\gamma: [0,1] \to X$ be a continuous path in $X$. 
+  Let $\mathcal{U} = \left\{\gamma^{-1}\left(B(x,{\theta \over 2})\right) \: \middle| \: x \in X \right\}$ which is an open cover of $[0,1]$.
+  By the Lebesgue number lemma there exists a $N \in \N$ such that for every $t$ in $[0,1]$ can be choosen large enough, such that $[t-1/N, 1+1/N] \subseteq U$ for a $U \in \mathcal{U}$.
+  Now set $t_i := i/N$ with $i \in \{0, \cdots, N\}$. Then $\forall i \in \{0, \cdots, N\}$ it holds that:
+  \begin{align*}
+    &\forall i \in \{1, \cdots, N\}: \gamma(t_{i-1}), \gamma(t_i) \in U \\
+    \Rightarrow \: &\forall i \in \{1, \cdots, N\}: d_X(\gamma(t_{i-1}), \gamma(t_i)) \leq \sup\limits_{x,y \in U} d_X(x,y) = \theta
+  \end{align*}
+  which means that $\widehat{\gamma}^{\theta}_{(t_0, \cdots, t_N)}$ is a $\theta$-discretization of $\gamma$.
+
+  Now let $n,m \in \N$ and let $\widehat{\gamma}_{(t_0, \cdots, t_n)}^{\theta}$ and $\widehat{\gamma}_{(t_0', \cdots, t_m')}^{\theta}$ be two $\theta$-discretizations of $\gamma$.
+  Wlog it can be assumed that inequality $t_0 < t_1 < \cdots < t_n$ are all strict, $n \leq m$ and that for every $t_i$ there exists a $j \geq i$ such that $t_i = t_j'$.
+  Now define the surjective, monotone map $f: [m] \to [n], j \mapsto \max \{t_i \leq t_j'\}$ 
+  and thus $(\gamma(t_{f(0)}), \cdots, \gamma(t_{f(m)}))$ is a lazification of $(\gamma(t_0), \cdots, \gamma(t_n))$ and is $\theta$ homotopic to $(\gamma(t_0'), \cdots, \gamma(t_m'))$.
+  
+  Let $H: [0,1] \times [0,1] \to X$ be a homotopy between $\alpha$ and $\beta$. As above, Lesbegue number lemma can be used to find a $N \in \N$ 
+  such that for every pair $(t,s) \in [0,1]^2$, such that $H(B((t,s),1/N)) \subseteq B(x, \theta/2)$.
+  Define $\widehat{H}^{\theta}: [N]^2 \to X, (i,j) \mapsto H(i/N, j/N)$. It is easy to see that $\widehat{H}^{\theta}(\cdot, 0)$ is a $\theta$-discretization of $\alpha$ and
+  $\widehat{H}^{\theta}(\cdot, N)$ is a $\theta$-discretization of $\beta$ by the argument above and $\widehat{H}^{\theta}(0, \cdot)$ is a (free) $\theta$-discretization betweem them because by definition it holds that:
+  \begin{equation*}
+    d_X(\widehat{H}^{\theta}(i,j), \widehat{H}^{\theta}(i,j+1)) \leq \theta, d_X(\widehat{H}^{\theta}(i,j), \widehat{H}^{\theta}(i+1,j)) \leq \theta
+  \end{equation*}
+  for $\forall i, j \in [N-1]$.
+\end{proof}
+
+By Lemma \ref{lem:discretization} it follows that the discretization map $\gamma \mapsto \widehat{\gamma}^{\theta}$ is well-defined on the level of paths
+and that it induces a map from $\pi_1(X, x_0)$ to $\pi_{1,\theta}(X, x_0)$ because it is easy to see that the map is compatible with the operation of path concatenation.
+Furthermore, for $\theta' \leq \theta$ diagram in figure \ref{fig:discretization} commutes.
+
+\begin{figure}[ht!]
+  \centering
+  \begin{tikzcd}
+      &  & {\pi_1(X,x_0)} \arrow[lldd, "\widehat{\cdotp}^{\hspace*{1px}\theta'}" description, shift right] \arrow[rrdd, "\widehat{\cdot}^{\hspace*{1px}\theta}" description] &  &                          \\
+      &  &                                                                                                                                        &  &                          \\
+    {\pi_{1, \theta'}(X,x_0)} \arrow[rrrr] &  &                                                                                                                                        &  & {\pi_{1,\theta}(X, x_0)}
+  \end{tikzcd}
+  \caption{Discretization map}\label{fig:discretization}
+\end{figure}
+
+Now by the universal property of the inverse limit it follows that there exists a unique group homomorphism $\: \widehat{\cdot}^{\hspace*{2px}\theta}: \pi_{1,\theta}(X, x_0) \to \varprojlim \pi_{1,\theta}(X, x_0)$.
+
+\begin{thm}
+  If $X$ is u.l.p.c. and u.s.l.s.c. then the discretization map $\: \widehat{\cdot}^{\hspace*{2px}\theta}: \pi_{1,\theta}(X, x_0) \to \varprojlim \pi_{1,\theta}(X, x_0)$ is an group isomorphism.
+\end{thm}
+
+\begin{proof}
+\end{proof}
 
 \section{Counterexamples}
 
