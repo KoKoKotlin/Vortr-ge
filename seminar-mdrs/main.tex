@@ -56,6 +56,9 @@
 \section{Basic topological definitions} \label{section-basic-defs}
 
 % TODO: only some defins, ref to def of topology, topological space, etc. 
+% TODO: \colon instead of :
+% TODO: no for \forall
+% TODO: maybe ldots statt cdots
 
 \textbf{Notation:}
 \begin{enumerate}
@@ -283,14 +286,14 @@ Another fruitful idea would be to reduce the difficulty in calculating the funda
 This concept it explored further in the following chapter.
 
 \begin{defin} \label{def:discrete-path}
-  Let $\theta \in \R_{>0}$ and $n \in \N$. A \textbf{discrete path} ($\theta$-path) with length $n$ is a map $Z: \R \supseteq [n] \to X$ that is $\theta$-lipschitz, i.e. for $\forall n_1, n_2 \in [n]$:
+  Let $\theta \in \R_{>0}$ and $n \in \N$. A \textbf{discrete path} ($\theta$-path) with length $n$ is a map $Z: [n] \to X$ that is $\theta$-Lipschitz with respect to the restriction of the euclidian metric on $\R$ to $[n]$, i.e.
   \begin{equation}
-    d_X(Z(n_2), Z(n_1)) \leq \theta |n_2 - n_1|
+    \forall n_1, n_2 \in [n]\colon d_X(Z(n_2), Z(n_1)) \leq \theta |n_2 - n_1|.
   \end{equation}
   An important special case is $n_2 = n_1 + 1$ for $n_1, n_2 \in [n]$ for which holds: $d_X(Z(n_1), Z(n_2)) \leq \theta$. This motivates a second
-  definition if the discrete path namely as a sequence of points $(z_i)_{i=0}^n$ with $z_i \in X$ and for $\forall i \in \{0, 1, \cdots n-1\}$:
+  definition of a discrete path as a sequence of points $(z_i)_{i=0}^n$ with $z_i \in X$ and
   \begin{equation}
-    d_X(z_i, z_{i+1}) \leq \theta
+    \forall i \in \{0, 1, \ldots, n-1\} \colon d_X(z_i, z_{i+1}) \leq \theta.
   \end{equation}
 
   Let $m \in \N$ with $m \geq n$ and let $Z': [m] \to X$ be a discrete path. $Z'$ is called a \textbf{lazification} of $Z$ if there exists a surjective, monotone map 
@@ -423,7 +426,7 @@ This concept it explored further in the following chapter.
   \textit{Inverse:}
   Let $x \in \mathcal{C}_{\theta}(X, x_0)$ with length $m$. Define the path $x^-: [m] \to X, t \mapsto x(m - t)$ where $n$ is the length of $x$.
 
-  Define $H: [m] \times [2m] \to X$ given by the following schema:
+  Define $H\colon [m] \times [2m] \to X$ given by the following schema:
   \begin{equation*}
     \begin{matrix}
       x_0 & x_1 & x_2 & \cdots & x_{m-2} & x_{m-1} & x_m = x_0 & x_{m-1} & x_{m-2} & \cdots & x_1 & x_0 \\
@@ -435,7 +438,6 @@ This concept it explored further in the following chapter.
   \end{equation*}
   The $n$-th row contains the path $x$ up to $t = m-n$ and then $2n-1$ copies of $x_{m-n}$ follow and after that the paths continuous with $x_{m-n}$ up to $x_0$.
   It is trivial to show that each row is a correct $\theta$-loop. It remains to show that each column is a $\theta$-path. To this end let $i \in [m]$ and define the $i-th$ row as $r: [m] \to X$.
-  % TODO: show friedrich martin
   Then if $\forall t \in [m-i]: r(t) = x_t$ and $\forall t \in [m-i+1, m]: r(t) = x_{m-(t-i)}$ and thus $d_X(r(i), r(i+1)) \leq \theta$ and hence $r$ is a $\theta$-path.
 \end{proof}
 
@@ -489,7 +491,7 @@ The construction of such inverse limits is very useful because it has the follow
 \end{figure}
 
 \begin{defin}
-  Let $(I, \leq)$ be a directed poset, $(G_i)_{i\in I}$ be a family of groups and let $(\varphi_{ij})_{i,j \in I, i \leq j}$ be a family of group homomorphisms $\varphi_{ij}: G_j \to G_i$.
+  Let $(I, \leq)$ be a directed poset, $(G_i)_{i\in I}$ be a family of groups and let $(\varphi_{ij})_{i,j \in I, i \leq j}$ be a family of group homomorphisms $\varphi_{ij} \colon G_j \to G_i$.
   Addionally let $\pi_i$ be the projection maps from the direct product to the $i$-th component.
   
   Then the inverse limit $\varprojlim_{i\in I} G_i$ has the following universal property:
@@ -567,6 +569,59 @@ Now by the universal property of the inverse limit it follows that there exists 
 \end{thm}
 
 \begin{proof}
+  Let $X$ be u.l.p.c. and u.s.l.s.c.
+
+  \textit{Injectivity:} Since $\widehat{\cdot}^{\hspace*{2px}\theta}$ is a homomorphism of groups it is enough to show that the kernel is trivial.
+  Since $X$ is u.s.l.s.c. there exists $\varepsilon \in \R_{>0}$ 
+  such that every closed loop in $X$ with image contained in $B(x, \varepsilon)$ ($x\in X$) is null-homotopic in $X$. Furthermore,
+  there exists $\delta \in (0, \varepsilon/2]$ such that for every $x \in X$ and every pair of points $(a,b) \in B(x, \delta)$ there is a path with image in $B(x, \varepsilon)$ connecting $a$ and $b$.
+  Now let $\theta \in (0, \delta)$ and let $[\gamma] \in {\rm Ker} \hspace*{2px} \widehat{\cdot}^{\hspace*{2px}\theta}$. 
+  This means that there exists a $\theta$-discretization $\widehat{\gamma}^{\theta}$ of $\gamma$ which is $\theta$-homotopic to the constant loop at $x_0$.
+  Injectivity follows if $\gamma$ is null-homotopic in $X$.
+  
+  By definition there exists a grid homotopy $H: [n] \times [m] \to X$ ($n,m\in\N$) between $\widehat{\gamma}^{\theta}$ and the constant loop at $x_0$.
+  Since $\theta < \delta$ it follows that for $\forall i \in [n-1], j \in [m]:$ 
+  \begin{equation*}
+    d_X(H(i,j), H(i+1,j)) < \delta
+  \end{equation*} which implies the existence of a path $\alpha_{i,j}$ connecting $H(i,j)$ and $H(i+1,j)$ and
+  the image of $\alpha_{ij}$ is contained in $B(H(i,j), \varepsilon)$.
+  By the same reasoning there exists a path $\beta_{i,j}$ connecting $H(i,j)$ and $H(i,j+1)$ for $\forall i \in [n], j \in [m-1]$ with image in $B(H(i,j), \varepsilon)$.
+
+  Now it is possible to define a path $\xi_{i,j}$ starting at $x_0$ and ending at $H(i,j)$ by concatenation, i.e:
+  \begin{equation*}
+    \xi_{ij} := \beta_{0,0} * \cdots * \beta_{0,j-1} * \alpha_{0,j} * \cdots * \alpha_{i-1,j}
+  \end{equation*}
+  for all $i \in [n], j \in [m]$ with $(i,j) \neq (0,0)$ and simply the constant path for $i = 0, j = 0$. 
+  
+  Now define the closed loops $\eta_{i,j}$ as:
+  \begin{equation*}
+    \eta_{i,j} := \xi_{i,j} * \alpha_{i,j} * \beta_{i+1,j} * \alpha^{-1}_{i,j+1} * \beta^{-1}_{i,j} * \xi^{-1}_{i,j}
+  \end{equation*}
+  for $\forall i \in [n-1], j \in [m-1]$.
+  The contructed loops are all null-homotopic in $X$ and the curve $\gamma$ lies inside of them. 
+  This means that there exists a homotopy between gamma and the concatenation of the loops $\eta_{ij}$ the enclose gamma (when the correct order of concatenation is chosen).
+  Thus $\gamma$ in null-homotopic in $X$ and $[\gamma] = [e_{x_0}]$ in $\pi_1(X, x_0)$.
+
+  % TODO: maybe concrete definition of the inverse limit earlier
+  \textit{Surjectivity}: Let $(Z_{\theta})_{\theta > 0} \in \varprojlim \pi_{1,\theta}(X, x_0)$. 
+  Since $X$ is u.l.p.c. for every $\theta > 0$ there exists a $\delta(\theta) > 0$ such that every any two points in $B(x, \delta(\theta))$ can be joined by a path with image in $B(x, \theta)$.
+  Here $\delta(\theta)$ is considered to be a function of $\theta$ which is decreasing, i.e. $\delta(\theta) \geq \delta(\theta')$ for $\theta \leq \theta'$.
+
+  Considering a path $Z_{\delta(\theta)}$ its adjacent points can be joined by continuous paths and the concatenation in order yields a closed loop $\gamma_{\theta}$ in $X$ based at $x_0$.
+  $Z_{\delta(\theta)}$ is a $\theta$-discretization of $\gamma_{\theta}$.
+  From the proof of the injectivity of $\; \widehat{\cdot} \;$ it follows that there exists a $\bar{\theta} > 0$ and small enough such that 
+  $\: \widehat{\cdot}^{\hspace*{2px}\bar{\theta}}$ is injective. For $0 < \theta < \bar{\theta}$ is holds that:
+  \begin{equation*}
+    \widehat{\gamma}_{\theta}^{\theta} \sim_{\theta} Z_{\delta(\theta)} \sim_{\delta(\bar{\theta})} Z_{\delta(\bar{\theta})} \sim_{\bar{\theta}} \widehat{\gamma}_{\bar{\theta}}^{{\bar{\theta}}}
+  \end{equation*}
+  and thus $\widehat{\gamma}_{\theta}^{\theta}$ is $\bar{\theta}$-homotopic to $\widehat{\gamma}_{\bar{\theta}}^{{\bar{\theta}}}$ which means that
+  $\gamma_{\theta} \sim \gamma_{\bar{\theta}}$.
+
+  It can be concluded that:
+  \begin{equation*}
+    \widehat{\gamma}_{\bar{\theta}}^{\theta} \sim_{\theta} \widehat{\gamma}_{\theta}^{\theta} \sim_{\theta} Z_{\delta(\theta)} \sim_{\theta} Z_{\theta}
+  \end{equation*}
+  for every $0 < \theta < \bar{\theta}$ and thus $\widehat{\gamma}_{\bar{\theta}} = \left(\left[Z_{\theta}\right]\right)_{\theta > 0} \in \varprojlim \pi_{1,\theta}(X, x_0)$.
 \end{proof}
 
 \section{Counterexamples}
