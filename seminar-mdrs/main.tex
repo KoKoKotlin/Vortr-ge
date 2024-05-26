@@ -52,15 +52,12 @@
 
 \maketitle
 
-% TODO: add introduction with a summary of the main questions of the paper 
-% i.e. can the fundamental group be recovered as a limit of discrete fundametal groups 
-
 \section*{Introduction}
-In this seminar thesis the work of Vigolo on the study of the inverse limit of discrete first fundamental groups (\cite{vigolo2018fundamental}). The discrete version serves as an approximation
+This seminar thesis is concerned with the work of Vigolo on the study of the inverse limit of discrete first fundamental groups (\cite{vigolo2018fundamental}). The discrete version serves as an approximation
 for the continuous analogue. But this approximation only makes sense if in the limit the discrete fundamental group is isomorphic to the fundamental group.
 
 The author formulated conditions on the underlying metric space such that the descritization map is an isomorphism. 
-Additionally examples  of metric spaces are presented which do not have the aforementioned properties and it is shown that the discretization map is not an isomorphims
+Additionally, examples of metric spaces are presented which do not have the aforementioned properties and it is shown that the discretization map is not an isomorphims
 in these spaces. This demonstrates the sharpness of the conditions.
 
 The first chapter in this thesis establishes basic topological facts and definitions and defines the fundamental group $\pi_1(X)$ of a topological space.
@@ -71,11 +68,6 @@ And the thesis closes with a selection of the examples of metric spaces presente
 \section{Basic topological definitions} \label{section-basic-defs}
 
 The definitions and proofs provided in this chapter are common knowledge and can be looked up in standard textbooks of topology like \cite{munkres2000topology}.
-
-% TODO: only some defins, ref to def of topology, topological space, etc. 
-% TODO: \colon instead of :
-% TODO: no for \forall
-% TODO: maybe ldots statt cdots
 
 \textbf{Notation:}
 \begin{enumerate}
@@ -649,7 +641,6 @@ Now by the universal property of the inverse limit it follows that there exists 
   This means that there exists a homotopy between $\gamma$ and the concatenation of the loops $\eta_{ij}$ the enclose $\gamma$ (when the correct order of concatenation is chosen).
   Thus $\gamma$ in null-homotopic in $X$ and $[\gamma] = [e_{x_0}]$ in $\pi_1(X, x_0)$.
 
-  % TODO: maybe concrete definition of the inverse limit earlier
   \textit{Surjectivity}: Let $(Z_{\theta})_{\theta > 0} \in \varprojlim \pi_{1,\theta}(X, x_0)$. 
   Since $X$ is u.l.p.c. for every $\theta > 0$ there exists a $\delta(\theta) > 0$ such that every any two points in $B(x, \delta(\theta))$ can be joined by a path with image in $B(x, \theta)$.
   Here $\delta(\theta)$ is considered to be a function of $\theta$ which is decreasing, i.e. $\delta(\theta) \geq \delta(\theta')$ for $\theta \leq \theta'$.
@@ -681,7 +672,7 @@ Now by the universal property of the inverse limit it follows that there exists 
 \end{col}
 
 \begin{proof}
-  It can be shown, that every locally path connected and semi-locally simply connected metric space that is compact is also u.l.p.c. and u.s.l.s.c. The claim follows from theorem \ref{thm:isomorphism}.
+  It can be shown, that every locally path connected and semi-locally simply connected metric space that is compact is also u.l.p.c. and u.s.l.s.c. \cite[Lemma 5.14.4]{sakai2013geometric} The claim follows from theorem \ref{thm:isomorphism}.
 \end{proof}
 
 \section{Counterexamples}
@@ -701,7 +692,7 @@ In the following the simplest examples will be presented and be explained in a l
 % Select one example for surjectivity
 \begin{ex}
   Consider the graph of the function $f\colon (0, 1] \to \R, \: x \mapsto sin(1/x)$ as a subset of $\R^2$. 
-  The metric space $X$ in this example is the mentioned graph union the segement $I = \{0\} \times [-1, 1]$ and union a path which joints $(1, sin(1))$ with $(0, 0)$ 
+  The metric space $X$ in this example is the mentioned graph union the segement $I = \{0\} \times [-1, 1]$ and union a path which joins $(1, {\rm sin}(1))$ with $(0, 0)$ 
   which does not intesect the graph nor $I$.
   $X$ is compact and simply connected, but not locally path connected.
   One can show that $\varprojlim \pi_{1,\theta}(X, 0) = \mathbb{Z}$ which means that the discretization map is not surjective.
@@ -709,8 +700,14 @@ In the following the simplest examples will be presented and be explained in a l
   Intuitivly speaking, this topological space is like a very distorted version of the unit circle. 
   Nevertheless, $\pi_1(X)$ is trivial because there is no continous path enclosing the "hole" in this topological space because it is not locally path connected.
   
-  The discrete version of the fundamental group can avoid this problem because they can jump over the problematic region near the y-axis und so there are discrete paths for all 
-  $\theta > 0$ enclosing the "hole". 
+  The discrete versions of the fundamental group can avoid this problem because they can jump over the problematic region near the y-axis und so there are discrete paths for all 
+  $\theta > 0$ enclosing the "hole".
+  
+  \begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{ex1.png}
+    \caption{The topological space $X$ \\ Source: \cite[p. 8]{vigolo2018fundamental}}
+  \end{figure}
 \end{ex}
 
 \begin{ex}
