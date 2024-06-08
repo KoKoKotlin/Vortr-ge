@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{babel}[english]
 \usepackage{hyperref}
 \usepackage{colonequals}
 \usepackage{xfrac}
@@ -53,7 +54,7 @@
 \maketitle
 
 \section*{Introduction}
-This seminar thesis is concerned with the work of Vigolo on the study of the inverse limit of discrete first fundamental groups (\cite{vigolo2018fundamental}). The discrete version serves as an approximation
+This seminar thesis is concerned with the work of Vigolo on the study of the inverse limit of discrete fundamental groups (\cite{vigolo2018fundamental}). The discrete version serves as an approximation
 for the continuous analogue. But this approximation only makes sense if in the limit the discrete fundamental group is isomorphic to the fundamental group.
 
 The author formulated conditions on the underlying metric space such that the discretization map is an isomorphism. 
@@ -73,9 +74,9 @@ The definitions and proofs provided in this chapter are common knowledge and can
 \begin{enumerate}
   \item Let $Y$ be a topological space with the topology $\T_Y$,
   \item Let $X$ be a metric space with the metric $d_X$ which is also a topological space with the topology induced by its metric,
-  \item If $Z_1, Z_2$ are topological spaces then $C(Z_1, Z_2)$ is the set of all continuous maps from $Z_1$ to $Z_2$,
-  \item Let $y \in Y$ then $\NB_y$ is the set of all neighbourhoods of the element $y$.
-  \item Let $\varepsilon \in \R_{>0}$ and let $x \in X$: $B_{\varepsilon}(x) := \{ y\in X \: | \: d_X(x, y) < \varepsilon\}$
+  \item If $Z_1, Z_2$ are topological spaces, then $C(Z_1, Z_2)$ is the set of all continuous maps from $Z_1$ to $Z_2$,
+  \item Let $y \in Y$, then $\NB_y$ is the set of all neighbourhoods of the element $y$,
+  \item For $\varepsilon \in \R_{>0}$ and $x \in X$, let $B_{\varepsilon}(x) := \{ y\in X \: | \: d_X(x, y) < \varepsilon\}$.
 \end{enumerate}
 
 \begin{defin}
@@ -83,15 +84,15 @@ The definitions and proofs provided in this chapter are common knowledge and can
 \end{defin}
 
 \begin{defin}
-  Let $\gamma_1, \gamma_2 \in C([0, 1], Y)$. A \textbf{free homotopy} $H\colon [0,1]^2 \to Y$ between $\gamma_1$ and $\gamma_2$ is a continuous map such that:
+  Let $\gamma_1, \gamma_2 \in C([0, 1], Y)$. A \textbf{free homotopy} $H\colon [0,1]^2 \to Y$ between $\gamma_1$ and $\gamma_2$ is a continuous map such that
   \begin{equation*}
     \forall s \in [0,1]\colon H(s, 0) = \gamma_1(s) \: \land \: H(s, 1) = \gamma_2(s)
   \end{equation*}
 
-  Now let $\gamma_1, \gamma_2 \in C([0, 1], Y)$ such that $\gamma_1(0) = \gamma_2(0)$ and $\gamma_1(1) = \gamma_2(1)$ i.e. both paths start and end at the same point.
-  The homotopy $H \in C([0,1]^2, Y)$ is called \textbf{endpoint preserving} if it is a free homotopy between $\gamma_1$ and $\gamma_2$ and it has the following property 
+  Now let $\gamma_1, \gamma_2 \in C([0, 1], Y)$ such that $\gamma_1(0) = \gamma_2(0)$ and $\gamma_1(1) = \gamma_2(1)$ i.e. the two paths start and end at the same point.
+  The homotopy $H \in C([0,1]^2, Y)$ is called \textbf{endpoint preserving} if it is a free homotopy between $\gamma_1$ and $\gamma_2$ and it has the following property:
   \begin{equation*}
-    \forall t\in[0,1]\forall i\in \{1,2\}: H(0, t) = \gamma_i(0) \: \land \: H(1, t) = \gamma_i(1).
+    \forall t\in[0,1]\forall i\in \{1,2\}\colon H(0, t) = \gamma_i(0) \: \land \: H(1, t) = \gamma_i(1).
   \end{equation*}
 
   If a free homotopy $H$ between the two paths $\gamma_1$ and $\gamma_2$ exists they are called \textbf{freely homotopic} $\gamma_1 \overset{\cdot}{\sim}_H \gamma_2$.
@@ -109,9 +110,10 @@ In this thesis all homotopies are endpoint preserving if it is not explicitly st
 \begin{defin} \label{def:connectedness}
   \begin{itemize}
     \item[] % this has to be here because of the newline after the definition label
-    \item $Y$ \textbf{connected} $\;\longeq\; \exists A,B \in \T_Y\setminus \{\emptyset\}\colon (A \cap B = \emptyset \: \land \: Y = A \cup B) \Rightarrow (A = \emptyset \: \lor \: B = \emptyset)$
+    \item $Y$ \textbf{connected} $\;\longeq\; \forall A,B \in \T_Y\colon (A \cap B = \emptyset \: \land \: Y = A \cup B) \Rightarrow (A = \emptyset \: \lor \: B = \emptyset)$
     \item $Y$ \textbf{path-connected} $\;\longeq\; \forall x,y \in Y \exists\gamma \in C([0,1], Y)\colon \gamma(0) = x \: \land \: \gamma(1) = y$
     \item $Y$ \textbf{locally (path-)connected} $\;\longeq \\ \forall y \in Y\forall U \in \NB_y\exists V\in \NB_y\colon V \subseteq U \: \land \: V$ (path-)connected
+    \item $X$ \textbf{semi-locally simply connected} (s.l.s.c) $\: \longeq \\ \forall x\in X\exists U \in \mathcal{N}_x\colon$ Every loop in $U$ is null-homotopic in $X$
   \end{itemize}
 \end{defin}
 
@@ -121,7 +123,6 @@ The following definitions only work in metric spaces:
   \begin{itemize}
     \item[] % this has to be here because of the newline after the definition label
     \item $X$ \textbf{uniformly locally path-connected} (u.l.p.c.) $\: \longeq \\ \forall \varepsilon \in \R_{>0} \exists \delta \in \R_{>0}\forall x \in X\colon \forall x_1, x_2 \in B_{\delta}(x)\exists \gamma \in C([0,1], B_{\varepsilon}(x))\colon \gamma(0) = x_1 \: \land \: \gamma(1) = x_2$
-    \item $X$ \textbf{semi-locally simply connected} (s.l.s.c) $\: \longeq \\ \forall x\in X\exists \varepsilon \in \R_{>0}\colon$ Every loop in $B_{\varepsilon}(x)$ is null-homotopic in $X$
     \item $X$ \textbf{uniformly semi-locally simply connected} (u.s.l.s.c) $\: \longeq \\ \exists \varepsilon \in \R_{>0}\forall x\in X\colon$ Every loop in $B_{\varepsilon}(x)$ is null-homotopic in $X$
   \end{itemize}
   \vspace*{10pt}
@@ -278,7 +279,7 @@ The operation $*\colon \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is 
 \end{proof}
 
 \begin{lemma}\label{lem:lesbesgue}
-  Let $\mathcal{U}$ be an open cover of $X$. If $X$ is compact, then there exists $\delta \in \R_{>0}$ such that:
+  Let $\mathcal{U}$ be an open cover of $X$. If $X$ is compact, then there exists $\delta \in \R_{>0}$ such that
   \begin{equation*}
     \forall A \in \mathcal{P}(X)\colon d(A) < \delta \Rightarrow (\exists U \in \mathcal{U}\colon A \subseteq U),
   \end{equation*}
@@ -292,16 +293,16 @@ The operation $*\colon \pi_1(Y, y_0) \times \pi_1(Y, y_0) \to \pi_1(Y, y_0)$ is 
 \section{Discretization of the fundamental group}
 \textbf{Notation:}
 \begin{enumerate}
-  \item Let $n \in \N$: $[n] := \{0, 1, \ldots, n\}$,
-  \item Let $n,m \in \N$ with $n \leq m$: $[n,m] := \{n, n+1, \ldots, m\}$.
+  \item For $n \in \N$, let $[n] := \{0, 1, \ldots, n\}$,
+  \item For $n,m \in \N$ with $n \leq m$, let $[n,m] := \{n, n+1, \ldots, m\}$.
 \end{enumerate}
 
-The notion of the fundamental group introduced in the previous chapter is very a useful tool for determining if two topological spaces are \textbf{not} homeomorphic.
+The notion of the fundamental group introduced in the previous chapter is a very useful tool for determining if two topological spaces are \textbf{not} homeomorphic.
 The fundamental group has this ability because it is a functor from the category of topological spaces with a fixed base point to the category of groups. 
 And if the images of a functor are not isomorphic then the arguments that mapped to these images can not be isomorphic in their category because functors preserve isomorphisms.
 
 A major disadvantage of the fundamental group is that it is very computationally difficult to calculate.
-That's the reason why there exist many other branches of algebraic topology concerned with other topological invariants that are invariant under homeomorphisms. 
+That is the reason why there exist many other branches of algebraic topology concerned with other topological invariants that are invariant under homeomorphisms. 
 Another fruitful idea would be to reduce the difficulty in calculating the fundamental group by approximating it via discrete fundamental groups. 
 This concept is explored further in the following chapter.
 
@@ -372,7 +373,7 @@ This concept is explored further in the following chapter.
   By the Definition \ref{def:discrete-path} there are $m,n \in \N$ such that we can write
   \begin{equation*}
     x = (x_0, x_1, \ldots, x_n = x_0), \: y = (y_0, y_1, \ldots, y_m = y_0)
-  \end{equation*} where for all $i \in [n]\colon x_i \in X$ and for all $j \in [m]: y_j \in X$.
+  \end{equation*} where $x \in X^{n+1}$ and $y \in X^{m+1}$.
 
   Now define the concatenation of paths $*\colon \mathcal{C}_{\theta}(X, x_0) \times \mathcal{C}_{\theta}(X, x_0) \to \mathcal{C}_{\theta}(X, x_0), (x, y) \to x * y$ where
   \begin{equation*}
@@ -406,7 +407,7 @@ This concept is explored further in the following chapter.
 \begin{proof}
   Firstly the set $\mathcal{C}_{\theta}(X, x_0)/_{\sim_{\theta}}$ is well-defined because of Lemma \ref{lem:discrete-homotopy}.
 
-  Now let $[x]_{\theta}, [y]_{\theta} \in \pi_{1, \theta}(X, x_0)$. Let $x, \tilde{x} \in [x]_{\theta}$ and $y \in [y]_{\theta}$.
+  Now let $[x]_{\theta}, [y]_{\theta} \in \pi_{1, \theta}(X, x_0)$. Consider a second representative $\tilde{x} \in [x]_{\theta}$.
   Then there exist lazifications $x', \tilde{x}'$ of $x, \tilde{x}$ and $y'$ of $y$ with the same length $m \in \N$ 
   and a $\theta$-grid homotopy $H\colon [n] \times [m] \to X$ with between $x'$ and $\tilde{x}'$ ($n \in \N$).
 
@@ -422,9 +423,9 @@ This concept is explored further in the following chapter.
   Since for all $t \in [2m]$ it holds that $\tilde{H}(0, t) = (x' * y')(t)$ and $\tilde{H}(n, t) = (\tilde{x}' * y')(t)$,
   $x * y \sim_{\theta} \tilde{x} * y$ follows and thus $[x * y]_{\theta} = [\tilde{x} * y]_\theta$.
 
-  A similar argument can be used to proof the claim for the right side of $*$. 
+  A similar argument can be used to prove that $[\tilde{x} * y]_{\theta} = [\tilde{x} * \tilde{y}]_{\theta}$ for any $\tilde{y} \in [y]_{\theta}$.   
   
-  It follows that $[x * y]_{\theta} = [\tilde{x} * \tilde{y}]_{\theta}$ if $\tilde{y} \in [y]_\theta$ 
+  By Transitivity it follows that $[x * y]_{\theta} = [\tilde{x} * \tilde{y}]_{\theta}$ if $\tilde{y} \in [y]_\theta$ 
   which means that the group operation is independent from the choice of representative.
 
   \textit{Associativity:}
@@ -489,7 +490,7 @@ This concept is explored further in the following chapter.
   Then $(z_0, z_1, z_2, z_3, z_4 = z_0) \sim_{\theta} (z_0, z_1, z_1, z_0, z_0)\sim_{\theta} (z_0, z_0, z_0, z_0, z_0) = Z'$. The remark follows from the fact that $\sim_{\theta}$ is an equivalence relation.
 \end{proof}
 
-In this sense one can imagine that $\pi_{1,\theta}$ is isomorphic to a factor of $\pi_1$ where loops shorter than $4\theta$ are all in the equivalence class of the constant loop.
+In this sense one might think of $\pi_{1,\theta}$ as a factor of $\pi_1$ where loops shorter than $4\theta$ are all in the equivalence class of the constant loop.
 
 \section{Inverse Limit}
 
@@ -506,7 +507,7 @@ But keep in mind that this notion can be generalized to arbitrary categories.
   \begin{equation*}
     \varprojlim_{i\in I} G_i := \left\{(g_i)_{i\in I} \in \prod_{i\in I} G_i \: \middle| \: \forall i,j \in I, i \leq j: \varphi_{ij}(g_j) = g_i\right\}
   \end{equation*}
-  with the group operation $(g_i)_{i\in I}, (h_i)_{i\in I} \mapsto (g_i \cdot h_i)_{i\in I}$.
+  with the group operation $((g_i)_{i\in I}, (h_i)_{i\in I}) \mapsto (g_i \cdot h_i)_{i\in I}$.
 \end{defin}
 
 The construction of such inverse limits is very useful because it has the following \textit{universal property}:
@@ -527,7 +528,7 @@ The construction of such inverse limits is very useful because it has the follow
   Additionally, let $\pi_i$ be the projection maps from the direct product to the $i$th component.
   
   Then the inverse limit $\varprojlim_{i\in I} G_i$ has the following universal property:
-  If there exists a group $H$ and a family of group homomorphisms $(\psi_i)_{i\in I}\colon H \to G_i$ such that 
+  If there exists a group $H$ and $(\psi_i)_{i\in I}$ a family of group homomorphisms $\psi_i\colon H \to G_i$ such that 
   \begin{equation*}
     \forall i,j \in I\colon i \leq j \Rightarrow \varphi_{ij} \circ \psi_j = \psi_i,
   \end{equation*}
@@ -552,12 +553,12 @@ In order to use this useful property of the inverse limit we need to define maps
 This definition is only useful if the following lemma can be proven.
 
 \begin{lemma}\label{lem:discretization}
-  Every continuous path admits a unique $\theta$-discretization up to $\theta$-homotopy. If the paths $\alpha, \beta\colon [0,1] \to X$ are homotopic then any two $\theta$-discretizations 
+  Let $\theta \in \R_{>0}$. Every continuous path admits a unique $\theta$-discretization up to $\theta$-homotopy. If the paths $\alpha, \beta\colon [0,1] \to X$ are homotopic, then any two $\theta$-discretizations 
   $\widehat{\alpha}^{\theta}_{(t_0, \ldots, t_n)}$, $\widehat{\beta}^{\theta}_{(t_0', \ldots, t_m')}$ are $\theta$-homotopic ($n,m \in \N$).
 \end{lemma}
 
 \begin{proof}
-  Let $\theta \in (0, \infty)$, $\gamma\colon [0,1] \to X$ be a continuous path in $X$. 
+  Let $\gamma\colon [0,1] \to X$ be a continuous path in $X$. 
   
   Let $\mathcal{U} = \left\{\gamma^{-1}\left(B(x,\tfrac{\theta}{2})\right) \: \middle| \: x \in X \right\}$ which is an open cover of $[0,1]$.
   By Lemma \ref{lem:lesbesgue} there exists a $N \in \N$ such that for every $t$ in $[0,1]$ the interval $[t-1/N, t+1/N]$ is contained inside of an element of $\mathcal{U}$.
@@ -572,10 +573,10 @@ This definition is only useful if the following lemma can be proven.
   Now define the surjective, monotone map $f\colon [m] \to [n], j \mapsto \max \{t_i \leq t_j'\}$ 
   and thus $(\gamma(t_{f(0)}), \ldots, \gamma(t_{f(m)}))$ is a lazification of $(\gamma(t_0), \ldots, \gamma(t_n))$ and is $\theta$ homotopic to $(\gamma(t_0'), \ldots, \gamma(t_m'))$.
   
-  Let $H\colon [0,1] \times [0,1] \to X$ be a homotopy between $\alpha$ and $\beta$. As above, Lebesgue number Lemma can be used to find a $N \in \N$ 
+  Let $H\colon [0,1] \times [0,1] \to X$ be a homotopy between $\alpha$ and $\beta$. As above, the Lebesgue number Lemma can be used to find a $N \in \N$ 
   such that for every pair $(t,s) \in [0,1]^2$, such that $H(B((t,s),1/N)) \subseteq B(x, \theta/2)$.
   Define $\widehat{H}^{\theta}\colon [N]^2 \to X, (i,j) \mapsto H(i/N, j/N)$. It is easy to see that $\widehat{H}^{\theta}(\cdot, 0)$ is a $\theta$-discretization of $\alpha$ and
-  $\widehat{H}^{\theta}(\cdot, N)$ is a $\theta$-discretization of $\beta$ by the argument above and $\widehat{H}^{\theta}(0, \cdot)$ is a (free) $\theta$-discretization between them because by definition it holds that
+  $\widehat{H}^{\theta}(\cdot, N)$ is a $\theta$-discretization of $\beta$ by the argument above and $\widehat{H}^{\theta}(0, \cdot)$ is a grid homotopy between them because by definition it holds that
   \begin{equation*}
     d_X(\widehat{H}^{\theta}(i,j), \widehat{H}^{\theta}(i,j+1)) \leq \theta, d_X(\widehat{H}^{\theta}(i,j), \widehat{H}^{\theta}(i+1,j)) \leq \theta
   \end{equation*}
@@ -585,7 +586,8 @@ This definition is only useful if the following lemma can be proven.
 \end{proof}
 
 By Lemma \ref{lem:discretization} it follows that the discretization map $\gamma \mapsto \widehat{\gamma}^{\theta}$ is well-defined on the level of paths
-and that it induces a map from $\pi_1(X, x_0)$ to $\pi_{1,\theta}(X, x_0)$ because it is easy to see that the map is compatible with the operation of path concatenation.
+and that it induces a map from $\pi_1(X, x_0)$ to $\pi_{1,\theta}(X, x_0)$. Moreover, it is easy to see that the map is compatible with the operation of path concatenation
+which means it is a homomorphism of groups.
 Furthermore, for $\theta' \leq \theta$ the diagram in Figure \ref{fig:discretization} commutes.
 
 \begin{figure}[ht!]
@@ -601,7 +603,7 @@ Furthermore, for $\theta' \leq \theta$ the diagram in Figure \ref{fig:discretiza
 Now by the universal property of the inverse limit it follows that there exists a unique group homomorphism $\: \widehat{\cdot} : \pi_{1,\theta}(X, x_0) \to \varprojlim \pi_{1,\theta}(X, x_0)$.
 
 \begin{thm} \label{thm:isomorphism}
-  If $X$ is u.l.p.c. and u.s.l.s.c. then the discretization map $\: \widehat{\cdot} : \pi_{1,\theta}(X, x_0) \to \varprojlim \pi_{1,\theta}(X, x_0)$ is a group isomorphism.
+  If $X$ is u.l.p.c. and u.s.l.s.c., then the discretization map $\: \widehat{\cdot} : \pi_{1,\theta}(X, x_0) \to \varprojlim \pi_{1,\theta}(X, x_0)$ is a group isomorphism.
 \end{thm}
 
 \begin{proof}
@@ -639,7 +641,7 @@ Now by the universal property of the inverse limit it follows that there exists 
   This means that there exists a homotopy between $\gamma$ and the concatenation of the loops $\eta_{ij}$ that enclose $\gamma$ (when the correct order of concatenation is chosen).
   Thus $\gamma$ is null-homotopic in $X$ and $[\gamma] = [e_{x_0}]$ in $\pi_1(X, x_0)$.
 
-  \textit{Surjectivity}: Let $(Z_{\theta})_{\theta > 0} \in \left(\left[Z_{\theta}\right]\right)_{\theta > 0} \in \varprojlim \pi_{1,\theta}(X, x_0)$. 
+  \textit{Surjectivity}: Let $\left(\left[Z_{\theta}\right]\right)_{\theta > 0} \in \varprojlim \pi_{1,\theta}(X, x_0)$. 
   Since $X$ is u.l.p.c. for every $\theta > 0$ there exists a $\delta(\theta) > 0$ such that any two points in $B(x, \delta(\theta))$ can be joined by a path with image in $B(x, \theta)$.
   Here $\delta(\theta)$ is considered to be a function of $\theta$ which is decreasing, i.e. $\delta(\theta) \geq \delta(\theta')$ for $\theta \leq \theta'$.
 
@@ -647,7 +649,7 @@ Now by the universal property of the inverse limit it follows that there exists 
   yields a closed loop $\gamma_{\theta}$ in $X$ based at $x_0$.
   $Z_{\delta(\theta)}$ is a $\theta$-discretization of $\gamma_{\theta}$.
   From the proof of the injectivity of $\; \widehat{\cdot} \;$ it follows that there exists a $\bar{\theta} > 0$ and small enough such that 
-  $\: \widehat{\cdot}^{\hspace*{2px}\bar{\theta}}$ is injective. For $0 < \theta < \bar{\theta}$ is holds that:
+  $\: \widehat{\cdot}^{\hspace*{2px}\bar{\theta}}$ is injective. For $0 < \theta < \bar{\theta}$ is holds that
   \begin{equation*}
     \widehat{\gamma}_{\theta}^{\theta} \sim_{\theta} Z_{\delta(\theta)} \sim_{\delta(\bar{\theta})} Z_{\delta(\bar{\theta})} \sim_{\bar{\theta}} \widehat{\gamma}_{\bar{\theta}}^{{\bar{\theta}}}
   \end{equation*}
@@ -670,21 +672,22 @@ Now by the universal property of the inverse limit it follows that there exists 
 \end{col}
 
 \begin{proof}
-  It can be shown, that every locally path connected and semi-locally simply connected metric space that is compact is also u.l.p.c. and u.s.l.s.c. \cite[Lemma 5.14.4]{sakai2013geometric} The claim follows from theorem \ref{thm:isomorphism}.
+  It can be shown, that every locally path connected and semi-locally simply connected metric space that is compact is also u.l.p.c. and u.s.l.s.c. \cite[Lemma 5.14.4]{sakai2013geometric}. The claim follows from Theorem \ref{thm:isomorphism}.
 \end{proof}
+
+It should be mentioned that there are examples of metric spaces, where the discretization map is an isomorphism but for which One of the assumptions of Theorem \ref{thm:isomorphism} does not apply.
+The proof uses that fact that the discretization map becomes injective for a small enough $\theta$ but this is not always the case when the fundamental group is isomorphic to the inverse limit.
+This means that the Theorem is not a classification of all spaces but rather a sufficient condition for a metric space such that the discretization map is isomorphic.
+These examples show that really only the limit object is isomorphic to the fundamental group and not one of the groups in the direct product.
 
 \section{Counterexamples}
 
-This last chapter will present a selection of counterexamples for metric spaces which does not have all the assumptions made in theorem \ref{thm:isomorphism}.
+This last chapter will present a selection of counterexamples for metric spaces which do not have all the assumptions made in Theorem \ref{thm:isomorphism}.
 It will be shown that regardless which assumption about $X$ (l.p.c., s.l.s.c., compactness) is dropped, 
 there will be examples of metric spaces in which the map $\hspace*{2px}\widehat{\cdot}\hspace*{2px}$ is not surjective or injective.
 This demonstrates that the assumptions on $X$ cannot be relaxed.
 
-But at first, it should be mentioned that there are examples of metric spaces, where theorem \ref{thm:isomorphism} 
-can be applied but there is no $\theta$ small enough such that the discretization map becomes injective or surjective.
-These examples show that really only the "limit object" is isomorphic to the fundamental group and not one of the groups in the direct product.
-
-The original work contains a counter example for every assumption and shows that the map then is either not injective or surjective. 
+The original work contains a counterexample for every assumption and shows that the map then is either not injective or surjective. 
 In the following the simplest examples will be presented and be explained in a little bit more detail. It is possible to look up the rest of the examples in \cite[p. 8ff]{vigolo2018fundamental}. 
 
 % Select one example for surjectivity
@@ -696,10 +699,10 @@ In the following the simplest examples will be presented and be explained in a l
   One can show that $\varprojlim \pi_{1,\theta}(X, 0) = \mathbb{Z}$ which means that the discretization map is not surjective.
 
   Intuitively speaking, this topological space is like a very distorted version of the unit circle. 
-  Nevertheless, $\pi_1(X)$ is trivial because there is no continuous path enclosing the "hole" in this topological space because it is not locally path connected.
+  Nevertheless, $\pi_1(X)$ is trivial because there is no continuous path enclosing the ``hole'' in this topological space because it is not locally path connected.
   
   The discrete versions of the fundamental group can avoid this problem because they can jump over the problematic region near the y-axis und so there are discrete paths for all 
-  $\theta > 0$ enclosing the "hole".
+  $\theta > 0$ enclosing the ``hole''.
   
   \begin{figure}[ht!]
     \centering
@@ -712,7 +715,7 @@ In the following the simplest examples will be presented and be explained in a l
   Let $X := \R^2 \setminus \{0\}$. This space is not compact. The fundamental group of this space is isomorphic to $\mathbb{Z}$. 
   But consider $\theta > 0$, then $\pi_{1,\theta}(X) = \{0\}$ which means that the discretization map cannot be injective.
 
-  Here the "hole" in the space is infinitesimally small. The continuous fundamental group can detect it without a problem. 
+  Here the ``hole'' in the space is infinitesimally small. The continuous fundamental group can detect it without a problem. 
   But for every $\theta > 0$ a discretization of the convex combination of two continuous paths is enough to get a $\theta$-homotopy between the 
   $\theta$-discretizations of the paths.
   It may be the case that a point of the chosen discrete homotopy lines up with the origin.
@@ -721,6 +724,6 @@ In the following the simplest examples will be presented and be explained in a l
 
 \clearpage
 \bibliographystyle{alpha}
-\bibliography{ref} % see references.bib for bibliography management
+\bibliography{ref}
 
 \end{document}
