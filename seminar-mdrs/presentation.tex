@@ -1,0 +1,194 @@
+\documentclass[12pt, aspectratio=169]{beamer}
+
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{wrapfig}
+\usepackage{xurl}
+\usepackage{animate}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{babel}[ngerman]
+\usepackage{hyperref}
+\usepackage{colonequals}
+\usepackage{xfrac}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+
+\usepackage{graphicx}
+\usepackage{caption}
+
+\captionsetup[figure]{labelformat=empty}
+\setbeamertemplate{section in toc}[square]
+\usefonttheme[onlymath]{serif}
+
+\usetheme{Singapore}
+\usecolortheme{default}
+\usefonttheme{structurebold}
+\setbeamerfont{text}{size=\large}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\definecolor{ao}{rgb}{0.0, 0.0, 0.7}
+
+
+\setbeamercolor{block body alerted}{bg=alerted text.fg!10}
+\setbeamercolor{block title alerted}{bg=alerted text.fg!20}
+\setbeamercolor{block body}{bg=structure!10}
+\setbeamercolor{block title}{bg=structure!20}
+\setbeamercolor{block body example}{bg=green!10}
+\setbeamercolor{block title example}{bg=green!20}
+
+\newcommand{\nimadd}{\overset{*}{+}}
+
+%\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{footline}[text line]{%
+  \parbox{\linewidth}{\vspace*{-8pt}\color{ao}\insertshorttitle\hspace{10px}\insertshortauthor\hfill\insertpagenumber}}
+
+\newcommand{\R}[0]{\mathbb{R}}
+\newcommand{\N}[0]{\mathbb{N}}
+\newcommand{\T}[0]{\mathcal{T}}
+\newcommand{\NB}[0]{\mathcal{N}}
+\newcommand*{\logeq}{\ratio\Leftrightarrow}
+\newcommand*{\longeq}{\ratio\Longleftrightarrow}
+\newcommand*{\bigdot}{\mathpalette\bigcdot@{.5}}
+\DeclareRobustCommand{\loongrightarrow}{%
+\DOTSB\relbar\joinrel\relbar\joinrel\rightarrow
+}
+
+\title{Seminarvortrag \\Fundamentalgruppen als Limites diskreter Fundamentalgruppen}
+\author[Y. Höll]{Yannik Höll}
+\date{12. Juni, 2024}
+% \logo{\includegraphics[keepaspectratio=True, width=30px]{./image/logo.png}}
+
+\beamertemplatenavigationsymbolsempty 
+
+\begin{document}
+\begin{frame}[noframenumbering, plain]
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Einteilung}
+	\tableofcontents
+\end{frame}
+
+\begin{frame}
+    Notation:
+        \begin{itemize}
+            \item $Y$ ist ein beliebiger topologischer Raum mit Tologie $\mathcal{T}_Y$,
+            \item $X$ ist ein beliebiger metrischer Raum mit Metrik $d_X$,
+            \item Für $Z_1, Z_2$ topologische Räume ist $C(Z_1, Z_2) := \{f: Z_1 \to Z_2 \: | \: f \text{ stetig}\}$
+            \item Für $y \in Y$ ist $\NB_y$ der Nachbarschaftsfilter von $y$ in $Y$,
+            \item Für $\varepsilon \in \R_{>0}$ und $x \in X$ ist $B_{\varepsilon}(x)$ die offene Kugel um $x$ mit Radius $\varepsilon$,
+            \item Für $n \in \N$, sei $[n] := \{0, 1, \ldots, n\}$,
+            \item Für $n,m \in \N$ mit $n \leq m$, sei $[n,m] := \{n, n+1, \ldots, m\}$.
+        \end{itemize}        
+\end{frame}
+
+\section{Topologische Grundlagen}
+
+\begin{frame}
+    \begin{definition}
+        Ein \textbf{Weg} in $Y$ ist eine stetige Abbildung von $[0,1]$ nach $Y$ wobei $[0,1]$ die euklidische Metrik von $\R$ übernimmt.
+    \end{definition}
+    \begin{definition}<2->
+        \onslide<2-> {
+        Let $\gamma_1, \gamma_2 \in C([0, 1], Y)$ mit selbem Start- und Endpunkt. Eine \textbf{Homotopie} $H\colon [0,1]^2 \to Y$ zwischen $\gamma_1$ und $\gamma_2$ ist eine stetige Abbildung für die gilt
+        \begin{align*}
+            &\forall s \in [0,1]\colon H(s, 0) = \gamma_1(s) \: \land \: H(s, 1) = \gamma_2(s), \\
+            &\forall t\in[0,1]\forall i\in \{1,2\}\colon H(0, t) = \gamma_i(0) \: \land \: H(1, t) = \gamma_i(1).
+        \end{align*}
+        }
+        \onslide<3-> { Die Wege $\gamma_1, \gamma_2$ heißen \textbf{homotop} ($\gamma_1 \sim_H \gamma_2$), falls eine Homotopie $H$ zwischen ihnen existiert. }
+        \onslide<4-> { Wenn ein Weg homotop zum konstanten Weg ($[0,1] \to Y, t \mapsto y \in Y$) ist, dann heißt er \textbf{null-homotop}.}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \begin{definition}<1->
+        Die \textbf{Homotopierelation} $\sim$ auf $C([0,1], Y)$ ist wie folgt definiert 
+        \begin{equation*}
+          \forall\gamma_1, \gamma_2 \in C([0,1], Y)\colon \gamma_1 \sim \gamma_2 \iff \exists H \text{ Homotopie zwischen } \gamma_1 \text{ und } \gamma_2.
+        \end{equation*}
+    \end{definition}
+    \begin{lemma}<2->
+        Die Homotopierelation $\sim$ von Wegen ist eine Äquivalenzrelation auf der Menge $C([0,1],Y)$.
+    \end{lemma}
+\end{frame}
+
+% TODO: add source
+\begin{frame}
+    \centering
+    \animategraphics[loop,controls,width=.5\textwidth]{10}{homotopie/hom-}{0}{50}
+\end{frame}
+
+\begin{frame}
+\begin{definition}
+    \begin{enumerate}
+        \item $Y$ \textbf{zusammenhängend} $\;:\Longleftrightarrow\; \forall A,B \in \T_Y\colon (A \cap B = \emptyset \: \land \: Y = A \cup B) \Rightarrow (A = \emptyset \: \lor \: B = \emptyset)$,
+        \item $Y$ \textbf{weg-zusammenhängend} $\;:\Longleftrightarrow\; \forall x,y \in Y \exists\gamma \in C([0,1], Y)\colon \gamma(0) = x \: \land \: \gamma(1) = y$,
+        \item $Y$ \textbf{lokal weg-zusammenhängend} $\;:\Longleftrightarrow$ \\ $\forall y \in Y\forall U \in \NB_y\exists V\in \NB_y\colon V \subseteq U \: \land \: V$ (weg-)zusammenhängend,
+        \item $Y$ \textbf{semi-lokal einfach zusammenhängend} (s.l.s.c) $\: :\Longleftrightarrow$ \\ $\forall y\in Y\exists U \in \NB_y\colon$ Jede Schleife in $U$ ist null-homotop in $Y$
+    \end{enumerate}
+\end{definition}
+\end{frame}
+
+\begin{frame}
+Uniforme Bediengungen für metrische Räume:    
+\begin{definition}
+    \begin{enumerate}
+        \item $X$ \textbf{uniform lokal weg-zusammenhängend} (u.l.p.c.) $\: :\Longleftrightarrow$ \\ $\forall \varepsilon \in \R_{>0} \exists \delta \in \R_{>0}\forall x \in X\colon \forall x_1, x_2 \in B_{\delta}(x)\exists \gamma \in C([0,1], B_{\varepsilon}(x))\colon$ \\ $\gamma(0) = x_1 \: \land \: \gamma(1) = x_2$,
+        \item $X$ \textbf{uniform semi-lokal einfach zusammenhängend} (u.s.l.s.c) $\: :\Longleftrightarrow$ \\ $\exists \varepsilon \in \R_{>0}\forall x\in X\colon$ Jede Schleife in $B_{\varepsilon}(x)$ ist null-homotop in $X$
+        \end{enumerate}
+\end{definition}
+\end{frame}
+
+\begin{frame}
+    \begin{definition}
+        \onslide<1-> {
+            Sei $y_0 \in Y$. Die \textbf{Fundamentalgruppe} von $Y$ mit Basispunkt $y_0$ ist definiert als
+            \begin{equation*}
+            \pi_1(Y, y_0) := (\{\gamma \in C([0,1],Y) \: | \: \gamma(0) = \gamma(1) = y_0\}/_{\sim}, \: *)
+            \end{equation*}
+        }
+        \onslide<2-> {
+        wobei 
+        \begin{align*} 
+          &*\colon C([0,1], Y) \times C([0,1], Y) \to C([0,1], Y), \\
+          &(\gamma_1, \gamma_2) \mapsto \left(t \mapsto \begin{cases}
+          \gamma_1(2t),   &t \in [0, {1 \over 2}], \\
+          \gamma_2(2t-1), &t \in [{1 \over 2}, 1],
+            \end{cases}\right)
+        \end{align*}
+        die \textbf{Konkatenation} von Pfaden ist. 
+        Da nur Schleifen mit dem selben Basispunkt betrachtet werden, kann man belibiege Elemente von $\pi_1(Y, y_0)$ konkatenieren.
+        }    
+    \end{definition}
+\end{frame}
+
+\begin{frame} \frametitle{Lemma von Lebesgue}
+    \begin{lemma}
+        Sei $\mathcal{U}$ eine offene Überdeckung von $X$. Wenn $X$ kompakt ist, dann existiert ein $\delta \in \R_{>0}$, sodass
+        \begin{equation*}
+          \forall A \in \mathcal{P}(X)\colon d(A) < \delta \Rightarrow (\exists U \in \mathcal{U}\colon A \subseteq U),
+        \end{equation*}
+        wobei $d\colon \mathcal{P}(X) \to [0, \infty), \: A \mapsto \sup \{ d_X(a_1, a_2) \: | \: a_1,a_2\in A \}$ der Durchmesser einer Teilmenge von $X$ ist.
+        Diese Zahl $\delta$ wird dann als \textbf{Lebesguezahl} bezeichnet.
+    \end{lemma}
+\end{frame}
+
+\section{Quellen}
+\begin{frame}[allowframebreaks, noframenumbering]
+    \nocite{*}
+	\hfill
+    \bibliographystyle{unsrt}
+    \bibliography{presentation-ref}
+\end{frame}
+
+
+\end{document}
