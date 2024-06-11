@@ -1,3 +1,7 @@
+---
+  geometry: margin=2cm
+---
+
 ## Einführung
  - Vorstellung Thema: (Bild an Tafel: gelochte Ebene mit Kreis)
    - kurz Idee erklären
@@ -15,12 +19,23 @@
 
 ## Kapitel 1: Topologische Grundlagen
  - Weg, Homotopie
- - Homotopierelation + Lemma
+ - Fundamentalgruppe + Konkatenation
  - Eigenschafen Räume
  - Uniforme Eigentschaften
+ - Lemma von Lebesgue
 
 ## Kapitel 2: Diskretisierung der Fundamental Gruppe $\pi_1$
+ - Diskreter Weg, Spezialfall $n_2 = n_1 + 1$, Folge, Lazification
+ - Gitterhomotopie + $\theta$-homotop (+ Lazification)
+ - Definition Menge aller geschlossenen diskreten Wege + Konkatenation (einfacher)
+ - Gitterhomotopie-Relation Äquivalenzrelation, Diskrete Fundamentalgruppe, wohldefiniert
+ - 2 wichtige Bemerkungen, 2 Parameter, jeder Weg mit geringerem Abstand ist ...
 
 ## Kapitel 3: Inverse Limes
+ - Inverser Limes, Diagram, Universelle Eigenschaft
+ - Konstruktion Diskretesierung, Diskretisierung immer möglich, Diskretisierung von Homotopien
+ - 2 wichtigen Sätze $\rightarrow$ nächste Folie Bild Beweis
 
 ## Kapitel 4: Gegenbeispiele
+ - gelochte Ebene (nicht injektiv)
+ - Topologists Sine Curve (nicht surjektiv)

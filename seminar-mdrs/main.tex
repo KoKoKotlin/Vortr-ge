@@ -363,8 +363,6 @@ This concept is explored further in the following chapter.
   if there exist lazifications $Z_1'$ of $Z_1$ and $Z_2'$ of $Z_2$ with the same length and a $\theta$-grid homotopy between $Z_1'$ and $Z_2'$.
   
   This is denoted as $Z_1 \sim_{\theta} Z_2$.
-
-  \cite[p. 3, Def. 2.2]{vigolo2018fundamental}
 \end{defin}
 
 \begin{defin}
@@ -375,7 +373,7 @@ This concept is explored further in the following chapter.
     x = (x_0, x_1, \ldots, x_n = x_0), \: y = (y_0, y_1, \ldots, y_m = y_0)
   \end{equation*} where $x \in X^{n+1}$ and $y \in X^{m+1}$.
 
-  Now define the concatenation of paths $*\colon \mathcal{C}_{\theta}(X, x_0) \times \mathcal{C}_{\theta}(X, x_0) \to \mathcal{C}_{\theta}(X, x_0), (x, y) \to x * y$ where
+  Now define the concatenation of paths $*\colon \mathcal{C}_{\theta}(X, x_0) \times \mathcal{C}_{\theta}(X, x_0) \to \mathcal{C}_{\theta}(X, x_0), (x, y) \mapsto x * y$ where
   \begin{equation*}
     x * y = (x_0, x_1, \ldots, x_n = y_0, y_1, \ldots, y_m)
   \end{equation*}
@@ -454,9 +452,9 @@ This concept is explored further in the following chapter.
   It follows that $[x]_{\theta} * [e_{x_0}]_{\theta} = [x * e_{x_0}]_{\theta} = [x]_{\theta}$ and $[e_{x_0}]_{\theta} * [x]_{\theta} = [e_{x_0} * x]_{\theta} = [x]_{\theta}$.
   
   \textit{Inverse:}
-  Let $x \in \mathcal{C}_{\theta}(X, x_0)$ with length $m$. Define the path $x^-\colon [m] \to X, t \mapsto x(m - t)$ where $n$ is the length of $x$.
+  Let $x \in \mathcal{C}_{\theta}(X, x_0)$ with length $m$. Define the path $x^-\colon [m] \to X, t \mapsto x(m - t)$.
 
-  Define $H\colon [m] \times [2m] \to X$ given by the following schema
+  Define $H\colon [2m] \times [m] \to X$ given by the following schema
   \begin{equation*}
     \begin{matrix}
       x_0 & x_1 & x_2 & \cdots & x_{m-2} & x_{m-1} & x_m = x_0 & x_{m-1} & x_{m-2} & \cdots & x_1 & x_0 \\
@@ -486,7 +484,6 @@ This concept is explored further in the following chapter.
 \begin{proof}
   Consider a closed $\theta$-path $(z_0, z_1, z_2, z_3, z_4 = z_0)$ in $X$. 
   Define the constant path $e_{z_0}\colon [0] \to X, 0 \mapsto z_0$ and the lazification $Z': [4] \to X, i \mapsto z_0$ of $Z$.
-
   Then $(z_0, z_1, z_2, z_3, z_4 = z_0) \sim_{\theta} (z_0, z_1, z_1, z_0, z_0)\sim_{\theta} (z_0, z_0, z_0, z_0, z_0) = Z'$. The remark follows from the fact that $\sim_{\theta}$ is an equivalence relation.
 \end{proof}
 
