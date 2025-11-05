@@ -36,7 +36,7 @@
   \parbox{\linewidth}{\vspace*{-8pt}\color{ao}\insertshorttitle\hspace{10px}\insertshortauthor\hfill\insertpagenumber}}
 
 \title{Kombinatorische Spieltheorie}
-\author[Y. Höll]{Yannik Höll}
+\author[M.Sc. Y. Höll]{M.Sc. Yannik Höll}
 \date{3. März, 2023}
 % \logo{\includegraphics[keepaspectratio=True, width=30px]{./image/logo.png}}
 
@@ -45,11 +45,6 @@
 \begin{document}
 \begin{frame}[noframenumbering, plain]
 	\titlepage
-\end{frame}
-
-\begin{frame}
-	\frametitle{Einteilung}
-	\tableofcontents
 \end{frame}
 
 \section{Einleitung}
@@ -118,13 +113,13 @@ Nicht untersucht werden können Spiele wie:
 
 \begin{frame}
     \frametitle{Nim}
-    $n,k \in \mathbb{N}$:
+    $n,k \in \mathbb{N}^+$:
     \begin{itemize}
         \item<1-> Position ohne Münze ($N_{0}$): Zweiter Spieler gewinnt
         \item<2-> Position mit einem Turm($N_{k}$): Erster Spieler gewinnt
-        \only<3-3>{\item Position mit mit 2 Türmen mit gleicher Anzahl an Münzen($N_{k,k}$): \\ \textbf{Hypothese:} 2. Spieler gewinnt immer, indem er den Gegner nachahmt }
+        \only<3-3>{\item Position mit mit 2 Türmen mit gleicher Anzahl an Münzen($N_{k} + N_{k}$): \\ \textbf{Hypothese:} 2. Spieler gewinnt immer, indem er den Gegner nachahmt }
         \item<4-> Position mit mit 2 Türmen mit gleicher Anzahl an Münzen: \\ 2. Spieler gewinnt immer, indem er den Gegner nachahmt
-        \item<5-> Position mit mit 2 Türmen mit unterschiedlicher Anzahl an Münzen ($N_{n,k}, n > k$): \\ 1. Spieler gewinnt immer, indem er $N_{n,k}$ nach $N_{k,k}$ überführt
+        \item<5-> Position mit mit 2 Türmen mit unterschiedlicher Anzahl an Münzen ($N_{n} + N_{k}, n > k$): \\ 1. Spieler gewinnt immer, indem er $N_{n} + N_{k}$ nach $N_{k} + N_{k}$ überführt
     \end{itemize}
 \end{frame}
 
@@ -135,7 +130,7 @@ Nicht untersucht werden können Spiele wie:
         \item<2-> $*k$ = Nim-Turm mit $k \in \mathbb{N}$ Münzen 
         \item<3-> $*k + *k = 0 \Rightarrow *k = - (*k)$
         \item<4-> $* + (*2) + (*3) = 0 \Rightarrow * + (*2) = *3$
-        \item<4-> \textbf{Aber}: $* + (*3) = (*2)$, $(2*) + (*3) = *$
+        \item<4-> \textbf{Aber}: $* + (*3) = (*2)$, $(*2) + (*3) = *$
         \item<4-> Nim-Addition verhält sich nicht wie Addition in $\mathbb{N}$
         \item<5-> Allgemeine Nim-Addition entspricht der vollständigen Nim-Theorie
     \end{itemize}
@@ -149,11 +144,11 @@ Nicht untersucht werden können Spiele wie:
         $*m + *n = *k$: $*k \neq *m' + *n$ und $*k \neq *m + *n'$ \\ mit $n' < n$ und $m' < m$
     \end{block}
     \onslide<2-> {
-    $\Rightarrow \forall k \in \mathbb{N}: n < 2^k \Rightarrow *2^k + *n = *(2^k + n)$ \\
+        $\forall k,n \in \mathbb{N}\colon n < 2^k \Rightarrow *2^k + *n = *(2^k + n)$ \\
     }
     \onslide<3-> {
-    $\Rightarrow \forall k,n \in \mathbb{N}: k \neq n: *2^k + *2^n = *(2^k + 2^n)$ \\
-    $\Rightarrow \forall k \in \mathbb{N}: *2^k + *2^k = 0$ \\
+        $\forall k,n \in \mathbb{N}\colon k \neq n: *2^k + *2^n = *(2^k + 2^n)$ \\
+        $\forall k \in \mathbb{N}\colon *2^k + *2^k = 0$ \\
     }
     \onslide<4-> {
         \vspace*{20px}
@@ -167,6 +162,9 @@ Nicht untersucht werden können Spiele wie:
         5 \nimadd 3 &= (4 + 1) \nimadd (2 + 1) = 4 \nimadd 2 = 4 + 2 = 6 \\
         \onslide<2->{11 \nimadd 22 \nimadd 33 &= (8 + 2 + 1) \nimadd (16 + 4 + 2) \nimadd (32 + 1) = 8 + 16 + 4 + 32 = 60}
     \end{align*}
+    \onslide<3->{\begin{equation*}
+        \forall k\in \mathbb{N}\colon k_0 2^0 + k_1 2^1 + k_2 2^2 + \ldots = \sum_{i=0}^\infty k_i\cdot 2^i, \: k_i \in \{0,1\}
+    \end{equation*}}
 \end{frame}
 
 \begin{frame}
@@ -176,53 +174,39 @@ Nicht untersucht werden können Spiele wie:
         \begin{center}
             $G = \{ a,b,c,\cdots | \: d,e,f,\cdots\}$
         \end{center}
-        wobei $a,b,c,d,e,f$ Kombinatorische Spiele sind. $a,b,c$ sind die Optionen des ersten Spielers (Links);
+        wobei $a,b,c,d,e,f$ kombinatorische Spiele sind. $a,b,c$ sind die Optionen des ersten Spielers (Links);
         $d,e,f$, die des 2. Spielers (Rechts). 
     \end{block}
-    $G = \{G^L | \: G^R\}$, falls es eine beste Optionen $G^L$ für Links und $G^R$ für rechts gibt. \\
-    $G^L$ ist beste Option $\iff \forall G^L_i \neq G^L: G^L > G^L_i$
+    $G = \{G^L | \: G^R\}$, falls es eine beste Optionen $G^L$ für Links und $G^R$ für Rechts gibt. \\
+    $G = \{G^L_0, G^L_1, \ldots \mid \: \ldots\}$, dann ist $G^L$ beste Option für Links, genau dann wenn $$\forall i\in \mathbb{N}\colon G^L \geq G^L_i.$$
 \end{frame}
 
 \begin{frame}
     \frametitle{Spiel - Abstrakte Definition}
 
     \begin{block}{Addition von Kombinatorischen Spielen}
-        $G = \{G^L| \: G^R\}, H = \{H^L | \: H^R\}$ Kombinatorische Spiele$: $
-        \[ G+H = \{G^L + H, G + H^L | \: G^R + H, G + H^R\} \]
+        Seien $G = \{G^L| \: G^R\}, H = \{H^L | \: H^R\}$ kombinatorische Spiele, dann
+        \[ G+H = \{G^L + H, G + H^L | \: G^R + H, G + H^R\}. \]
     \end{block}
 
     \begin{block}{Inverse von Kombinatorischen Spielen}
-        $G = \{G^L| \: G^R\}$ Kombinatorische Spiele:
-        \[ -G = \{-G^R |\: -G^L \}\]
+        Sei $G = \{G^L| \: G^R\}$ kombinatorisches Spiel, dann
+        \[ -G = \{-G^R |\: -G^L \}.\]
 
     \end{block}
 
 \end{frame}
-
-\begin{frame}
-    \frametitle{Spiel - Abstrakte Definition}
-
-    \begin{align*}
-        -G &= \{-G^R |\: -G^L \} \\
-        \vspace*{100px}\\
-        G + (-G) &= \{G^L| \: G^R\} + \{-G^R |\: -G^L \} \\
-        &= \{G^L + -G, G + (-G)^L |\: G^R + -G, G + (-G)^R \} \\
-        &= \{G^L + (-G), G + (-G^R) |\: G^R + (-G), G + (-G^L) \} \\
-        &\Rightarrow G^L + (-G); \:\: G + (-G^R) \:\:\:\:\: G^R + (-G); \:\: G + (-G^L)
-    \end{align*}
-\end{frame}
-
 
 \begin{frame}
     \frametitle{Spiel - Abstrakte Definition}
     \begin{block}{Vergleich von Spielen}
-    $G, H$ Kombinatorische Spiele:
+    Seien $G$ und $H$ kombinatorische Spiele, dann
     
     \begin{align*}
-        G > H \iff G + (-H) > 0 \\
-        G \geq H \iff G + (-H) \geq 0 \\
-        G < H \iff G + (-H) > 0 \\
-        G \leq H \iff G + (-H) \leq 0
+        G > H \iff G + (-H) > 0, \\
+        G \geq H \iff G + (-H) \geq 0, \\
+        G < H \iff G + (-H) > 0, \\
+        G \leq H \iff G + (-H) \leq 0.
     \end{align*}
     
     \end{block}
@@ -231,11 +215,11 @@ Nicht untersucht werden können Spiele wie:
 \begin{frame}
     \frametitle{Spiel - Abstrakte Definition}
     \begin{block}{Umkehrbare Züge}
-    $G = \{A,B,C,\cdots | \: D,E,F,\cdots\}, D^L = \{U,V,W\cdots | \: X,Y,Z,\cdots\}$ Kombinatorische Spiele: \\
+    Seien $G = \{A,B,C,\cdots | \: D,E,F,\cdots\}$ und $D^L = \{U,V,W\cdots | \: X,Y,Z,\cdots\}$ kombinatorische Spiele, dann \\
     \begin{center}
-        $\exists D^L \geq G \iff$ D ist umkehrbarer Zug
+        $D$ ist umkehrbarer Zug, genau dann wenn $D^L \geq G$.
     \end{center}
-    $\Rightarrow G = \{A,B,C,\cdots | D,E,F,\cdots\} = \{A,B,C,\cdots | \: \alert{X,Y,Z,\cdots},E,F\cdots\} = H$
+    Also $G = \{A,B,C,\cdots | D,E,F,\cdots\} \leq \{A,B,C,\cdots | \: \alert{X,Y,Z,\cdots},E,F\cdots\} = H$
     \end{block}
 \end{frame}
 
@@ -419,7 +403,7 @@ Nicht untersucht werden können Spiele wie:
     \frametitle{Hackenbush-Hotchpotch}
     \begin{itemize}
         \item<1-> $* < 1/2^n, \: \forall n \in \mathbb{N}, \: * > -1/2^n, \forall n \in \mathbb{N}, \: * \neq 0$
-        \item<2-> $* \: || \: 0$, "Start confused with 0", Stern ist ununterscheidbar von 0
+        \item<2-> $* \: || \: 0$, "Star confused with 0", Stern ist ununterscheidbar von 0
         \item<3-> $\uparrow \: = \{0,* | 0\}$, $\uparrow \: || \: *$
         \item<3-> $\uparrow + \uparrow \: = \: \Uparrow$
     \end{itemize}
