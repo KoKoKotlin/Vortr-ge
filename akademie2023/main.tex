@@ -37,7 +37,7 @@
 
 \title{Kombinatorische Spieltheorie}
 \author[M.Sc. Y. Höll]{M.Sc. Yannik Höll}
-\date{3. März, 2023}
+\date{23. Februar, 2026}
 % \logo{\includegraphics[keepaspectratio=True, width=30px]{./image/logo.png}}
 
 \beamertemplatenavigationsymbolsempty 
@@ -76,15 +76,18 @@ Kombinatorische Spieltheorie ist:
 Nicht untersucht werden können Spiele wie:
 \begin{itemize}
     \item<2-> Schach (Unentschieden)
-    \item<3-> Backgammon (Zufall)
+    \item<3-> Würfelspiele (Zufall)
     \item<4-> Tennis, oder andere Sportarten (keine diskreten Zustände)
     \item<5-> Schere-Stein-Papier (keine vollständige Information, nicht abwechselnd)
 \end{itemize}
 
 \onslide<6-> {
-    $\Rightarrow$ viele untersuchte Spiele eher unbekannt \\
-    $\Rightarrow$ Die meisten Spiele wurden wegen Theorie "erfunden"
+    \begin{itemize}
+        \item Spiele wurden entwickelt, um Theorie aufzubauen
+        \item Mit entwickelter Theorie ist Untersuchung komplexer Spiele möglich 
+    \end{itemize}
 }
+
 \end{frame}
 
 \begin{frame}
@@ -157,6 +160,26 @@ Nicht untersucht werden können Spiele wie:
 \end{frame}
 
 \begin{frame}
+    \begin{table}[h!]
+        \centering
+        \begin{tabular}{rrrrrrrrrrrrrrrr}
+        0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+        1 & 0 & 3 & 2 & 5 & 4 & 7 & 6 & 9 & 8 & 11 \\
+        2 & 3 & 0 & 1 & 6 & 7 & 4 & 5 & 10 & 11 & 8 \\
+        3 & 2 & 1 & 0 & 7 & 6 & 5 & 4 & 11 & 10 & 9 \\
+        4 & 5 & 6 & 7 & 0 & 1 & 2 & 3 & 12 & 13 & 14 \\
+        5 & 4 & 7 & 6 & 1 & 0 & 3 & 2 & 13 & 12 & 15 \\
+        6 & 7 & 4 & 5 & 2 & 3 & 0 & 1 & 14 & 15 & 12 \\
+        7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 & 15 & 14 & 13 \\
+        8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 0 & 1 & 2 \\
+        9 & 8 & 11 & 10 & 13 & 12 & 15 & 14 & 1 & 0 & 3 \\
+        10 & 11 & 8 & 9 & 14 & 15 & 12 & 13 & 2 & 3 & 0 \\
+        \end{tabular}
+        \caption{Nim-Additionstable}
+    \end{table}
+\end{frame}
+
+\begin{frame}
     \frametitle{Nim-Addition - Beispiel}
     \begin{align*}
         5 \nimadd 3 &= (4 + 1) \nimadd (2 + 1) = 4 \nimadd 2 = 4 + 2 = 6 \\
@@ -205,7 +228,7 @@ Nicht untersucht werden können Spiele wie:
     \begin{align*}
         G > H \iff G + (-H) > 0, \\
         G \geq H \iff G + (-H) \geq 0, \\
-        G < H \iff G + (-H) > 0, \\
+        G < H \iff G + (-H) < 0, \\
         G \leq H \iff G + (-H) \leq 0.
     \end{align*}
     
@@ -230,16 +253,6 @@ Nicht untersucht werden können Spiele wie:
         \includegraphics[width=0.8\textwidth]{pic/reversible.png}
         \caption{Schematische Darstellung - Umkehrbarer Zug \tiny{\cite{ww}}}
     \end{figure}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Beispiel Nim}
-    \begin{itemize}
-        \item $0 = \{|\}$
-        \item $* = \{0|0\}$
-        \item $*2 = \{0,*|0,*\}$
-        \item $*k = \{0,*,*2,\cdots,*(k-1)|0,*,*2,\cdots,*(k-1)\}$
-    \end{itemize}
 \end{frame}
 
 \section{Poker-Nim}
